@@ -48,5 +48,5 @@ function validate(reqBody) {
 
 // ===========================================================================
 
-exports.Items = mongoose.model('Item', itemSchema)
+exports.Item = mongoose.model('Item', itemSchema)
 exports.validate = validate

@@ -2,13 +2,13 @@ const express = require('express')
 const router = express.Router()
 const winston = require('../config/winston')
 const httpStatusCodes = require('../constants/http-status-codes')
-const { Board } = require('../models/board')
-const { List, validate } = require('../models/list')
+const { List } = require('../models/list')
+const { Item, validate } = require('../models/item')
 const { PaginatedResponse } = require('../application/paginated-response')
 const isValidObjectId = require('../middleware/http-param-validation')
 
 // ===========================================================================
-// Add
+// Add an Item
 // ===========================================================================
 
 router.post('/', async (req, res, next) => {
@@ -19,21 +19,22 @@ router.post('/', async (req, res, next) => {
       .status(httpStatusCodes.unprocessableEntity)
       .send(error.details[0].message)
   }
-  const board = await Board.findById(req.body.board)
-  if (!board) {
-    return res.status(httpStatusCodes.notFound).send('Board does not exist')
+
+  const list = await List.findById(req.body.list)
+  if (!list) {
+    return res.status(httpStatusCodes.notFound).send('List does not exist')
   }
 
   try {
-    const list = new List(req.body)
+    const item = new Item(req.body)
+    await item.save()
+
+    winston.info(`A new Item was created. Item(_id:${item._id})`)
+
+    list.items.push(item._id)
     await list.save()
-
-    winston.info(`A new List was created. List(_id:${list._id})`)
-
-    board.lists.push(list._id)
-    await board.save()
-
-    res.status(httpStatusCodes.created).json(list)
+    
+    res.status(httpStatusCodes.created).json(item)
   } catch (e) {
     winston.error(e)
     next(e)
@@ -49,13 +50,13 @@ router.get('/', async (req, res, next) => {
   const pageSize = req.query.pageSize || 50
 
   try {
-    const count = await List.countDocuments()
-    const lists = await List.find()
+    const count = await Item.countDocuments()
+    const items = await Item.find()
       .sort('_id')
       .skip(pageIndex * pageSize)
       .limit(pageSize)
 
-    res.json(new PaginatedResponse(pageIndex, pageSize, count, lists))
+    res.json(new PaginatedResponse(pageIndex, pageSize, count, items))
   } catch (e) {
     winston.error(e)
     next(e)
@@ -67,8 +68,10 @@ router.get('/', async (req, res, next) => {
 // ===========================================================================
 
 router.get('/:id', isValidObjectId, async (req, res, next) => {
-  const list = await List.findById(req.params.id).populate('items')
-  res.json(list)
+  const item = await Item.findById(req.params.id)
+  // TODO: Populate the item
+  // .populate('items')
+  res.json(item)
 })
 
 // ===========================================================================
@@ -84,16 +87,16 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
       .send(error.details[0].message)
   }
 
-  const list = await List.findById(req.params.id)
-  if (!list) {
-    return res.status(httpStatusCodes.notFound).send('List does not exist')
+  const item = await Item.findById(req.params.id)
+  if (!item) {
+    return res.status(httpStatusCodes.notFound).send('Item does not exist')
   }
 
   try {
-    list.title = req.body.title
-    await list.save()
+    item.title = req.body.title
+    await item.save()
 
-    winston.info(`A list was updated. List(_id:${list._id})`)
+    winston.info(`A item was updated. Item(_id:${item._id})`)
     res.status(httpStatusCodes.noContent).send()
   } catch (e) {
     winston.error(e)
