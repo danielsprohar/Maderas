@@ -4,30 +4,25 @@ const Joi = require('joi')
 
 // ===========================================================================
 
-const boardSchema = new Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-      minlength: 1,
-      maxlength: 512
-    },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    },
-    lists: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'List'
-      }
-    ]
+const boardSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+    minlength: 1,
+    maxlength: 512
   },
-  {
-    timestamps: true
-  }
-)
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  lists: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'List'
+    }
+  ]
+})
 
 // ===========================================================================
 

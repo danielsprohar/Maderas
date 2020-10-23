@@ -4,23 +4,18 @@ const Joi = require('joi')
 
 // ===========================================================================
 
-const listSchema = new Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-      minlength: 1,
-      maxlength: 512
-    },
-    board: {
-      type: mongoose.Types.ObjectId,
-      ref: 'Board'
-    }
+const listSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+    minlength: 1,
+    maxlength: 512
   },
-  {
-    timestamps: true
+  board: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Board'
   }
-)
+})
 
 // ===========================================================================
 

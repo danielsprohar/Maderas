@@ -10,42 +10,36 @@ const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0
 
 // ===========================================================================
 
-const userSchema = new Schema(
-  {
-    username: {
-      type: String,
-      required: true,
-      minlength: 1,
-      maxlength: 255,
-      trim: true
+const userSchema = new Schema({
+  username: {
+    type: String,
+    minlength: 1,
+    maxlength: 255,
+    trim: true
+  },
+  email: {
+    type: String,
+    required: true,
+    maxlength: 255,
+    validate: emailRegex,
+    trim: true
+  },
+  normalizedEmail: {
+    type: String,
+    set: function () {
+      return this.email.toUpperCase()
     },
-    email: {
-      type: String,
-      required: true,
-      maxlength: 255,
-      validate: emailRegex,
-      trim: true
-    },
-    normalizedEmail: {
-      type: String,
-      set: function () {
-        return this.email.toUpperCase()
-      },
-      index: {
-        unique: true
-      }
-    },
-    // https://www.npmjs.com/package/bcrypt#hash-info
-    hashedPassword: {
-      type: String,
-      minlength: 6,
-      maxlength: 64
+    index: {
+      unique: true
     }
   },
-  {
-    timestamps: true
+  // https://www.npmjs.com/package/bcrypt#hash-info
+  password: {
+    type: String,
+    minlength: 6,
+    maxlength: 64
   }
-)
+})
 
 // ===========================================================================
 
@@ -53,9 +47,9 @@ const userSchema = new Schema(
  * Validates the request body of a HTTP POST request for a User model.
  * @param {*} requestBody The request body of a HTTP POST request.
  */
-function validateUserDoc(requestBody) {
+function validate(requestBody) {
   const schema = Joi.object({
-    username: Joi.string().required(),
+    username: Joi.string(),
     email: Joi.string().regex(emailRegex).required(),
     password: Joi.string().min(6).required()
   })
@@ -66,4 +60,4 @@ function validateUserDoc(requestBody) {
 // ===========================================================================
 
 exports.User = mongoose.model('User', userSchema)
-exports.validateUserDoc = validateUserDoc
+exports.validate = validate
