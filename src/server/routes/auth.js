@@ -9,7 +9,7 @@ const { User, validate } = require('../models/user')
 const saltRounds = 11
 
 // ===========================================================================
-//
+// Login
 // ===========================================================================
 
 router.post('/login', async (req, res, next) => {
@@ -56,7 +56,7 @@ router.post('/login', async (req, res, next) => {
 })
 
 // ===========================================================================
-//
+// Register
 // ===========================================================================
 
 router.post('/register', async (req, res, next) => {
@@ -71,15 +71,17 @@ router.post('/register', async (req, res, next) => {
   try {
     const hash = await bcrypt.hash(req.body.password, saltRounds)
 
-    let user = new User({
+    const user = new User({
       username: req.body.username,
       email: req.body.email,
       password: hash
     })
 
-    user = await user.save()
-
-    winston.info(`A new user was created: User(${user._id}, ${user.email})`)
+    await user.save()
+    
+    winston.info(
+      `A new user was created: User(_id: ${user._id}, email: ${user.email})`
+    )
 
     res.json(buildResponse(user))
   } catch (e) {
@@ -97,7 +99,7 @@ function buildResponse(userDoc) {
     user: {
       id: userDoc._id,
       email: userDoc.email,
-      username: userDoc?.username
+      username: userDoc.username
     },
     token: buildJwtToken(userDoc)
   }
