@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-// const Joi = require('joi')
-const Joi = require('../extensions/joi-mongo-object-id')
+const Joi = require('../extensions/joi-mongodb-object-id')
 
 // ===========================================================================
 
@@ -30,7 +29,7 @@ const boardSchema = new Schema({
 function validate(reqBody) {
   const schema = Joi.object({
     title: Joi.string().max(512).required(),
-    userId: Joi.objectId().required()
+    user: Joi.objectId().required()
   })
 
   return schema.validate(reqBody)
