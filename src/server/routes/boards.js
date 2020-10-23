@@ -22,6 +22,9 @@ router.post('/', async (req, res, next) => {
   try {
     const board = new Board(req.body)
     await board.save()
+
+    winston.info(`A new Board was created. Board(_id:${board._id})`)
+
     res.status(httpStatusCodes.created).json(board)
   } catch (e) {
     winston.error(e)
@@ -56,9 +59,7 @@ router.get('/', async (req, res, next) => {
 // ===========================================================================
 
 router.get('/:id', isValidObjectId, async (req, res, next) => {
-  const board = await Board.findById(req.params.id)
-    // TODO: Populate the board
-    // .populate('lists')
+  const board = await Board.findById(req.params.id).populate('lists')
   res.json(board)
 })
 

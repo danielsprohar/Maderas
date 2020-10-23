@@ -2,10 +2,10 @@ const express = require('express')
 const router = express.Router()
 const winston = require('../config/winston')
 const httpStatusCodes = require('../constants/http-status-codes')
-const { List, validate } = require('../models/board')
+const { Board } = require('../models/board')
+const { List, validate } = require('../models/list')
 const { PaginatedResponse } = require('../application/paginated-response')
 const isValidObjectId = require('../middleware/http-param-validation')
-
 
 // ===========================================================================
 // Add
@@ -19,11 +19,21 @@ router.post('/', async (req, res, next) => {
       .status(httpStatusCodes.unprocessableEntity)
       .send(error.details[0].message)
   }
+  const board = await Board.findById(req.body.board)
+  if (!board) {
+    return res.status(httpStatusCodes.notFound).send('Board does not exist')
+  }
 
   try {
-    const board = new List(req.body)
+    const list = new List(req.body)
+    await list.save()
+
+    winston.info(`A new List was created. List(_id:${list._id})`)
+
+    board.lists.push(list._id)
     await board.save()
-    res.status(httpStatusCodes.created).json(board)
+    
+    res.status(httpStatusCodes.created).json(list)
   } catch (e) {
     winston.error(e)
     next(e)
@@ -40,12 +50,12 @@ router.get('/', async (req, res, next) => {
 
   try {
     const count = await List.countDocuments()
-    const boards = await List.find()
+    const lists = await List.find()
       .sort('_id')
       .skip(pageIndex * pageSize)
       .limit(pageSize)
 
-    res.json(new PaginatedResponse(pageIndex, pageSize, count, boards))
+    res.json(new PaginatedResponse(pageIndex, pageSize, count, lists))
   } catch (e) {
     winston.error(e)
     next(e)
@@ -57,10 +67,10 @@ router.get('/', async (req, res, next) => {
 // ===========================================================================
 
 router.get('/:id', isValidObjectId, async (req, res, next) => {
-  const board = await List.findById(req.params.id)
-    // TODO: Populate the list
-    // .populate('items')
-  res.json(board)
+  const list = await List.findById(req.params.id)
+  // TODO: Populate the list
+  // .populate('items')
+  res.json(list)
 })
 
 // ===========================================================================
@@ -76,16 +86,16 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
       .send(error.details[0].message)
   }
 
-  const board = await List.findById(req.params.id)
-  if (!board) {
+  const list = await List.findById(req.params.id)
+  if (!list) {
     return res.status(httpStatusCodes.notFound).send('List does not exist')
   }
 
   try {
-    board.title = req.body.title
-    await board.save()
+    list.title = req.body.title
+    await list.save()
 
-    winston.info(`A board was updated. List(_id:${board._id})`)
+    winston.info(`A list was updated. List(_id:${list._id})`)
     res.status(httpStatusCodes.noContent).send()
   } catch (e) {
     winston.error(e)
