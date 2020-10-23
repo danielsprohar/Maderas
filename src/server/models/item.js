@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const Joi = require('joi')
+const Joi = require('../extensions/joi-mongodb-object-id')
 
 // ===========================================================================
 
@@ -38,9 +38,9 @@ const itemSchema = new Schema({
 function validate(reqBody) {
   const schema = Joi.object({
     title: Joi.string().max(512).required(),
-    description: Joi.string().max(2048).required(),
-    dueDate: Joi.date().min(yesterday).required(),
-    listId: Joi.string().required()
+    description: Joi.string().max(2048),
+    dueDate: Joi.date().min(yesterday),
+    list: Joi.objectId().required()
   })
 
   return schema.validate(reqBody)
