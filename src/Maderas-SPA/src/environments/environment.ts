@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  maderasApiUrl: 'http://localhost:5000/api/',
-  maderasAuthUrl: 'http://localhost:5000/api/auth/',
+  maderasApiUrl: 'http://localhost:5000/api',
+  maderasAuthUrl: 'http://localhost:5000/api/auth',
 };
 
 /*
