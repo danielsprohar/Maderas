@@ -2,13 +2,16 @@
   <h1>Create an account</h1>
   <hr />
   <form [formGroup]="form">
+    <!-- ====================================================================== -->
     <!-- Username control -->
+    <!-- ====================================================================== -->
     <div class="field">
       <label class="label">Username</label>
       <div class="control has-icons-left has-icons-right">
         <input
+          [class]="username.touched && username.valid ? 'is-success' : ''"
           formControlName="username"
-          class="input is-success"
+          class="input"
           type="text"
           autofocus
           tabindex="1"
@@ -16,9 +19,11 @@
         <span class="icon is-small is-left">
           <fa-icon [icon]="faUser"></fa-icon>
         </span>
-        <span class="icon is-small is-right">
-          <fa-icon [icon]="faCheck"></fa-icon>
-        </span>
+        <ng-container *ngIf="username.touched && username.valid">
+          <span class="icon is-small is-right">
+            <fa-icon [icon]="faCheck"></fa-icon>
+          </span>
+        </ng-container>
       </div>
       <!-- error message -->
       <ng-container
@@ -29,21 +34,21 @@
       <!-- <p class="help is-success">This username is available</p> -->
     </div>
 
+    <!-- ====================================================================== -->
     <!-- Email control -->
+    <!-- ====================================================================== -->
     <div class="field">
       <label class="label">Email</label>
       <div class="control has-icons-left has-icons-right">
         <input
+          [class]="email.touched && email.valid ? 'is-success' : ''"
           formControlName="email"
-          class="input is-danger"
+          class="input"
           type="email"
           tabindex="2"
         />
         <span class="icon is-small is-left">
           <fa-icon [icon]="faEnvelope"></fa-icon>
-        </span>
-        <span class="icon is-small is-right">
-          <fa-icon [icon]="faExclamationTriangle"></fa-icon>
         </span>
       </div>
       <!-- error message -->
@@ -52,11 +57,14 @@
       </ng-container>
     </div>
 
+    <!-- ====================================================================== -->
     <!-- Password -->
+    <!-- ====================================================================== -->
     <div class="field">
       <label class="label">Password</label>
       <div class="control has-icons-left">
         <input
+          [class]="password.touched && password.valid ? 'is-success' : ''"
           formControlName="password"
           class="input"
           type="password"
@@ -66,15 +74,20 @@
           <fa-icon [icon]="faKey"></fa-icon>
         </span>
       </div>
+      <!-- Give the user a hint -->
+      <p class="help">Password must be between 6 and 64 characters in length</p>
+
       <!-- error message -->
       <ng-container
         *ngIf="password.invalid && (password.dirty || password.touched)"
       >
-        <p class="help is-danger">Passwords do not match</p>
+        <p class="help is-danger">{{ getPasswordError() }}</p>
       </ng-container>
     </div>
 
+    <!-- ====================================================================== -->
     <!-- Confirm password -->
+    <!-- ====================================================================== -->
     <div class="field">
       <label class="label">Confirm password</label>
       <div class="control has-icons-left">
@@ -85,7 +98,9 @@
       </div>
     </div>
 
+    <!-- ====================================================================== -->
     <!-- Actions -->
+    <!-- ====================================================================== -->
     <div class="field is-grouped">
       <div class="control">
         <button

@@ -26,7 +26,6 @@ export class RegisterComponent implements OnInit {
   faCheck = faCheck;
   faEnvelope = faEnvelope;
   faKey = faKey;
-  faExclamationTriangle = faExclamationTriangle;
 
   form: FormGroup;
 
@@ -44,8 +43,15 @@ export class RegisterComponent implements OnInit {
           '',
           [Validators.required, Validators.maxLength(255), Validators.email],
         ],
-        password: ['', [Validators.required]],
-        confirmPassword: ['', [Validators.required]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(64),
+          ],
+        ],
+        confirmPassword: [''],
       },
       {
         validators: passwordsMatchValidator,
@@ -92,6 +98,22 @@ export class RegisterComponent implements OnInit {
 
     return this.email.hasError('maxLength')
       ? 'Must be less than 256 characters'
+      : '';
+  }
+
+  getPasswordError(): string {
+    if (this.password.hasError('required')) {
+      return 'Password is required';
+    }
+    if (this.password.hasError('minLength')) {
+      return 'Password must be at least 6 characters in length';
+    }
+    if (this.password.hasError('maxLength')) {
+      return 'Password must be less than 65 characters in length';
+    }
+
+    return this.password.hasError('passwordsDoNoMatch')
+      ? 'Passwords do not match'
       : '';
   }
 

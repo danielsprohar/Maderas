@@ -9,6 +9,6 @@ export const passwordsMatchValidator: ValidatorFn = (
   return password &&
     confirmPasssword &&
     password.value !== confirmPasssword.value
-    ? { fieldsDoNotMatch: true }
+    ? { passwordsDoNotMatch: true }
     : null;
 };

@@ -26,9 +26,8 @@ const userSchema = new Schema({
   },
   normalizedEmail: {
     type: String,
-    set: function () {
-      return this.email.toUpperCase()
-    },
+    required: true,
+    uppercase: true,
     index: {
       unique: true
     }
