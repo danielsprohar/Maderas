@@ -1,23 +1,32 @@
 <div class="container">
-  <form action="">
+  <h1>Create an account</h1>
+  <hr />
+  <form [formGroup]="form">
     <!-- Username control -->
     <div class="field">
       <label class="label">Username</label>
       <div class="control has-icons-left has-icons-right">
         <input
+          formControlName="username"
           class="input is-success"
           type="text"
-          placeholder="Text input"
-          value="bulma"
+          autofocus
+          tabindex="1"
         />
         <span class="icon is-small is-left">
-          <i class="fas fa-user"></i>
+          <fa-icon [icon]="faUser"></fa-icon>
         </span>
         <span class="icon is-small is-right">
-          <i class="fas fa-check"></i>
+          <fa-icon [icon]="faCheck"></fa-icon>
         </span>
       </div>
-      <p class="help is-success">This username is available</p>
+      <!-- error message -->
+      <ng-container
+        *ngIf="username.invalid && (username.dirty || username.touched)"
+      >
+        <p class="help is-danger">{{ getUsernameError() }}</p>
+      </ng-container>
+      <!-- <p class="help is-success">This username is available</p> -->
     </div>
 
     <!-- Email control -->
@@ -25,44 +34,73 @@
       <label class="label">Email</label>
       <div class="control has-icons-left has-icons-right">
         <input
+          formControlName="email"
           class="input is-danger"
           type="email"
-          placeholder="Email input"
-          value="hello@"
+          tabindex="2"
         />
         <span class="icon is-small is-left">
-          <i class="fas fa-envelope"></i>
+          <fa-icon [icon]="faEnvelope"></fa-icon>
         </span>
         <span class="icon is-small is-right">
-          <i class="fas fa-exclamation-triangle"></i>
+          <fa-icon [icon]="faExclamationTriangle"></fa-icon>
         </span>
       </div>
-      <p class="help is-danger">This email is invalid</p>
+      <!-- error message -->
+      <ng-container *ngIf="email.invalid && (email.dirty || email.touched)">
+        <p class="help is-danger">{{ getEmailError() }}</p>
+      </ng-container>
     </div>
 
     <!-- Password -->
     <div class="field">
       <label class="label">Password</label>
-      <div class="control">
-        <input class="input" type="password" />
+      <div class="control has-icons-left">
+        <input
+          formControlName="password"
+          class="input"
+          type="password"
+          tabindex="3"
+        />
+        <span class="icon is-small is-left">
+          <fa-icon [icon]="faKey"></fa-icon>
+        </span>
       </div>
+      <!-- error message -->
+      <ng-container
+        *ngIf="password.invalid && (password.dirty || password.touched)"
+      >
+        <p class="help is-danger">Passwords do not match</p>
+      </ng-container>
     </div>
 
     <!-- Confirm password -->
     <div class="field">
-      <label class="label">Password</label>
-      <div class="control">
-        <input class="input" type="password" />
+      <label class="label">Confirm password</label>
+      <div class="control has-icons-left">
+        <input class="input" type="password" tabindex="4" />
+        <span class="icon is-small is-left">
+          <fa-icon [icon]="faKey"></fa-icon>
+        </span>
       </div>
     </div>
 
     <!-- Actions -->
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-link">Submit</button>
+        <button
+          type="submit"
+          [disabled]="form.invalid"
+          class="button is-primary"
+          tabindex="5"
+        >
+          Submit
+        </button>
       </div>
       <div class="control">
-        <button class="button is-link is-light" routerLink="/">Cancel</button>
+        <a class="button is-link is-light" routerLink="/" tabindex="6">
+          Cancel
+        </a>
       </div>
     </div>
   </form>

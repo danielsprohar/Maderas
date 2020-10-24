@@ -4,6 +4,17 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  height: 100vh;
+}
+
+/* Style the horizontal ruler */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
 .spacer {
   flex: 1;
 }
