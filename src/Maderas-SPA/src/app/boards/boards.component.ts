@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -19,6 +19,7 @@ export class BoardsComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
     private readonly dataService: DataService<Board>,
     public readonly auth: AuthService
   ) {}
@@ -32,7 +33,7 @@ export class BoardsComponent implements OnInit {
   // =========================================================================
 
   view(boardId: string): void {
-    console.log(boardId);
+    this.router.navigate([boardId, 'shell'], { relativeTo: this.route });
   }
 
   // =========================================================================
