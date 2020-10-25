@@ -1,1 +1,34 @@
-<p>boards works!</p>
+<div class="columns">
+  <aside class="menu mr-4">
+    <p class="menu-label">General</p>
+    <ul class="menu-list">
+      <li><a routerLink="/boards">Boards</a></li>
+      <li><a>Templates</a></li>
+      <li><a routerLink="/">Home</a></li>
+    </ul>
+  </aside>
+
+  <div class="column">
+    <div class="box">
+      <div class="mb-4">
+        <fa-icon [icon]="faUser"></fa-icon>
+        <span class="ml-2">
+          <strong>Personal Boards</strong>
+        </span>
+      </div>
+      <button class="button">Create new board</button>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- Personal Boards -->
+    <!-- ===================================================================== -->
+    <div *ngIf="boards$ | async as boards" class="container">
+      <h1 class="title">Your boards</h1>
+      <div *ngFor="let board of boards" class="box board" (click)="view(board._id)">
+        <p>
+          <strong>{{ board.title }}</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

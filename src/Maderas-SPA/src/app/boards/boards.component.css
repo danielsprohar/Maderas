@@ -1,0 +1,7 @@
+.board {
+  cursor: pointer;
+}
+
+.board:hover {
+  background-color: whitesmoke;
+}

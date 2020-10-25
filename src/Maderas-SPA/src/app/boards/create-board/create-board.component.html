@@ -1,0 +1,39 @@
+<div class="container is-fluid">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- ====================================================================== -->
+    <!-- Title control -->
+    <!-- ====================================================================== -->
+    <div class="field">
+      <label class="label"> Title </label>
+      <div class="control">
+        <input
+          [class]="title.touched && title.valid ? 'is-success' : ''"
+          formControlName="title"
+          class="input"
+          placeholder="e.g., Backlog"
+          type="text"
+          autofocus
+        />
+      </div>
+      <!-- error message -->
+      <ng-container *ngIf="title.invalid && (title.dirty || title.touched)">
+        <p class="help is-danger">{{ getTitleError() }}</p>
+      </ng-container>
+    </div>
+
+    <!-- ====================================================================== -->
+    <!-- Actions -->
+    <!-- ====================================================================== -->
+    <div class="field">
+      <div class="control">
+        <button
+          type="submit"
+          [disabled]="form.invalid"
+          class="button is-primary"
+        >
+          Create
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
