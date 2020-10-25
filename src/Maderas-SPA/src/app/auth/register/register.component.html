@@ -1,7 +1,7 @@
 <div class="container">
   <h1>Create an account</h1>
   <hr />
-  <form [formGroup]="form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <!-- ====================================================================== -->
     <!-- Username control -->
     <!-- ====================================================================== -->
@@ -14,7 +14,6 @@
           class="input"
           type="text"
           autofocus
-          tabindex="1"
         />
         <span class="icon is-small is-left">
           <fa-icon [icon]="faUser"></fa-icon>
@@ -45,7 +44,6 @@
           formControlName="email"
           class="input"
           type="email"
-          tabindex="2"
         />
         <span class="icon is-small is-left">
           <fa-icon [icon]="faEnvelope"></fa-icon>
@@ -75,7 +73,6 @@
           formControlName="password"
           class="input"
           type="password"
-          tabindex="3"
           appUniqueEmailValidator
         />
         <span class="icon is-small is-left">
@@ -108,7 +105,6 @@
           formControlName="confirmPassword"
           class="input"
           type="password"
-          tabindex="4"
         />
         <span class="icon is-small is-left">
           <fa-icon [icon]="faKey"></fa-icon>
@@ -124,30 +120,16 @@
     <!-- ====================================================================== -->
     <!-- Actions -->
     <!-- ====================================================================== -->
-    <div class="field is-grouped">
+    <div class="field">
       <div class="control">
         <button
           type="submit"
           [disabled]="form.invalid"
-          class="button is-primary"
-          tabindex="5"
+          class="button is-primary full-width"
         >
           Submit
         </button>
       </div>
-      <div class="control">
-        <a class="button is-link is-light" routerLink="/" tabindex="6">
-          Cancel
-        </a>
-      </div>
-    </div>
-
-    <hr />
-
-    <div>
-      <p>Form: {{ form.valid }}</p>
-      <p>Email: {{ email.valid }}</p>
-      <p>Password: {{ password.valid }}</p>
     </div>
   </form>
 </div>

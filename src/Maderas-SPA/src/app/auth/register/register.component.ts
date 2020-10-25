@@ -139,4 +139,8 @@ export class RegisterComponent implements OnInit {
   // =========================================================================
   // Actions
   // =========================================================================
+
+  onSubmit(): void {
+    console.log('submitted');
+  }
 }
