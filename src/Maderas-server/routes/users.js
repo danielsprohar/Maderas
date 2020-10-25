@@ -15,7 +15,7 @@ router.get('/search', async (req, res) => {
     normalizedEmail: new String(req.query.email).trim().toLocaleUpperCase()
   })
 
-  res.json({ count })
+  res.json(count)
 })
 
 // ===========================================================================

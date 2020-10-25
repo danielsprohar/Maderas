@@ -8,5 +8,6 @@ import { RegisterComponent } from './register/register.component';
 @NgModule({
   declarations: [LoginComponent, RegisterComponent],
   imports: [CommonModule, SharedModule, RouterModule],
+  providers: [],
 })
 export class AuthModule {}

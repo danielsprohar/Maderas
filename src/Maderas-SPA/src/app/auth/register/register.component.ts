@@ -9,12 +9,12 @@ import { Router } from '@angular/router';
 import {
   faCheck,
   faEnvelope,
-  faExclamationTriangle,
   faKey,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import { passwordsMatchValidator } from '../validators/passwords-match-validator';
+import { UniqueEmailAsyncValidator } from '../validators/unique-email-async-validator';
 
 @Component({
   selector: 'app-register',
@@ -42,6 +42,7 @@ export class RegisterComponent implements OnInit {
         email: [
           '',
           [Validators.required, Validators.maxLength(255), Validators.email],
+          UniqueEmailAsyncValidator.create(this.auth),
         ],
         password: [
           '',
@@ -55,6 +56,7 @@ export class RegisterComponent implements OnInit {
       },
       {
         validators: passwordsMatchValidator,
+        updateOn: 'blur',
       }
     );
   }
@@ -67,9 +69,13 @@ export class RegisterComponent implements OnInit {
     return this.form.get('username');
   }
 
+  // =========================================================================
+
   get email(): AbstractControl {
     return this.form.get('email');
   }
+
+  // =========================================================================
 
   get password(): AbstractControl {
     return this.form.get('password');
@@ -88,6 +94,8 @@ export class RegisterComponent implements OnInit {
       : '';
   }
 
+  // =========================================================================
+
   getEmailError(): string {
     if (this.email.hasError('required')) {
       return 'Email is required';
@@ -95,11 +103,16 @@ export class RegisterComponent implements OnInit {
     if (this.email.hasError('email')) {
       return 'Invalid format';
     }
+    if (this.email.hasError('maxLength')) {
+      return 'Must be less than 256 characters';
+    }
 
-    return this.email.hasError('maxLength')
-      ? 'Must be less than 256 characters'
+    return this.email.hasError('emailIsTaken')
+      ? 'Email is taken. Please use a different email.'
       : '';
   }
+
+  // =========================================================================
 
   getPasswordError(): string {
     if (this.password.hasError('required')) {

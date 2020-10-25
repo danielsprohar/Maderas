@@ -25,7 +25,7 @@ export class DataService<T> {
   constructor(private readonly http: HttpClient) {}
 
   getAll(path: string, params?: HttpParams): Observable<PaginatedResponse<T>> {
-    const url = environment.maderasApiUrl + path;
+    const url = environment.apiUrl + path;
 
     return this.http
       .get<PaginatedResponse<T>>(url, {
@@ -38,7 +38,7 @@ export class DataService<T> {
   // ==========================================================================
 
   get(path: string): Observable<T> {
-    const url = environment.maderasApiUrl + path;
+    const url = environment.apiUrl + path;
 
     return this.http
       .get<T>(url, { headers: httpHeaders })
@@ -48,7 +48,7 @@ export class DataService<T> {
   // ==========================================================================
 
   update(path: string, data: T): Observable<T> {
-    const url = environment.maderasApiUrl + path;
+    const url = environment.apiUrl + path;
 
     return this.http
       .put<T>(url, data, { headers: httpHeaders })
@@ -58,7 +58,7 @@ export class DataService<T> {
   // ==========================================================================
 
   create(path: string, data: T): Observable<T> {
-    const url = environment.maderasApiUrl + path;
+    const url = environment.apiUrl + path;
 
     return this.http
       .post<T>(url, data, { headers: httpHeaders })
