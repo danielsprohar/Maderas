@@ -13,6 +13,8 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
+import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
+import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 import { RegisterModel } from '../models/register-model';
 import { AuthService } from '../services/auth.service';
 import { passwordsMatchValidator } from '../validators/passwords-match-validator';
@@ -37,7 +39,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly auth: AuthService,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private readonly snackbar: SnackbarService
   ) {}
 
   ngOnInit(): void {
@@ -164,17 +167,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     const sub = this.auth.login(registerModel).subscribe(
       (res) => {
-        if (res) {
-          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-          if (!returnUrl) {
-            this.router.navigate(['/']);
-          } else {
-            this.router.navigate([returnUrl]);
-          }
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+        if (!returnUrl) {
+          this.router.navigate(['/']);
+        } else {
+          this.router.navigate([returnUrl]);
         }
       },
       (err) => {
-        // this.notification.error(err.message);
+        this.snackbar.show(err.message, SnackbarMessageType.Danger);
         // TODO: Log error
         console.error(err);
       }

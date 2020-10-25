@@ -1,10 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
-  title = 'Maderas-SPA';
+export class AppComponent implements OnInit, OnDestroy {
+  private routerSubscription: Subscription;
+
+  constructor(private readonly router: Router) {}
+
+  ngOnInit(): void {
+    this.router.setUpLocationChangeListener();
+
+    this.routerSubscription = this.router.events.subscribe((next) => {
+      const navbarMenu = document.getElementById('navbarMenu');
+      navbarMenu.classList.remove('is-active');
+
+      const navbarBurger = document.getElementById('navbarBurger');
+      navbarBurger.classList.remove('is-active');
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
 }
