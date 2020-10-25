@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   faCheck,
   faEnvelope,
   faKey,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
+import { RegisterModel } from '../models/register-model';
 import { AuthService } from '../services/auth.service';
 import { passwordsMatchValidator } from '../validators/passwords-match-validator';
 import { UniqueEmailAsyncValidator } from '../validators/unique-email-async-validator';
@@ -21,7 +23,9 @@ import { UniqueEmailAsyncValidator } from '../validators/unique-email-async-vali
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
+  private readonly subscriptions: Subscription[] = [];
+
   faUser = faUser;
   faCheck = faCheck;
   faEnvelope = faEnvelope;
@@ -31,6 +35,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
     private readonly auth: AuthService,
     private readonly fb: FormBuilder
   ) {}
@@ -59,6 +64,12 @@ export class RegisterComponent implements OnInit {
         updateOn: 'blur',
       }
     );
+  }
+
+  // =========================================================================
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
   // =========================================================================
@@ -141,6 +152,34 @@ export class RegisterComponent implements OnInit {
   // =========================================================================
 
   onSubmit(): void {
-    console.log('submitted');
+    if (this.form.invalid) {
+      return;
+    }
+
+    const registerModel = new RegisterModel(
+      this.username.value.trim(),
+      this.email.value.trim(),
+      this.password.value.trim()
+    );
+
+    const sub = this.auth.login(registerModel).subscribe(
+      (res) => {
+        if (res) {
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+          if (!returnUrl) {
+            this.router.navigate(['/']);
+          } else {
+            this.router.navigate([returnUrl]);
+          }
+        }
+      },
+      (err) => {
+        // this.notification.error(err.message);
+        // TODO: Log error
+        console.error(err);
+      }
+    );
+
+    this.subscriptions.push(sub);
   }
 }

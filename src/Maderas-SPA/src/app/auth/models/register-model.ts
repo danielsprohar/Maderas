@@ -3,7 +3,9 @@ export class RegisterModel {
   email: string;
   password: string;
 
-  constructor(fields: { username?: string; email: string; password: string }) {
-    Object.assign(this, fields);
+  constructor(username: string, email: string, password: string) {
+    this.username = username;
+    this.email = email;
+    this.password = password;
   }
 }
