@@ -12,7 +12,7 @@ export class UniqueEmailAsyncValidator {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return auth.validateEmail(control.value).pipe(
         debounceTime(1000),
-        // Set the 'uniqueError' flag to
+        // Set the 'emailIsTaken' flag to
         // inform the consumer that the email already exists in the db.
         tap((res) => console.log(res)),
         map((isTaken) => (isTaken ? { emailIsTaken: true } : null)),

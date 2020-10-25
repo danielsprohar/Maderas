@@ -104,11 +104,16 @@
     <div class="field">
       <label class="label">Confirm password</label>
       <div class="control has-icons-left has-icons-right">
-        <input class="input" type="password" tabindex="4" />
+        <input
+          formControlName="confirmPassword"
+          class="input"
+          type="password"
+          tabindex="4"
+        />
         <span class="icon is-small is-left">
           <fa-icon [icon]="faKey"></fa-icon>
         </span>
-        <ng-container *ngIf="password.touched && password.valid">
+        <ng-container *ngIf="confirmPassword.touched && confirmPassword.valid">
           <span class="icon is-small is-right">
             <fa-icon [icon]="faCheck"></fa-icon>
           </span>
@@ -136,11 +141,6 @@
         </a>
       </div>
     </div>
-
-    <hr />
-
-    <p>Email pending: {{ email.pending }}</p>
-    <p>Password pending: {{ password.pending }}</p>
 
     <hr />
 

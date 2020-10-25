@@ -52,7 +52,7 @@ export class RegisterComponent implements OnInit {
             Validators.maxLength(64),
           ],
         ],
-        confirmPassword: [''],
+        confirmPassword: ['', Validators.required],
       },
       {
         validators: passwordsMatchValidator,
@@ -79,6 +79,12 @@ export class RegisterComponent implements OnInit {
 
   get password(): AbstractControl {
     return this.form.get('password');
+  }
+
+  // =========================================================================
+
+  get confirmPassword(): AbstractControl {
+    return this.form.get('confirmPassword');
   }
 
   // =========================================================================
