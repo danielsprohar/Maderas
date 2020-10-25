@@ -24,9 +24,7 @@ router.post('/login', async (req, res, next) => {
   try {
     // Check the validity of the email.
     const userDoc = await User.findOne({
-      $where: {
-        normalizedEmail: req.body.email.toUpperCase()
-      }
+      normalizedEmail: req.body.email.toUpperCase()
     })
 
     if (!userDoc) {
@@ -46,6 +44,10 @@ router.post('/login', async (req, res, next) => {
         .status(httpStatusCodes.unauthorized)
         .send('Invalid email or password')
     }
+
+    winston.info(
+      `User login successful: User(_id: ${userDoc._id}, email: ${userDoc.email})`
+    )
 
     // Good to go!
     res.json(buildResponse(userDoc))

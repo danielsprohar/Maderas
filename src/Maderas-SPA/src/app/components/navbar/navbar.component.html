@@ -39,7 +39,8 @@
       </div>
     </div>
 
-    <div class="navbar-end">
+    <!-- Register/Login buttons -->
+    <div *ngIf="!auth.isLoggedIn(); else loggedIn" class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
           <a class="button is-primary" routerLink="/register">
@@ -49,5 +50,14 @@
         </div>
       </div>
     </div>
+
+    <!-- User info -->
+    <ng-template #loggedIn>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span>Hello</span>
+        </div>
+      </div>
+    </ng-template>
   </div>
 </nav>

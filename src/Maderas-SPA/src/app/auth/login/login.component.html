@@ -1,1 +1,57 @@
-<p>login works!</p>
+<div class="container">
+  <h1 class="title">Please log in</h1>
+  <hr />
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- ====================================================================== -->
+    <!-- Email control -->
+    <!-- ====================================================================== -->
+    <div class="field">
+      <label class="label">Email</label>
+      <div class="control has-icons-left has-icons-right">
+        <input
+          [class]="email.touched && email.valid ? 'is-success' : ''"
+          formControlName="email"
+          class="input"
+          type="email"
+        />
+        <span class="icon is-small is-left">
+          <fa-icon [icon]="faEnvelope"></fa-icon>
+        </span>
+      </div>
+    </div>
+
+    <!-- ====================================================================== -->
+    <!-- Password -->
+    <!-- ====================================================================== -->
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control has-icons-left has-icons-right">
+        <input
+          [class]="password.touched && password.valid ? 'is-success' : ''"
+          formControlName="password"
+          class="input"
+          type="password"
+          appUniqueEmailValidator
+        />
+        <span class="icon is-small is-left">
+          <fa-icon [icon]="faKey"></fa-icon>
+        </span>
+      </div>
+    </div>
+
+    <!-- ====================================================================== -->
+    <!-- Actions -->
+    <!-- ====================================================================== -->
+    <div class="field">
+      <div class="control">
+        <button
+          type="submit"
+          [disabled]="form.invalid"
+          class="button is-primary full-width"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

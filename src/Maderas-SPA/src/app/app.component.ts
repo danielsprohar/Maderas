@@ -13,6 +13,16 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
+    this.addRouterListener();
+  }
+
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
+
+  private addRouterListener(): void {
     this.router.setUpLocationChangeListener();
 
     this.routerSubscription = this.router.events.subscribe((next) => {
@@ -22,11 +32,5 @@ export class AppComponent implements OnInit, OnDestroy {
       const navbarBurger = document.getElementById('navbarBurger');
       navbarBurger.classList.remove('is-active');
     });
-  }
-
-  ngOnDestroy(): void {
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-    }
   }
 }

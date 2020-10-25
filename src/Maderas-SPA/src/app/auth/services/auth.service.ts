@@ -105,6 +105,10 @@ export class AuthService {
   // =========================================================================
 
   isLoggedIn(): boolean {
+    if (this.getAuthorizationToken()) {
+      return true;
+    }
+
     return this.isLoggedInSubject.value;
   }
 

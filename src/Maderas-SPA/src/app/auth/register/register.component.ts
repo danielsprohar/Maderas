@@ -28,12 +28,11 @@ import { UniqueEmailAsyncValidator } from '../validators/unique-email-async-vali
 export class RegisterComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
-  faUser = faUser;
-  faCheck = faCheck;
-  faEnvelope = faEnvelope;
-  faKey = faKey;
-
-  form: FormGroup;
+  public faUser = faUser;
+  public faCheck = faCheck;
+  public faEnvelope = faEnvelope;
+  public faKey = faKey;
+  public form: FormGroup;
 
   constructor(
     private readonly router: Router,
@@ -102,7 +101,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   // =========================================================================
-  // Form getters
+  // Form getters (error messages)
   // =========================================================================
 
   getUsernameError(): string {
@@ -162,7 +161,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     const registerModel = new RegisterModel(
       this.username.value.trim(),
       this.email.value.trim(),
-      this.password.value.trim()
+      this.password.value
     );
 
     const sub = this.auth.register(registerModel).subscribe(
