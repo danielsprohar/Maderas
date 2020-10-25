@@ -84,7 +84,7 @@ export class AuthService {
    * @see https://tools.ietf.org/html/rfc7519#section-4.1.4
    */
   isTokenValid(): boolean {
-    const token = sessionStorage.getItem('luca');
+    const token = localStorage.getItem('luca');
     if (!token) {
       return false;
     }
@@ -111,7 +111,7 @@ export class AuthService {
   // =========================================================================
 
   getAuthorizationToken(): string {
-    return sessionStorage.getItem(storageKey);
+    return localStorage.getItem(storageKey);
   }
 
   // =========================================================================
@@ -125,7 +125,7 @@ export class AuthService {
   private persist(res: AuthResponse): void {
     this.userSubject.next(res.user);
     this.isLoggedInSubject.next(true);
-    sessionStorage.setItem(storageKey, res.token);
+    localStorage.setItem(storageKey, res.token);
   }
 
   // =========================================================================

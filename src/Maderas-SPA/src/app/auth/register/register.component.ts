@@ -165,7 +165,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.password.value.trim()
     );
 
-    const sub = this.auth.login(registerModel).subscribe(
+    const sub = this.auth.register(registerModel).subscribe(
       (res) => {
         const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
         if (!returnUrl) {

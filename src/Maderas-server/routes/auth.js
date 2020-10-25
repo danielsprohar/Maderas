@@ -74,11 +74,12 @@ router.post('/register', async (req, res, next) => {
     const user = new User({
       username: req.body.username,
       email: req.body.email,
+      normalizedEmail: req.body.email.toUpperCase(),
       password: hash
     })
 
     await user.save()
-    
+
     winston.info(
       `A new user was created: User(_id: ${user._id}, email: ${user.email})`
     )
