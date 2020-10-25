@@ -55,7 +55,11 @@
     <ng-template #loggedIn>
       <div class="navbar-end">
         <div class="navbar-item">
-          <span>Hello</span>
+          <div class="buttons">
+            <button class="button" (click)="logout()">
+              Log out
+            </button>
+          </div>
         </div>
       </div>
     </ng-template>

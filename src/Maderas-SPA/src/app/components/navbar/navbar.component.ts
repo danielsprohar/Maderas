@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
@@ -7,7 +8,9 @@ import { AuthService } from 'src/app/auth/services/auth.service';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  constructor(public readonly auth: AuthService) {}
+  constructor(
+    private readonly router: Router,
+    public readonly auth: AuthService) {}
 
   ngOnInit(): void {}
 
@@ -17,5 +20,10 @@ export class NavbarComponent implements OnInit {
 
     const navbarBurger = document.getElementById('navbarBurger');
     navbarBurger.classList.toggle('is-active');
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/']);
   }
 }

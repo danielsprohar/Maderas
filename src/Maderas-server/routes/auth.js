@@ -118,13 +118,14 @@ function buildResponse(userDoc) {
 function buildJwtToken(user) {
   return jwt.sign(
     {
-      id: user.id
+      id: user.id,
+      username: user.username
     },
     process.env.JWT_KEY,
     {
       expiresIn: '1h',
-      issuer: 'http://localhost:5000'
-      // audience: 'http://localhost:4200'
+      issuer: 'http://localhost:5000',
+      audience: 'http://localhost:4200'
     }
   )
 }
