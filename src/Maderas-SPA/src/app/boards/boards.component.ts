@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { AuthService } from '../auth/services/auth.service';
 import { Board } from '../models/board';
 import { DataService } from '../services/data.service';
+import { StoreService } from '../store/store.service';
 import { PaginatedResponse } from '../wrappers/paginated-response';
 
 @Component({
@@ -21,6 +22,7 @@ export class BoardsComponent implements OnInit {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly dataService: DataService<Board>,
+    private readonly store: StoreService,
     public readonly auth: AuthService
   ) {}
 
@@ -32,8 +34,9 @@ export class BoardsComponent implements OnInit {
 
   // =========================================================================
 
-  view(boardId: string): void {
-    this.router.navigate([boardId, 'shell'], { relativeTo: this.route });
+  view(board: Board): void {
+    this.store.setBoard(board);
+    this.router.navigate([board._id, 'shell'], { relativeTo: this.route });
   }
 
   // =========================================================================

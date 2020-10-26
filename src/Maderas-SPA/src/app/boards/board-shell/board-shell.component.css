@@ -1,8 +1,21 @@
+.column {
+  align-items: flex-start;
+
+}
+
 .items-column {
   max-width: 300px;
   min-height: 20px;
+  margin: 0 4px;
 }
 
 .list-title {
   text-align: center;
+}
+
+.create-list-column {
+  display: block;
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
 }

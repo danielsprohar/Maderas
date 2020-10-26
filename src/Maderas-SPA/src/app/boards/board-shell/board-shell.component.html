@@ -14,8 +14,8 @@
   </div>
 </div>
 
-<div *ngIf="lists$ | async as lists" class="columns">
-  <div *ngFor="let list of lists" class="column items-column">
+<div *ngIf="lists$ | async as lists" class="columns is-4">
+  <div *ngFor="let list of lists" class="column card items-column">
     <p class="title list-title">{{ list.title }}</p>
 
     <!--  ==================================================================== -->
@@ -33,10 +33,14 @@
         <p>{{ item?.dueDate | date: "short" }}</p>
       </div>
     </div>
+  </div>
 
-    <!--  ==================================================================== -->
-    <!-- Add a new item -->
-    <!--  ==================================================================== -->
-
+  <!--  ==================================================================== -->
+  <!-- Add a new item -->
+  <!--  ==================================================================== -->
+  <div class="create-list-column items-column">
+    <div class="box mt-0">
+      <app-create-list></app-create-list>
+    </div>
   </div>
 </div>

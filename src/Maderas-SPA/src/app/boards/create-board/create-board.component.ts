@@ -77,7 +77,7 @@ export class CreateBoardComponent implements OnInit, OnDestroy {
       .create('/boards', board)
       .subscribe(
         (data: Board) => {
-          this.store.boardSubject.next(data);
+          this.store.setBoard(data);
           this.router.navigate(['boards']);
         },
         (err) => {
