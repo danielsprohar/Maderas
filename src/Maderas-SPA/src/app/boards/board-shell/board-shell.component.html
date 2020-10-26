@@ -15,26 +15,28 @@
 </div>
 
 <div *ngIf="lists$ | async as lists" class="columns">
-  <div *ngFor="let list of lists" class="column">
-    <p class="title">{{ list.title }}</p>
+  <div *ngFor="let list of lists" class="column items-column">
+    <p class="title list-title">{{ list.title }}</p>
 
     <!--  ==================================================================== -->
     <!-- Items -->
     <!--  ==================================================================== -->
-    <div *ngFor="let item of list.items" class="card item-card mb-2">
+    <div *ngFor="let item of list.items" class="card mb-2">
       <header class="card-header">
         <p class="card-header-title is-centered">{{ item.title }}</p>
       </header>
       <div class="card-content">
+        <p class="heading">Description</p>
         <p>{{ item.description }}</p>
-        <ng-template *ngIf="item.dueDate">
-          <p>{{ item.dueDate | date: "short" }}</p>
-        </ng-template>
+
+        <p class="heading mt-4">Due Date</p>
+        <p>{{ item?.dueDate | date: "short" }}</p>
       </div>
     </div>
 
     <!--  ==================================================================== -->
-    <!-- Items -->
+    <!-- Add a new item -->
     <!--  ==================================================================== -->
+    
   </div>
 </div>
