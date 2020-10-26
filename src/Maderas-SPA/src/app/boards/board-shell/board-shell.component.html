@@ -1,46 +1,44 @@
-<div *ngIf="board$ | async as board" class="hero mb-2">
+<div *ngIf="board$ | async as board" class="hero">
   <div class="level">
-    <div class="level-item">
-      <div class="select">
-        <select>
-          <option>Select dropdown</option>
-          <option>With options</option>
-        </select>
-      </div>
-    </div>
-    <div class="level-item">
-      <p class="title is-centered">{{ board.title }}</p>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="lists$ | async as lists" class="columns is-4">
-  <div *ngFor="let list of lists" class="column card items-column">
-    <p class="title list-title">{{ list.title }}</p>
-
-    <!--  ==================================================================== -->
-    <!-- Items -->
-    <!--  ==================================================================== -->
-    <div *ngFor="let item of list.items" class="card mb-2">
-      <header class="card-header">
-        <p class="card-header-title is-centered">{{ item.title }}</p>
-      </header>
-      <div class="card-content">
-        <p class="heading">Description</p>
-        <p>{{ item.description }}</p>
-
-        <p class="heading mt-4">Due Date</p>
-        <p>{{ item?.dueDate | date: "short" }}</p>
+    <div class="level-left">
+      <div class="level-item">
+        <div>
+          <p class="heading">Board Name</p>
+          <p class="is-centered">{{ board.title }}</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <!--  ==================================================================== -->
-  <!-- Add a new item -->
-  <!--  ==================================================================== -->
-  <div class="create-list-column items-column">
-    <div class="box mt-0">
-      <app-create-list></app-create-list>
+  <hr />
+  <div *ngIf="lists$ | async as lists" class="columns is-4">
+    <div *ngFor="let list of lists" class="column card items-column">
+      <p class="title list-title">{{ list.title }}</p>
+
+      <!--  ==================================================================== -->
+      <!-- Items -->
+      <!--  ==================================================================== -->
+      <div *ngFor="let item of list.items" class="card mb-2">
+        <header class="card-header">
+          <p class="card-header-title is-centered">{{ item.title }}</p>
+        </header>
+        <div class="card-content">
+          <p class="heading">Description</p>
+          <p>{{ item.description }}</p>
+
+          <p class="heading mt-4">Due Date</p>
+          <p>{{ item?.dueDate | date: "short" }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!--  ==================================================================== -->
+    <!-- Add a new item -->
+    <!--  ==================================================================== -->
+    <div class="create-list-column items-column">
+      <div class="box mt-0">
+        <app-create-list></app-create-list>
+      </div>
     </div>
   </div>
 </div>
