@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CreateBoardComponent } from './create-board/create-board.component';
 import { BoardShellComponent } from './board-shell/board-shell.component';
 import { ListsModule } from '../lists/lists.module';
+import { ItemsModule } from '../items/items.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { ListsModule } from '../lists/lists.module';
     CommonModule,
     BoardsRoutingModule,
     SharedModule,
-    ListsModule
+    ListsModule,
+    ItemsModule
   ]
 })
 export class BoardsModule { }

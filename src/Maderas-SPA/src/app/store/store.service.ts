@@ -118,7 +118,7 @@ export class StoreService {
     return this.itemSubject.asObservable();
   }
 
-  setitem(item: Item): void {
+  setItem(item: Item): void {
     localStorage.setItem(this.itemKey, JSON.stringify(item));
     this.itemSubject.next(item);
   }
