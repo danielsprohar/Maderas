@@ -14,6 +14,8 @@ import {
 import { Subscription } from 'rxjs';
 import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
+import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
+import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 import { StoreService } from 'src/app/store/store.service';
 
 @Component({
@@ -30,7 +32,8 @@ export class CreateListComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly listService: DataService<List>,
-    private readonly store: StoreService
+    private readonly store: StoreService,
+    private readonly snackbar: SnackbarService
   ) {}
 
   ngOnInit(): void {
@@ -80,12 +83,16 @@ export class CreateListComponent implements OnInit, OnDestroy {
       board: this.store.getBoard()._id,
     });
 
-    this.subscription = this.listService
-      .create('/lists', list)
-      .subscribe((res: List) => {
+    this.subscription = this.listService.create('/lists', list).subscribe(
+      (res: List) => {
         this.store.setList(res);
         this.newListEvent.emit(res);
-      });
+        this.snackbar.show('New list created', SnackbarMessageType.Success);
+      },
+      (err) => {
+        this.snackbar.show(err.message, SnackbarMessageType.Danger);
+      }
+    );
   }
 
   // =========================================================================

@@ -11,7 +11,7 @@
   </div>
 
   <hr />
-  <div *ngIf="lists$ | async as lists" class="columns is-4">
+  <div *ngIf="lists" class="columns is-4">
     <div *ngFor="let list of lists" class="column card items-column">
       <p class="title list-title">{{ list.title }}</p>
 
@@ -37,7 +37,7 @@
     <!--  ==================================================================== -->
     <div class="create-list-column items-column">
       <div class="box mt-0">
-        <app-create-list></app-create-list>
+        <app-create-list (newListEvent)="addList($event)"></app-create-list>
       </div>
     </div>
   </div>
