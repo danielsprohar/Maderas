@@ -1,0 +1,15 @@
+<div class="form-container">
+  <form [formGroup]="listForm" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          placeholder="Enter list title"
+          formControlName="title"
+        />
+      </div>
+      <button type="submit" class="button is-primary">Create</button>
+    </div>
+  </form>
+</div>

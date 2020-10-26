@@ -26,6 +26,6 @@ export class BoardShellComponent implements OnInit {
       .getAll('/lists')
       .pipe(map((res: PaginatedResponse<List>) => res.data));
 
-    this.board$ = this.store.boardSubject.asObservable();
+    this.board$ = this.store.getBoardAsObservable();
   }
 }
