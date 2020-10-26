@@ -5,7 +5,13 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { DataService } from 'src/app/services/data.service';
@@ -20,8 +26,10 @@ import { StoreService } from 'src/app/store/store.service';
 })
 export class CreateItemComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
+  public faTimes = faTimes;
 
   @Output() newItemEvent = new EventEmitter<Item>();
+  @Output() toggleVisibilityEvent = new EventEmitter<boolean>();
 
   public itemForm: FormGroup;
 
@@ -67,6 +75,12 @@ export class CreateItemComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
+  close(): void {
+    this.toggleVisibilityEvent.emit(true);
+  }
+
+  // =========================================================================
+
   onSubmit(): void {
     if (this.itemForm.invalid) {
       return;
@@ -81,7 +95,7 @@ export class CreateItemComponent implements OnInit, OnDestroy {
       (res: Item) => {
         this.store.setItem(res);
         this.newItemEvent.emit(res);
-        this.snackbar.show('New list created', SnackbarMessageType.Success);
+        this.snackbar.show('New item created', SnackbarMessageType.Success);
       },
       (err) => {
         this.snackbar.show(err.message, SnackbarMessageType.Danger);

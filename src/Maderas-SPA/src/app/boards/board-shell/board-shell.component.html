@@ -11,8 +11,11 @@
   </div>
 
   <hr />
-  <div *ngIf="lists" class="columns is-4">
-    <div *ngFor="let list of lists" class="column card items-column">
+  <div *ngIf="lists" class="columns is-2">
+    <div
+      *ngFor="let list of lists; index as i"
+      class="column card items-column"
+    >
       <p class="title list-title">{{ list.title }}</p>
 
       <!--  ==================================================================== -->
@@ -34,15 +37,33 @@
       <!--  ==================================================================== -->
       <!-- Add an Item to a List -->
       <!--  ==================================================================== -->
+      <div id="button{{ i }}" class="mt-2">
+        <button class="button" (click)="toggleItemComponent(i)">
+          Add another item
+        </button>
+      </div>
 
+      <div id="{{ i }}" class="is-hidden">
+        <app-create-item
+          (newItemEvent)="addItem(list._id, $event)"
+          (toggleVisibilityEvent)="toggleItemComponent(i)"
+        ></app-create-item>
+      </div>
     </div>
 
     <!--  ==================================================================== -->
     <!-- Add a List -->
     <!--  ==================================================================== -->
     <div class="create-list-column items-column">
-      <div class="box mt-0">
-        <app-create-list (newListEvent)="addList($event)"></app-create-list>
+      <button id="createListBtn" class="button" (click)="toggleListComponent()">
+        Create another list
+      </button>
+      <div class="box mt-0" id="newListFormBox" class="is-hidden">
+        <app-create-list
+          (newListEvent)="addList($event)"
+          (toggleVisibilityEvent)="toggleListComponent()"
+        >
+        </app-create-list>
       </div>
     </div>
   </div>

@@ -5,12 +5,25 @@
         <input
           class="input"
           type="text"
-          placeholder="Enter list title"
+          autocomplete="off"
+          placeholder="Enter the list's title"
           formControlName="title"
         />
       </div>
-      <p *ngIf="title.invalid" class="help is-danger">{{ getError() }}</p>
-      <button type="submit" class="button is-primary">Create</button>
+      <p
+        *ngIf="title.invalid && (title.touched || title.dirty)"
+        class="help is-danger"
+      >
+        {{ getError() }}
+      </p>
+      <div class="buttons">
+        <button type="submit" class="button is-primary">Create Item</button>
+        <button class="button close-button-icon" title="close">
+          <span class="icon is-centered" (click)="close()">
+            <fa-icon [icon]="faTimes"></fa-icon>
+          </span>
+        </button>
+      </div>
     </div>
   </form>
 </div>

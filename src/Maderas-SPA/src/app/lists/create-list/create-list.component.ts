@@ -11,6 +11,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
@@ -27,8 +28,10 @@ export class CreateListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   @Output() newListEvent = new EventEmitter<List>();
+  @Output() toggleVisibilityEvent = new EventEmitter<boolean>();
 
   public listForm: FormGroup;
+  public faTimes = faTimes;
 
   constructor(
     private readonly listService: DataService<List>,
@@ -69,6 +72,12 @@ export class CreateListComponent implements OnInit, OnDestroy {
     return this.title.hasError('maxLength')
       ? 'Must be less than 512 characters'
       : '';
+  }
+
+  // =========================================================================
+
+  close(): void {
+    this.toggleVisibilityEvent.emit(true);
   }
 
   // =========================================================================

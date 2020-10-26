@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Board } from 'src/app/models/board';
+import { Item } from 'src/app/models/item';
 import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
 import { StoreService } from 'src/app/store/store.service';
@@ -51,5 +52,37 @@ export class BoardShellComponent implements OnInit, OnDestroy {
   }
 
   // =========================================================================
+
+  addItem(listId: string, item: Item): void {
+    if (!listId || !item) {
+      return;
+    }
+
+    const list = this.lists.find((l) => l._id === listId);
+    if (!list) {
+      return;
+    }
+
+    list.items.push(item);
+  }
+
   // =========================================================================
+
+  toggleListComponent(): void {
+    const div = document.getElementById('newListFormBox');
+    div.classList.toggle('is-hidden');
+
+    const button = document.getElementById(`createListBtn`);
+    button.classList.toggle('is-hidden');
+  }
+
+  // =========================================================================
+
+  toggleItemComponent(index: number): void {
+    const div = document.getElementById(index.toString());
+    div.classList.toggle('is-hidden');
+
+    const button = document.getElementById(`button${index}`);
+    button.classList.toggle('is-hidden');
+  }
 }
