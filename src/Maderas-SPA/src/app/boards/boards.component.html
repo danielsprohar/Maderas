@@ -16,7 +16,7 @@
           <strong>Personal Boards</strong>
         </span>
       </div>
-      <button class="button">Create new board</button>
+      <a class="button" routerLink="create">Create new board</a>
     </div>
 
     <!-- ===================================================================== -->
@@ -24,7 +24,11 @@
     <!-- ===================================================================== -->
     <div *ngIf="boards$ | async as boards" class="container">
       <h1 class="title">Your boards</h1>
-      <div *ngFor="let board of boards" class="box board" (click)="view(board._id)">
+      <div
+        *ngFor="let board of boards"
+        class="box board"
+        (click)="view(board._id)"
+      >
         <p>
           <strong>{{ board.title }}</strong>
         </p>

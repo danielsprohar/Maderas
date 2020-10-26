@@ -23,7 +23,7 @@ router.post('/', async (req, res, next) => {
     const board = new Board(req.body)
     await board.save()
 
-    winston.info(`A new Board was created. Board(_id:${board._id})`)
+    winston.info(`[AddBoard] Board(_id:${board._id}, user: ${board.user})`)
 
     res.status(httpStatusCodes.created).json(board)
   } catch (e) {
@@ -43,7 +43,7 @@ router.get('/', async (req, res, next) => {
   try {
     const count = await Board.countDocuments()
     const boards = await Board.find()
-      .sort('_id')
+      .sort('-_id')
       .skip(pageIndex * pageSize)
       .limit(pageSize)
 
