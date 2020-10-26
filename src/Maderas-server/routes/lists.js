@@ -51,7 +51,8 @@ router.get('/', async (req, res, next) => {
   try {
     const count = await List.countDocuments()
     const lists = await List.find()
-      .sort('_id')
+      .populate('items')
+      .sort('-_id')
       .skip(pageIndex * pageSize)
       .limit(pageSize)
 

@@ -1,1 +1,40 @@
-<p>board-shell works!</p>
+<div *ngIf="board$ | async as board" class="hero mb-2">
+  <div class="level">
+    <div class="level-item">
+      <div class="select">
+        <select>
+          <option>Select dropdown</option>
+          <option>With options</option>
+        </select>
+      </div>
+    </div>
+    <div class="level-item">
+      <p class="title is-centered">{{ board.title }}</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="lists$ | async as lists" class="columns">
+  <div *ngFor="let list of lists" class="column">
+    <p class="title">{{ list.title }}</p>
+
+    <!--  ==================================================================== -->
+    <!-- Items -->
+    <!--  ==================================================================== -->
+    <div *ngFor="let item of list.items" class="card item-card mb-2">
+      <header class="card-header">
+        <p class="card-header-title is-centered">{{ item.title }}</p>
+      </header>
+      <div class="card-content">
+        <p>{{ item.description }}</p>
+        <ng-template *ngIf="item.dueDate">
+          <p>{{ item.dueDate | date: "short" }}</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <!--  ==================================================================== -->
+    <!-- Items -->
+    <!--  ==================================================================== -->
+  </div>
+</div>

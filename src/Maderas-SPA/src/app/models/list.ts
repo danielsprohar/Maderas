@@ -1,3 +1,5 @@
+import { Item } from './item';
+
 export class List {
   // tslint:disable-next-line: variable-name
   _id: string;
@@ -8,7 +10,14 @@ export class List {
    */
   board: string;
 
-  constructor(fields: { _id?: string; title: string; board?: string }) {
+  items: Item[];
+
+  constructor(fields: {
+    _id?: string;
+    title: string;
+    board?: string;
+    items?: Item[];
+  }) {
     Object.assign(this, fields);
   }
 }
