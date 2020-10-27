@@ -74,15 +74,15 @@ export class CreateItemComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const list = new Item({
+    const item = new Item({
       title: (this.title.value as string).trim(),
       list: this.store.getList()._id,
     });
 
-    this.subscription = this.itemsService.create('/items', list).subscribe(
+    this.subscription = this.itemsService.create('/items', item).subscribe(
       (res: Item) => {
-        this.store.setItem(res);
         this.newItemEvent.emit(res);
+        this.store.setItem(res);
         this.toggleVisibilityEvent.emit(true);
         this.snackbar.show('New item created', SnackbarMessageType.Success);
       },

@@ -60,7 +60,7 @@
 
       <div id="{{ i }}" class="is-hidden">
         <app-create-item
-          (newItemEvent)="addItem(list._id, $event)"
+          (newItemEvent)="addItem($event)"
           (toggleVisibilityEvent)="toggleItemComponent(list, i)"
         ></app-create-item>
       </div>
