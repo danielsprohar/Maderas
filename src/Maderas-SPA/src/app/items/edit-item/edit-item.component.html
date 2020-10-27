@@ -1,0 +1,56 @@
+<div class="container is-fluid">
+  <p class="title">Edit your item</p>
+  <hr />
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- ===================================================================== -->
+    <!-- Title -->
+    <!-- ===================================================================== -->
+    <div class="field">
+      <label class="label">Title</label>
+      <div class="control">
+        <input class="input" type="text" formControlName="title" />
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- Description -->
+    <!-- ===================================================================== -->
+    <div class="field">
+      <label class="label">Description</label>
+      <div class="control">
+        <textarea
+          class="textarea"
+          placeholder="add a description"
+          formControlName="description"
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- Due Date -->
+    <!-- ===================================================================== -->
+    <div class="field-body">
+      <div class="field">
+        <label class="label">Date</label>
+        <div class="control">
+          <input class="input" type="date" formControlName="date" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Time</label>
+        <div class="control">
+          <input class="input" type="time" formControlName="time" />
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- Actions -->
+    <!-- ===================================================================== -->
+    <div class="buttons mt-3">
+      <button type="submit" class="button is-primary">Submit</button>
+      <button class="button" (click)="close()">Close</button>
+    </div>
+  </form>
+</div>

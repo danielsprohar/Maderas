@@ -1,12 +1,14 @@
 <div class="columns">
-  <aside class="menu mr-4">
-    <p class="menu-label">General</p>
-    <ul class="menu-list">
-      <li><a routerLink="/boards">Boards</a></li>
-      <li><a>Templates</a></li>
-      <li><a routerLink="/">Home</a></li>
-    </ul>
-  </aside>
+  <div class="column is-one-fifth">
+    <aside class="menu">
+      <p class="menu-label">General</p>
+      <ul class="menu-list">
+        <li><a routerLink="/boards">Boards</a></li>
+        <li><a>Templates</a></li>
+        <li><a routerLink="/">Home</a></li>
+      </ul>
+    </aside>
+  </div>
 
   <div class="column">
     <div class="box board">
@@ -24,15 +26,15 @@
     <!-- ===================================================================== -->
     <div *ngIf="boards$ | async as boards" class="container">
       <h1 class="title">Your boards</h1>
-      <div
-        *ngFor="let board of boards"
-        class="box board"
-        (click)="view(board)"
-      >
+      <div *ngFor="let board of boards" class="box board" (click)="view(board)">
         <p>
           <strong>{{ board.title }}</strong>
         </p>
       </div>
     </div>
+  </div>
+
+  <div class="column">
+    <app-edit-item></app-edit-item>
   </div>
 </div>

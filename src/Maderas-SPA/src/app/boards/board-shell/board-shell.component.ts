@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Board } from 'src/app/models/board';
@@ -15,6 +16,8 @@ import { PaginatedResponse } from 'src/app/wrappers/paginated-response';
 })
 export class BoardShellComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
+
+  public faEdit = faEdit;
   public board$: Observable<Board>;
   public lists: List[];
 
@@ -64,6 +67,20 @@ export class BoardShellComponent implements OnInit, OnDestroy {
     }
 
     list.items.push(item);
+  }
+
+  // =========================================================================
+
+  editItem(item: Item): void {
+    const modal = document.getElementById('editItemModal');
+    modal.style.display = 'block';
+  }
+
+  // =========================================================================
+
+  closeModal(): void {
+    const modal = document.getElementById('editItemModal');
+    modal.style.display = 'none';
   }
 
   // =========================================================================

@@ -2,19 +2,25 @@
   <div class="level">
     <div class="level-left">
       <div class="level-item">
-        <div>
+        <div class="container">
           <p class="heading">Board Name</p>
           <p class="is-centered">{{ board.title }}</p>
+        </div>
+      </div>
+      <div class="level-item">
+        <div class="container">
+          <p class="heading">No. of Lists</p>
+          <p class="is-centered">{{ board.lists?.length }}</p>
         </div>
       </div>
     </div>
   </div>
 
   <hr />
-  <div *ngIf="lists" class="columns is-2">
+  <div *ngIf="lists" class="columns">
     <div
       *ngFor="let list of lists; index as i"
-      class="column card items-column"
+      class="column card items-column mb-4"
     >
       <p class="title list-title">{{ list.title }}</p>
 
@@ -22,9 +28,18 @@
       <!-- Items -->
       <!--  ==================================================================== -->
       <div *ngFor="let item of list.items" class="card mb-2">
-        <header class="card-header">
-          <p class="card-header-title is-centered">{{ item.title }}</p>
+        <!-- Card header -->
+        <header class="level card-header">
+          <p class="level-left card-header-title">{{ item.title }}</p>
+          <button
+            class="button button-icon"
+            title="edit"
+            (click)="editItem(item)"
+          >
+            <fa-icon [icon]="faEdit"></fa-icon>
+          </button>
         </header>
+        <!--  Card content -->
         <div class="card-content">
           <p class="heading">Description</p>
           <p>{{ item.description }}</p>
@@ -65,6 +80,15 @@
         >
         </app-create-list>
       </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- Modal -->
+  <!-- ======================================================================= -->
+  <div id="editItemModal" class="modal">
+    <div class="modal-content">
+      <app-edit-item (closeModalEvent)="closeModal()"></app-edit-item>
     </div>
   </div>
 </div>
