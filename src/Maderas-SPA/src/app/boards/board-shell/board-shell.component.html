@@ -64,6 +64,15 @@
           (toggleVisibilityEvent)="toggleItemComponent(i)"
         ></app-create-item>
       </div>
+
+      <!-- ======================================================================= -->
+      <!-- EditItem Modal -->
+      <!-- ======================================================================= -->
+      <div id="editItemModal" class="modal">
+        <div class="modal-content">
+          <app-edit-item (closeModalEvent)="closeModal()"> </app-edit-item>
+        </div>
+      </div>
     </div>
 
     <!--  ==================================================================== -->
@@ -80,15 +89,6 @@
         >
         </app-create-list>
       </div>
-    </div>
-  </div>
-
-  <!-- ======================================================================= -->
-  <!-- Modal -->
-  <!-- ======================================================================= -->
-  <div id="editItemModal" class="modal">
-    <div class="modal-content">
-      <app-edit-item (closeModalEvent)="closeModal()"></app-edit-item>
     </div>
   </div>
 </div>

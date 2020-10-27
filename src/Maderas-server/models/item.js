@@ -17,13 +17,11 @@ const itemSchema = new Schema({
   },
   description: {
     type: String,
-    required: true,
     minlength: 1,
     maxlength: 2048
   },
   dueDate: {
     type: Date,
-    required: true,
     // yesterday
     min: yesterday
   },

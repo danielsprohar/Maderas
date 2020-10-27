@@ -8,6 +8,7 @@ import {
 import { Item } from 'src/app/models/item';
 import { DataService } from 'src/app/services/data.service';
 import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
+import { StoreService } from 'src/app/store/store.service';
 
 @Component({
   selector: 'app-edit-item',
@@ -25,10 +26,17 @@ export class EditItemComponent implements OnInit {
   constructor(
     private readonly itemsService: DataService<Item>,
     private readonly snackbar: SnackbarService,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private readonly store: StoreService
   ) {}
 
   ngOnInit(): void {
+    this.initForm();
+  }
+
+  // =========================================================================
+
+  private initForm(): void {
     this.form = this.fb.group({
       title: [
         this.item?.title,
