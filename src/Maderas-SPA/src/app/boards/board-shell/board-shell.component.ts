@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Board } from 'src/app/models/board';
@@ -17,7 +17,7 @@ import { PaginatedResponse } from 'src/app/wrappers/paginated-response';
 export class BoardShellComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
-  public faEdit = faEdit;
+  public faEllipsisH = faEllipsisH;
   public board$: Observable<Board>;
   public lists: List[];
 
@@ -51,22 +51,24 @@ export class BoardShellComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   addList(list: List): void {
+    this.store.setList(list);
     this.lists.push(list);
   }
 
   // =========================================================================
 
-  addItem(listId: string, item: Item): void {
-    if (!listId || !item) {
+  addItem(item: Item): void {
+    if (!item) {
       return;
     }
 
-    const list = this.lists.find((l) => l._id === listId);
+    const list = this.lists.find((l) => l._id === this.store.getList()._id);
     if (!list) {
       return;
     }
 
     list.items.push(item);
+    this.store.setList(list);
   }
 
   // =========================================================================
@@ -95,7 +97,11 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  toggleItemComponent(index: number): void {
+  toggleItemComponent(list: List, index: number): void {
+    if (list !== this.store.getList()) {
+      this.store.setList(list);
+    }
+
     const div = document.getElementById(index.toString());
     div.classList.toggle('is-hidden');
 

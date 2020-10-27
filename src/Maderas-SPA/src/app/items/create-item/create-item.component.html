@@ -10,14 +10,15 @@
           formControlName="title"
         />
       </div>
-      <p
-        *ngIf="title.invalid && (title.touched || title.dirty)"
-        class="help is-danger"
-      >
-        {{ getError() }}
-      </p>
+
       <div class="buttons">
-        <button type="submit" class="button is-primary">Create Item</button>
+        <button
+          [disabled]="itemForm.invalid"
+          type="submit"
+          class="button is-primary"
+        >
+          Create Item
+        </button>
         <button class="button button-icon" title="close">
           <span class="icon is-centered" (click)="close()">
             <fa-icon [icon]="faTimes"></fa-icon>

@@ -63,18 +63,6 @@ export class CreateItemComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  getError(): string {
-    if (this.title.hasError('required')) {
-      return 'Field is required';
-    }
-
-    return this.title.hasError('maxLength')
-      ? 'Must be less than 512 characters'
-      : '';
-  }
-
-  // =========================================================================
-
   close(): void {
     this.toggleVisibilityEvent.emit(true);
   }
@@ -95,6 +83,7 @@ export class CreateItemComponent implements OnInit, OnDestroy {
       (res: Item) => {
         this.store.setItem(res);
         this.newItemEvent.emit(res);
+        this.toggleVisibilityEvent.emit(true);
         this.snackbar.show('New item created', SnackbarMessageType.Success);
       },
       (err) => {

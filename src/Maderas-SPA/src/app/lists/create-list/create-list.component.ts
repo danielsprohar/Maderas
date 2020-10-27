@@ -64,18 +64,6 @@ export class CreateListComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  getError(): string {
-    if (this.title.hasError('required')) {
-      return 'Field is required';
-    }
-
-    return this.title.hasError('maxLength')
-      ? 'Must be less than 512 characters'
-      : '';
-  }
-
-  // =========================================================================
-
   close(): void {
     this.toggleVisibilityEvent.emit(true);
   }

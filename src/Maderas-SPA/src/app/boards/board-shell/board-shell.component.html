@@ -36,7 +36,7 @@
             title="edit"
             (click)="editItem(item)"
           >
-            <fa-icon [icon]="faEdit"></fa-icon>
+            <fa-icon [icon]="faEllipsisH"></fa-icon>
           </button>
         </header>
         <!--  Card content -->
@@ -53,7 +53,7 @@
       <!-- Add an Item to a List -->
       <!--  ==================================================================== -->
       <div id="button{{ i }}" class="mt-2">
-        <button class="button" (click)="toggleItemComponent(i)">
+        <button class="button" (click)="toggleItemComponent(list, i)">
           Add another item
         </button>
       </div>
@@ -61,7 +61,7 @@
       <div id="{{ i }}" class="is-hidden">
         <app-create-item
           (newItemEvent)="addItem(list._id, $event)"
-          (toggleVisibilityEvent)="toggleItemComponent(i)"
+          (toggleVisibilityEvent)="toggleItemComponent(list, i)"
         ></app-create-item>
       </div>
 
