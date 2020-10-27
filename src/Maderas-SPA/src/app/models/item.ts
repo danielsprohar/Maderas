@@ -3,7 +3,7 @@ export class Item {
   _id: string;
   title: string;
   description: string;
-  dueDate: Date;
+  dueDate: string;
 
   /**
    * The object id of the list that this item belongs to.
@@ -14,7 +14,7 @@ export class Item {
     _id?: string;
     title: string;
     description?: string;
-    dueDate?: Date;
+    dueDate?: string;
     list?: string;
   }) {
     Object.assign(this, fields);

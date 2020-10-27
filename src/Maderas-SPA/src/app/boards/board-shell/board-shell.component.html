@@ -37,8 +37,12 @@
           <p class="heading">Description</p>
           <p>{{ item.description }}</p>
 
-          <p class="heading mt-4">Due Date</p>
-          <p>{{ item?.dueDate | date: "short" }}</p>
+          <ng-container *ngIf="item.dueDate">
+            <p class="heading mt-4">Due Date</p>
+            <p>
+              {{ item.dueDate | date: "short" }}
+            </p>
+          </ng-container>
         </div>
         <!-- Card footer -->
         <footer class="card-footer">
@@ -75,7 +79,11 @@
       <!-- ======================================================================= -->
       <div id="editItemModal" class="modal">
         <div class="modal-content">
-          <app-edit-item (editItemEvent)="addItem($event)" (closeModalEvent)="closeModal()"> </app-edit-item>
+          <app-edit-item
+            (editItemEvent)="addItem($event)"
+            (closeModalEvent)="closeModal()"
+          >
+          </app-edit-item>
         </div>
       </div>
     </div>

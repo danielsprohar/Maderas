@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Board } from 'src/app/models/board';
 import { Item } from 'src/app/models/item';
@@ -72,10 +72,10 @@ export class BoardShellComponent implements OnInit, OnDestroy {
     }
 
     const list = this.lists.find((l) => l._id === this.store.getList()._id);
-    const i = list.items.findIndex((i) => i._id === item._id);
-    list.items[i] = item;
+    const index = list.items.findIndex((i) => i._id === item._id);
+    list.items[index] = item;
     this.store.setList(list);
-    this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.markForCheck();
   }
 
   // =========================================================================
