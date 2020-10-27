@@ -1,7 +1,7 @@
 <div class="container is-fluid">
   <p class="title">Edit your item</p>
   <hr />
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form">
     <!-- ===================================================================== -->
     <!-- Title -->
     <!-- ===================================================================== -->
@@ -49,7 +49,9 @@
     <!-- Actions -->
     <!-- ===================================================================== -->
     <div class="buttons mt-3">
-      <button type="submit" class="button is-primary">Submit</button>
+      <button type="submit" class="button is-primary" (click)="onSubmit()">
+        Submit
+      </button>
       <button class="button" (click)="close()">Close</button>
     </div>
   </form>

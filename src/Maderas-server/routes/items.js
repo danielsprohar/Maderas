@@ -33,7 +33,7 @@ router.post('/', async (req, res, next) => {
 
     list.items.push(item._id)
     await list.save()
-    
+
     res.status(httpStatusCodes.created).json(item)
   } catch (e) {
     winston.error(e)
@@ -93,10 +93,10 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
   }
 
   try {
-    item.title = req.body.title
+    Object.assign(item, req.body)
     await item.save()
 
-    winston.info(`A item was updated. Item(_id:${item._id})`)
+    winston.info(`[UpdateItem] An item was updated. Item(_id:${item._id})`)
     res.status(httpStatusCodes.noContent).send()
   } catch (e) {
     winston.error(e)

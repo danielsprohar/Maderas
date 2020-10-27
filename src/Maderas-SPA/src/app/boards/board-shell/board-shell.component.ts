@@ -1,6 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Board } from 'src/app/models/board';
 import { Item } from 'src/app/models/item';
@@ -13,6 +19,7 @@ import { PaginatedResponse } from 'src/app/wrappers/paginated-response';
   selector: 'app-board-shell',
   templateUrl: './board-shell.component.html',
   styleUrls: ['./board-shell.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BoardShellComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
@@ -20,10 +27,12 @@ export class BoardShellComponent implements OnInit, OnDestroy {
   public faEllipsisH = faEllipsisH;
   public board$: Observable<Board>;
   public lists: List[];
+  public item: Item;
 
   constructor(
     private readonly store: StoreService,
-    private readonly listService: DataService<List>
+    private readonly listService: DataService<List>,
+    private readonly changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -63,17 +72,16 @@ export class BoardShellComponent implements OnInit, OnDestroy {
     }
 
     const list = this.lists.find((l) => l._id === this.store.getList()._id);
-    if (!list) {
-      return;
-    }
-
-    list.items.push(item);
+    const i = list.items.findIndex((i) => i._id === item._id);
+    list.items[i] = item;
     this.store.setList(list);
+    this.changeDetectorRef.detectChanges();
   }
 
   // =========================================================================
 
   editItem(item: Item): void {
+    this.store.setItem(item);
     const modal = document.getElementById('editItemModal');
     modal.style.display = 'block';
   }

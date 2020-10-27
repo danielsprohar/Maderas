@@ -1,12 +1,12 @@
 .column {
   align-items: flex-start;
-
 }
 
 .items-column {
   max-width: 300px;
   min-height: 20px;
   margin: 0 4px;
+  /* background-color: #f0f0f0; */
 }
 
 .list-title {
@@ -18,4 +18,9 @@
   flex-basis: 0;
   flex-grow: 1;
   flex-shrink: 1;
+}
+
+.card-footer-item:hover,
+.card-footer-item:focus {
+  background-color: #fafafa;
 }

@@ -32,6 +32,7 @@ hr {
 .button-icon {
   /* This is to be used in tandem with Bulma's "button" class */
   border: none !important;
+  background-color: inherit !important;
 }
 
 .main-content {
@@ -41,18 +42,6 @@ hr {
   /* max-width: 960px; */
   flex-direction: column;
   /* align-items: center; */
-}
-
-footer {
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  line-height: 20px;
-}
-
-footer a {
-  display: flex;
-  align-items: center;
 }
 
 /* =========================================================================== */
@@ -97,5 +86,3 @@ footer a {
   text-decoration: none;
   cursor: pointer;
 }
-
-/* =========================================================================== */

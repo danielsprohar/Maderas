@@ -1,12 +1,20 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { DataService } from 'src/app/services/data.service';
+import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 import { StoreService } from 'src/app/store/store.service';
 
@@ -15,8 +23,9 @@ import { StoreService } from 'src/app/store/store.service';
   templateUrl: './edit-item.component.html',
   styleUrls: ['./edit-item.component.css'],
 })
-export class EditItemComponent implements OnInit {
-  @Input() item: Item;
+export class EditItemComponent implements OnInit, OnDestroy {
+  private subscription: Subscription;
+  private item: Item;
 
   public form: FormGroup;
 
@@ -32,20 +41,48 @@ export class EditItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+
+    this.subscription = this.store
+      .getitemAsObservable()
+      .subscribe((item: Item) => {
+        this.setFormFields(item);
+        this.item = item;
+      });
+  }
+
+  // =========================================================================
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   // =========================================================================
 
   private initForm(): void {
     this.form = this.fb.group({
-      title: [
-        this.item?.title,
-        [Validators.required, Validators.maxLength(512)],
-      ],
-      description: [this.item?.description, [Validators.maxLength(2048)]],
-      date: [this.item?.dueDate.toLocaleDateString()],
-      time: [this.item?.dueDate.toLocaleTimeString()],
+      title: ['', [Validators.required, Validators.maxLength(512)]],
+      description: ['', [Validators.maxLength(2048)]],
+      date: [''],
+      time: [''],
     });
+  }
+
+  // =========================================================================
+
+  private setFormFields(item: Item): void {
+    if (!item) {
+      return;
+    }
+
+    this.title.setValue(item.title);
+    this.description.setValue(item.description);
+    if (item.dueDate) {
+      const dueDate = new Date(item.dueDate);
+      this.date.setValue(dueDate.toLocaleDateString());
+      this.time.setValue(dueDate.toLocaleTimeString());
+    }
   }
 
   // =========================================================================
@@ -67,7 +104,23 @@ export class EditItemComponent implements OnInit {
   }
 
   // =========================================================================
-  // =========================================================================
+
+  getItem(): Item {
+    const item = new Item({
+      title: (this.title.value as string).trim(),
+      description: (this.description.value as string).trim(),
+      list: this.item.list,
+    });
+
+    if (this.date.value && this.time.value) {
+      item.dueDate = new Date(this.date.value + ' ' + this.time.value);
+    } else if (this.date.value && !this.time.value) {
+      item.dueDate = new Date(this.date.value);
+    }
+
+    return item;
+  }
+
   // =========================================================================
 
   close(): void {
@@ -80,5 +133,24 @@ export class EditItemComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+
+    const item = this.getItem();
+
+    this.subscription = this.itemsService
+      .update(`/items/${this.item._id}`, item)
+      .subscribe(
+        (res: Item) => {
+          this.store.setItem(null);
+          console.log('Item was updated');
+          this.snackbar.show(
+            'Your item was updated.',
+            SnackbarMessageType.Success
+          );
+        },
+        (err) => {
+          this.snackbar.show(err.message, SnackbarMessageType.Danger);
+        },
+        () => this.close()
+      );
   }
 }

@@ -20,10 +20,10 @@
   <div *ngIf="lists" class="columns">
     <div
       *ngFor="let list of lists; index as i"
-      class="column card items-column mb-4"
+      class="column items-column mb-4"
     >
       <p class="title list-title">{{ list.title }}</p>
-
+      <hr />
       <!--  ==================================================================== -->
       <!-- Items -->
       <!--  ==================================================================== -->
@@ -31,13 +31,6 @@
         <!-- Card header -->
         <header class="level card-header">
           <p class="level-left card-header-title">{{ item.title }}</p>
-          <button
-            class="button button-icon"
-            title="edit"
-            (click)="editItem(item)"
-          >
-            <fa-icon [icon]="faEllipsisH"></fa-icon>
-          </button>
         </header>
         <!--  Card content -->
         <div class="card-content">
@@ -47,6 +40,18 @@
           <p class="heading mt-4">Due Date</p>
           <p>{{ item?.dueDate | date: "short" }}</p>
         </div>
+        <!-- Card footer -->
+        <footer class="card-footer">
+          <span class="card-footer-item has-text-dark is-clickable">View</span>
+          <span
+            class="card-footer-item has-text-dark is-clickable"
+            (click)="editItem(item)"
+            >Edit</span
+          >
+          <span class="card-footer-item has-text-dark is-clickable"
+            >Delete</span
+          >
+        </footer>
       </div>
 
       <!--  ==================================================================== -->
@@ -70,7 +75,7 @@
       <!-- ======================================================================= -->
       <div id="editItemModal" class="modal">
         <div class="modal-content">
-          <app-edit-item (closeModalEvent)="closeModal()"> </app-edit-item>
+          <app-edit-item (editItemEvent)="addItem($event)" (closeModalEvent)="closeModal()"> </app-edit-item>
         </div>
       </div>
     </div>
@@ -78,7 +83,7 @@
     <!--  ==================================================================== -->
     <!-- Add a List -->
     <!--  ==================================================================== -->
-    <div class="create-list-column items-column">
+    <div class="column create-list-column my-0">
       <button id="createListBtn" class="button" (click)="toggleListComponent()">
         Create another list
       </button>
