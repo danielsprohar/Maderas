@@ -19,7 +19,7 @@
   <hr />
   <div *ngIf="lists" class="columns">
     <div
-      *ngFor="let list of lists; index as i"
+      *ngFor="let list of lists; index as listIndex"
       class="column items-column mb-4"
     >
       <p class="title list-title">{{ list.title }}</p>
@@ -31,7 +31,7 @@
         <!-- Card header -->
         <div class="item-header">
           <p>{{ item.title }}</p>
-          <app-item-actions-menu [index]="itemIndex"></app-item-actions-menu>
+          <app-item-actions-menu [item]="item"></app-item-actions-menu>
         </div>
 
         <!--  Card content -->
@@ -59,17 +59,17 @@
       <!--  ==================================================================== -->
       <!-- Add an Item to a List -->
       <!--  ==================================================================== -->
-      <div id="button{{ i }}" class="mt-2">
-        <button class="button" (click)="toggleItemComponent(list, i)">
+      <div id="button{{ listIndex }}" class="mt-2">
+        <button class="button" (click)="toggleItemComponent(list, listIndex)">
           Add another item
         </button>
       </div>
 
-      <div id="{{ i }}" class="is-hidden">
+      <div id="{{ listIndex }}" class="is-hidden">
         <!-- Component -->
         <app-create-item
           (newItemEvent)="addItem($event)"
-          (toggleVisibilityEvent)="toggleItemComponent(list, i)"
+          (toggleVisibilityEvent)="toggleItemComponent(list, listIndex)"
         ></app-create-item>
       </div>
 
