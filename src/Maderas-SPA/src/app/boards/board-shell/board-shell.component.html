@@ -31,27 +31,27 @@
         <!-- Card header -->
         <div class="item-header">
           <p>{{ item.title }}</p>
-          <app-item-actions-menu [item]="item"></app-item-actions-menu>
+          <app-item-actions-menu
+            [item]="item"
+            (editItemEvent)="editItem($event)"
+          ></app-item-actions-menu>
         </div>
 
         <!--  Card content -->
         <ng-container *ngIf="item.description || item.dueDate">
-          <!-- TODO: Add a click event that displays the item's details. -->
-          <div class="is-clickable">
-            <div class="badges">
-              <ng-container *ngIf="item.dueDate">
-                <div class="badge" title="This item has a due date">
-                  <fa-icon [icon]="faClock"></fa-icon>
-                  <span class="ml-1">{{ item.dueDate | date: "MMM d" }}</span>
-                </div>
-              </ng-container>
+          <div class="badges">
+            <ng-container *ngIf="item.dueDate">
+              <div class="badge" title="This item has a due date">
+                <fa-icon [icon]="faClock"></fa-icon>
+                <span class="ml-1">{{ item.dueDate | date: "MMM d" }}</span>
+              </div>
+            </ng-container>
 
-              <ng-container *ngIf="item.description">
-                <div class="badge" title="This item has a description">
-                  <fa-icon [icon]="faAlignJustify"></fa-icon>
-                </div>
-              </ng-container>
-            </div>
+            <ng-container *ngIf="item.description">
+              <div class="badge" title="This item has a description">
+                <fa-icon [icon]="faAlignJustify"></fa-icon>
+              </div>
+            </ng-container>
           </div>
         </ng-container>
       </div>

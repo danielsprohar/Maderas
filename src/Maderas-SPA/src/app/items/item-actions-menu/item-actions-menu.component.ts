@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { Item } from 'src/app/models/item';
 
@@ -10,11 +10,20 @@ import { Item } from 'src/app/models/item';
 export class ItemActionsMenuComponent implements OnInit {
 
   @Input() item: Item;
+
+  @Output() editItemEvent = new EventEmitter<Item>();
+
   public faEllipsisH = faEllipsisH;
 
   constructor() {}
 
   ngOnInit(): void {
+  }
+
+  // =========================================================================
+
+  edit(): void {
+    this.editItemEvent.emit(this.item);
   }
 
 }
