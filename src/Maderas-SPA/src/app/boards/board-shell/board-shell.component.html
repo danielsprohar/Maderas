@@ -1,4 +1,4 @@
-<div *ngIf="board$ | async as board" class="hero">
+<div *ngIf="board$ | async as board" class="container is-fluid">
   <div class="level">
     <div class="level-left">
       <div class="level-item">
@@ -27,44 +27,33 @@
       <!--  ==================================================================== -->
       <!-- Items -->
       <!--  ==================================================================== -->
-      <div *ngFor="let item of list.items" class="card mb-2">
+      <div *ngFor="let item of list.items; index as itemIndex" class="box mb-2">
         <!-- Card header -->
-        <header class="level card-header mb-1">
-          <p class="level-left card-header-title">{{ item.title }}</p>
-        </header>
+        <div class="item-header">
+          <p>{{ item.title }}</p>
+          <app-item-actions-menu [index]="itemIndex"></app-item-actions-menu>
+        </div>
 
         <!--  Card content -->
         <ng-container *ngIf="item.description || item.dueDate">
           <!-- TODO: Add a click event that displays the item's details. -->
-          <div class="card-content p-2 is-clickable">
-            <div class="level">
+          <div class="is-clickable">
+            <div class="badges">
               <ng-container *ngIf="item.dueDate">
-                <div class="level-item" title="This item has a due date">
+                <div class="badge" title="This item has a due date">
                   <fa-icon [icon]="faClock"></fa-icon>
-                  <span>{{ item.dueDate | date: "shortDate" }}</span>
+                  <span class="ml-1">{{ item.dueDate | date: "MMM d" }}</span>
                 </div>
               </ng-container>
 
               <ng-container *ngIf="item.description">
-                <div class="level-item" title="This item has a description">
+                <div class="badge" title="This item has a description">
                   <fa-icon [icon]="faAlignJustify"></fa-icon>
                 </div>
               </ng-container>
             </div>
           </div>
         </ng-container>
-        <!-- Card footer -->
-        <!-- <footer class="card-footer">
-          <span class="card-footer-item has-text-dark is-clickable">View</span>
-          <span
-            class="card-footer-item has-text-dark is-clickable"
-            (click)="editItem(item)"
-            >Edit</span
-          >
-          <span class="card-footer-item has-text-dark is-clickable"
-            >Delete</span
-          >
-        </footer> -->
       </div>
 
       <!--  ==================================================================== -->
@@ -77,6 +66,7 @@
       </div>
 
       <div id="{{ i }}" class="is-hidden">
+        <!-- Component -->
         <app-create-item
           (newItemEvent)="addItem($event)"
           (toggleVisibilityEvent)="toggleItemComponent(list, i)"
@@ -88,6 +78,7 @@
       <!-- ======================================================================= -->
       <div id="editItemModal" class="modal">
         <div class="modal-content">
+          <!-- Component -->
           <app-edit-item
             (editItemEvent)="addItem($event)"
             (closeModalEvent)="closeModal()"
@@ -105,6 +96,7 @@
         Create another list
       </button>
       <div class="box mt-0" id="newListFormBox" class="is-hidden">
+        <!-- Component -->
         <app-create-list
           (newListEvent)="addList($event)"
           (toggleVisibilityEvent)="toggleListComponent()"
