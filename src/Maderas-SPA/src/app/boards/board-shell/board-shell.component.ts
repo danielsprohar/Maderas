@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faAlignJustify, faClock, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Board } from 'src/app/models/board';
@@ -25,6 +25,9 @@ export class BoardShellComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
   public faEllipsisH = faEllipsisH;
+  public faAlignJustify = faAlignJustify;
+  public faClock = faClock;
+
   public board$: Observable<Board>;
   public lists: List[];
   public item: Item;

@@ -29,23 +29,32 @@
       <!--  ==================================================================== -->
       <div *ngFor="let item of list.items" class="card mb-2">
         <!-- Card header -->
-        <header class="level card-header">
+        <header class="level card-header mb-1">
           <p class="level-left card-header-title">{{ item.title }}</p>
         </header>
-        <!--  Card content -->
-        <div class="card-content">
-          <p class="heading">Description</p>
-          <p>{{ item.description }}</p>
 
-          <ng-container *ngIf="item.dueDate">
-            <p class="heading mt-4">Due Date</p>
-            <p>
-              {{ item.dueDate | date: "short" }}
-            </p>
-          </ng-container>
-        </div>
+        <!--  Card content -->
+        <ng-container *ngIf="item.description || item.dueDate">
+          <!-- TODO: Add a click event that displays the item's details. -->
+          <div class="card-content p-2 is-clickable">
+            <div class="level">
+              <ng-container *ngIf="item.dueDate">
+                <div class="level-item" title="This item has a due date">
+                  <fa-icon [icon]="faClock"></fa-icon>
+                  <span>{{ item.dueDate | date: "shortDate" }}</span>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="item.description">
+                <div class="level-item" title="This item has a description">
+                  <fa-icon [icon]="faAlignJustify"></fa-icon>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
         <!-- Card footer -->
-        <footer class="card-footer">
+        <!-- <footer class="card-footer">
           <span class="card-footer-item has-text-dark is-clickable">View</span>
           <span
             class="card-footer-item has-text-dark is-clickable"
@@ -55,7 +64,7 @@
           <span class="card-footer-item has-text-dark is-clickable"
             >Delete</span
           >
-        </footer>
+        </footer> -->
       </div>
 
       <!--  ==================================================================== -->
