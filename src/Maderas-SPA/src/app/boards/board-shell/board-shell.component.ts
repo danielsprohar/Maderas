@@ -3,13 +3,13 @@ import {
   Component,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   faAlignJustify,
   faClock,
-  faEllipsisH
+  faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -48,20 +48,25 @@ export class BoardShellComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // const sub = this.listService
-    //   .getAll('/lists')
-    //   .pipe(map((res: PaginatedResponse<List>) => res.data))
-    //   .subscribe((data: List[]) => {
-    //     this.lists = data;
-    //     const board = this.store.getBoard();
-    //     board.lists = data;
-    //   });
-
-    // this.subscriptions.push(sub);
-
     this.board$ = this.route.data.pipe(
-      map((data: { board: Board }) => data.board)
+      map((data: { board: Board }) => {
+        this.fetchLists(data.board._id);
+        return data.board;
+      })
     );
+  }
+
+  // =========================================================================
+
+  fetchLists(boardId: string): void {
+    const sub = this.listService
+      .getAll(`/lists?board=${boardId}`)
+      .pipe(map((res: PaginatedResponse<List>) => res.data))
+      .subscribe((data: List[]) => {
+        this.lists = data;
+      });
+
+    this.subscriptions.push(sub);
   }
 
   // =========================================================================

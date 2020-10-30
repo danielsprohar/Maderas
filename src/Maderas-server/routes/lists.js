@@ -48,9 +48,13 @@ router.get('/', async (req, res, next) => {
   const pageIndex = req.query.pageIndex || 0
   const pageSize = req.query.pageSize || 50
 
+  const query = {
+    board: req.query.board
+  }
+
   try {
-    const count = await List.countDocuments()
-    const lists = await List.find()
+    const count = await List.countDocuments(query)
+    const lists = await List.find(query)
       .populate('items')
       .sort('-_id')
       .skip(pageIndex * pageSize)
