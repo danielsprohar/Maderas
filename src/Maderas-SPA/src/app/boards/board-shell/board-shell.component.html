@@ -71,7 +71,8 @@
       <div id="{{ listIndex }}" class="is-hidden">
         <!-- Component -->
         <app-create-item
-          (newItemEvent)="addItem($event)"
+          [list]="list"
+          (newItemEvent)="handleNewItemEvent($event)"
           (toggleVisibilityEvent)="toggleItemComponent(list, listIndex)"
         ></app-create-item>
       </div>
@@ -103,7 +104,7 @@
   <div class="modal-content">
     <!-- Component -->
     <app-edit-item
-      (editItemEvent)="addItem($event)"
+      (editItemEvent)="handleEditItem($event)"
       (closeModalEvent)="closeModal()"
     >
     </app-edit-item>

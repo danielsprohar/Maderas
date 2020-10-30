@@ -1,23 +1,24 @@
 import {
   Component,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
 import {
-  FormGroup,
-  FormControl,
-  Validators,
   AbstractControl,
+  FormControl,
+  FormGroup,
+  Validators,
 } from '@angular/forms';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
+import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
 import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
-import { StoreService } from 'src/app/store/store.service';
 
 @Component({
   selector: 'app-create-item',
@@ -28,6 +29,7 @@ export class CreateItemComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   public faTimes = faTimes;
 
+  @Input() list: List;
   @Output() newItemEvent = new EventEmitter<Item>();
   @Output() toggleVisibilityEvent = new EventEmitter<boolean>();
 
@@ -35,7 +37,6 @@ export class CreateItemComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly itemsService: DataService<Item>,
-    private readonly store: StoreService,
     private readonly snackbar: SnackbarService
   ) {}
 
@@ -76,13 +77,12 @@ export class CreateItemComponent implements OnInit, OnDestroy {
 
     const item = new Item({
       title: (this.title.value as string).trim(),
-      list: this.store.getList()._id,
+      list: this.list._id,
     });
 
     this.subscription = this.itemsService.create('/items', item).subscribe(
       (res: Item) => {
         this.newItemEvent.emit(res);
-        this.store.setItem(res);
         this.toggleVisibilityEvent.emit(true);
         this.snackbar.show('New item created', SnackbarMessageType.Success);
       },

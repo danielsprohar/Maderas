@@ -8,22 +8,18 @@ import { Item } from 'src/app/models/item';
   styleUrls: ['./item-actions-menu.component.css'],
 })
 export class ItemActionsMenuComponent implements OnInit {
-
   @Input() item: Item;
-
   @Output() editItemEvent = new EventEmitter<Item>();
 
   public faEllipsisH = faEllipsisH;
 
   constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   // =========================================================================
 
   edit(): void {
     this.editItemEvent.emit(this.item);
   }
-
 }

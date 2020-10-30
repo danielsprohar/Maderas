@@ -6,7 +6,11 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { faAlignJustify, faClock, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAlignJustify,
+  faClock,
+  faEllipsisH,
+} from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EditItemComponent } from 'src/app/items/edit-item/edit-item.component';
@@ -74,22 +78,19 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  addItem(item: Item): void {
-    if (!item) {
-      return;
-    }
-
-    const list = this.lists.find((l) => l._id === this.store.getList()._id);
-    const index = list.items.findIndex((i) => i._id === item._id);
-    list.items[index] = item;
-    this.store.setList(list);
-    this.changeDetectorRef.markForCheck();
+  /**
+   * Handles the event that is emitted by the `CreateItemComponent`.
+   * @param item The `Item` that was just created.
+   */
+  handleNewItemEvent(item: Item): void {
+    const list = this.lists.find((l) => l._id === item.list);
+    list.items.push(item);
   }
 
   // =========================================================================
 
   /**
-   * Handles the event that is emitted by the `ItemActionsMenuComponent`
+   * Handles the event that is emitted by the `ItemActionsMenuComponent`.
    * @param item The Item to edit
    */
   handleEditItem(item: Item): void {
