@@ -1,15 +1,15 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
   faAlignJustify,
   faClock,
-  faEllipsisH,
+  faEllipsisH
 } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -44,23 +44,24 @@ export class BoardShellComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: StoreService,
     private readonly listService: DataService<List>,
-    private readonly changeDetectorRef: ChangeDetectorRef
+    private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    const sub = this.listService
-      .getAll('/lists')
-      .pipe(map((res: PaginatedResponse<List>) => res.data))
-      .subscribe((data: List[]) => {
-        this.lists = data;
-        const board = this.store.getBoard();
-        board.lists = data;
-        this.store.setBoard(board);
-      });
+    // const sub = this.listService
+    //   .getAll('/lists')
+    //   .pipe(map((res: PaginatedResponse<List>) => res.data))
+    //   .subscribe((data: List[]) => {
+    //     this.lists = data;
+    //     const board = this.store.getBoard();
+    //     board.lists = data;
+    //   });
 
-    this.subscriptions.push(sub);
+    // this.subscriptions.push(sub);
 
-    this.board$ = this.store.getBoardAsObservable();
+    this.board$ = this.route.data.pipe(
+      map((data: { board: Board }) => data.board)
+    );
   }
 
   // =========================================================================
@@ -97,7 +98,6 @@ export class BoardShellComponent implements OnInit, OnDestroy {
    * @param item The `Item` to edit.
    */
   handleEditItem(item: Item): void {
-    this.store.setItem(item);
     this.editItemComponent.setItem(item);
 
     const modal = document.getElementById('editItemModal');
@@ -124,9 +124,9 @@ export class BoardShellComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   toggleItemComponent(list: List, index: number): void {
-    if (list !== this.store.getList()) {
-      this.store.setList(list);
-    }
+    // if (list !== this.store.getList()) {
+    //   this.store.setList(list);
+    // }
 
     const div = document.getElementById(index.toString());
     div.classList.toggle('is-hidden');
