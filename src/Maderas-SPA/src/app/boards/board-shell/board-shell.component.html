@@ -88,7 +88,7 @@
       <div class="box mt-0" id="newListFormBox" class="is-hidden">
         <!-- Component -->
         <app-create-list
-          (newListEvent)="addList($event)"
+          (newListEvent)="handleNewListEvent($event)"
           (toggleVisibilityEvent)="toggleListComponent()"
         >
         </app-create-list>

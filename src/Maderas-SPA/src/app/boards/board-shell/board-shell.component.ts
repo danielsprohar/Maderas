@@ -71,8 +71,11 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  addList(list: List): void {
-    this.store.setList(list);
+  /**
+   * Handles the event that is emitted by the `CreateListComponent`.
+   * @param list The `Board` that was just created.
+   */
+  handleNewListEvent(list: List): void {
     this.lists.push(list);
   }
 
@@ -91,7 +94,7 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   /**
    * Handles the event that is emitted by the `ItemActionsMenuComponent`.
-   * @param item The Item to edit
+   * @param item The `Item` to edit.
    */
   handleEditItem(item: Item): void {
     this.store.setItem(item);

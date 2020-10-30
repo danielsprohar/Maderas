@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -13,11 +14,11 @@ import {
 } from '@angular/forms';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
+import { Board } from 'src/app/models/board';
 import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
 import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
-import { StoreService } from 'src/app/store/store.service';
 
 @Component({
   selector: 'app-create-list',
@@ -27,6 +28,7 @@ import { StoreService } from 'src/app/store/store.service';
 export class CreateListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
+  @Input() board: Board;
   @Output() newListEvent = new EventEmitter<List>();
   @Output() toggleVisibilityEvent = new EventEmitter<boolean>();
 
@@ -35,7 +37,6 @@ export class CreateListComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly listService: DataService<List>,
-    private readonly store: StoreService,
     private readonly snackbar: SnackbarService
   ) {}
 
@@ -77,12 +78,11 @@ export class CreateListComponent implements OnInit, OnDestroy {
 
     const list = new List({
       title: (this.title.value as string).trim(),
-      board: this.store.getBoard()._id,
+      board: this.board._id,
     });
 
     this.subscription = this.listService.create('/lists', list).subscribe(
       (res: List) => {
-        this.store.setList(res);
         this.newListEvent.emit(res);
         this.snackbar.show('New list created', SnackbarMessageType.Success);
       },
