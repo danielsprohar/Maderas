@@ -16,7 +16,6 @@ import { Item } from 'src/app/models/item';
 import { DataService } from 'src/app/services/data.service';
 import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
-import { StoreService } from 'src/app/store/store.service';
 
 @Component({
   selector: 'app-edit-item',
@@ -29,25 +28,21 @@ export class EditItemComponent implements OnInit, OnDestroy {
 
   public form: FormGroup;
 
-  @Output() editItemEvent = new EventEmitter<Item>();
+  @Output() itemUpdatedEvent = new EventEmitter<Item>();
   @Output() closeModalEvent = new EventEmitter<boolean>();
 
   constructor(
     private readonly itemsService: DataService<Item>,
     private readonly snackbar: SnackbarService,
-    private readonly fb: FormBuilder,
-    private readonly store: StoreService
+    private readonly fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.initForm();
 
-    this.subscription = this.store
-      .getitemAsObservable()
-      .subscribe((item: Item) => {
-        this.setFormFields(item);
-        this.item = item;
-      });
+    if (this.item) {
+      this.setFormFields(this.item);
+    }
   }
 
   // =========================================================================
@@ -67,6 +62,13 @@ export class EditItemComponent implements OnInit, OnDestroy {
       date: [''],
       time: [''],
     });
+  }
+
+  // =========================================================================
+
+  setItem(item: Item): void {
+    this.item = item;
+    this.setFormFields(item);
   }
 
   // =========================================================================
@@ -141,9 +143,7 @@ export class EditItemComponent implements OnInit, OnDestroy {
     this.subscription = this.itemsService
       .update(`/items/${this.item._id}`, item)
       .subscribe(
-        (res: Item) => {
-          this.store.setItem(null);
-          console.log('Item was updated');
+        () => {
           this.snackbar.show(
             'Your item was updated.',
             SnackbarMessageType.Success

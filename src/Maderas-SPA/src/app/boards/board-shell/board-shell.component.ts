@@ -4,10 +4,12 @@ import {
   Component,
   OnDestroy,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { faAlignJustify, faClock, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { EditItemComponent } from 'src/app/items/edit-item/edit-item.component';
 import { Board } from 'src/app/models/board';
 import { Item } from 'src/app/models/item';
 import { List } from 'src/app/models/list';
@@ -23,6 +25,9 @@ import { PaginatedResponse } from 'src/app/wrappers/paginated-response';
 })
 export class BoardShellComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
+
+  @ViewChild(EditItemComponent)
+  private readonly editItemComponent: EditItemComponent;
 
   public faEllipsisH = faEllipsisH;
   public faAlignJustify = faAlignJustify;
@@ -83,8 +88,14 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  editItem(item: Item): void {
+  /**
+   * Handles the event that is emitted by the `ItemActionsMenuComponent`
+   * @param item The Item to edit
+   */
+  handleEditItem(item: Item): void {
     this.store.setItem(item);
+    this.editItemComponent.setItem(item);
+
     const modal = document.getElementById('editItemModal');
     modal.style.display = 'block';
   }

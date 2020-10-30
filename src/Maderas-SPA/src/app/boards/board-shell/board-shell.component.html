@@ -20,7 +20,7 @@
   <div *ngIf="lists" class="columns">
     <div
       *ngFor="let list of lists; index as listIndex"
-      class="column items-column mb-4"
+      class="column swimlane mb-4"
     >
       <p class="title list-title">{{ list.title }}</p>
       <hr />
@@ -31,9 +31,12 @@
         <!-- Card header -->
         <div class="item-header">
           <p>{{ item.title }}</p>
+          <!-- ================================================================ -->
+          <!-- Item Action Menu -->
+          <!-- ================================================================ -->
           <app-item-actions-menu
             [item]="item"
-            (editItemEvent)="editItem($event)"
+            (editItemEvent)="handleEditItem($event)"
           ></app-item-actions-menu>
         </div>
 
@@ -72,20 +75,6 @@
           (toggleVisibilityEvent)="toggleItemComponent(list, listIndex)"
         ></app-create-item>
       </div>
-
-      <!-- ======================================================================= -->
-      <!-- EditItem Modal -->
-      <!-- ======================================================================= -->
-      <div id="editItemModal" class="modal">
-        <div class="modal-content">
-          <!-- Component -->
-          <app-edit-item
-            (editItemEvent)="addItem($event)"
-            (closeModalEvent)="closeModal()"
-          >
-          </app-edit-item>
-        </div>
-      </div>
     </div>
 
     <!--  ==================================================================== -->
@@ -104,5 +93,19 @@
         </app-create-list>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ======================================================================= -->
+<!-- EditItem Modal -->
+<!-- ======================================================================= -->
+<div id="editItemModal" class="modal">
+  <div class="modal-content">
+    <!-- Component -->
+    <app-edit-item
+      (editItemEvent)="addItem($event)"
+      (closeModalEvent)="closeModal()"
+    >
+    </app-edit-item>
   </div>
 </div>
