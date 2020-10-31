@@ -150,6 +150,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   // =========================================================================
+
+  isPasswordValid(): boolean {
+    return (
+      this.password.touched &&
+      this.confirmPassword.touched &&
+      this.password.valid &&
+      this.confirmPassword.valid
+    );
+  }
+
+  // =========================================================================
   // Actions
   // =========================================================================
 

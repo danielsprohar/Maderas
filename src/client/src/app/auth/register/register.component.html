@@ -14,6 +14,7 @@
           class="input"
           type="text"
           autofocus
+          tabindex="1"
         />
         <span class="icon is-small is-left">
           <fa-icon [icon]="faUser"></fa-icon>
@@ -44,6 +45,7 @@
           formControlName="email"
           class="input"
           type="email"
+          tabindex="2"
         />
         <span class="icon is-small is-left">
           <fa-icon [icon]="faEnvelope"></fa-icon>
@@ -69,16 +71,17 @@
       <label class="label">Password</label>
       <div class="control has-icons-left has-icons-right">
         <input
-          [class]="password.touched && password.valid ? 'is-success' : ''"
+          [class]="isPasswordValid() ? 'is-success' : ''"
           formControlName="password"
           class="input"
           type="password"
+          tabindex="3"
           appUniqueEmailValidator
         />
         <span class="icon is-small is-left">
           <fa-icon [icon]="faKey"></fa-icon>
         </span>
-        <ng-container *ngIf="password.touched && password.valid">
+        <ng-container *ngIf="isPasswordValid()">
           <span class="icon is-small is-right">
             <fa-icon [icon]="faCheck"></fa-icon>
           </span>
@@ -102,14 +105,16 @@
       <label class="label">Confirm password</label>
       <div class="control has-icons-left has-icons-right">
         <input
+          [class]="isPasswordValid() ? 'is-success' : ''"
           formControlName="confirmPassword"
           class="input"
           type="password"
+          tabindex="4"
         />
         <span class="icon is-small is-left">
           <fa-icon [icon]="faKey"></fa-icon>
         </span>
-        <ng-container *ngIf="confirmPassword.touched && confirmPassword.valid">
+        <ng-container *ngIf="isPasswordValid()">
           <span class="icon is-small is-right">
             <fa-icon [icon]="faCheck"></fa-icon>
           </span>
@@ -126,6 +131,7 @@
           type="submit"
           [disabled]="form.invalid"
           class="button is-primary full-width"
+          tabindex="5"
         >
           Submit
         </button>
