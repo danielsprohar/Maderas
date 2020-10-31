@@ -17,7 +17,6 @@ const itemSchema = new Schema({
   },
   description: {
     type: String,
-    minlength: 1,
     maxlength: 2048
   },
   dueDate: {
@@ -36,7 +35,7 @@ const itemSchema = new Schema({
 function validate(reqBody) {
   const schema = Joi.object({
     title: Joi.string().max(512).required(),
-    description: Joi.string().max(2048),
+    description: Joi.string().max(2048).allow(''),
     dueDate: Joi.date().min(yesterday),
     list: Joi.objectId().required()
   })

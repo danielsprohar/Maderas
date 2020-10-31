@@ -109,6 +109,19 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
+  /**
+   * Handles the event that is emitted by the `EditItemComponent`.
+   * @param item The `Item` that was updated.
+   */
+  handleItemUpdatedEvent(item: Item): void {
+    const list = this.lists.find((l) => l._id === item.list);
+    const i = list.items.findIndex((i) => i._id === item._id);
+    list.items[i] = item;
+    list.items = [...list.items];
+  }
+
+  // =========================================================================
+
   closeModal(): void {
     const modal = document.getElementById('editItemModal');
     modal.style.display = 'none';
