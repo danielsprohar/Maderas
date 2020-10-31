@@ -29,8 +29,10 @@
 .create-list-column {
   display: block;
   flex-basis: 0;
-  flex-grow: 1;
+  flex-grow: 0;
   flex-shrink: 1;
+  margin: 0;
+  padding: 0;
 }
 
 .card-footer-item:hover,

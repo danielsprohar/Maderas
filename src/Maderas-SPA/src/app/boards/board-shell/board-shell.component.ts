@@ -18,7 +18,6 @@ import { Board } from 'src/app/models/board';
 import { Item } from 'src/app/models/item';
 import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
-import { StoreService } from 'src/app/store/store.service';
 import { PaginatedResponse } from 'src/app/wrappers/paginated-response';
 
 @Component({
@@ -42,7 +41,6 @@ export class BoardShellComponent implements OnInit, OnDestroy {
   public item: Item;
 
   constructor(
-    private readonly store: StoreService,
     private readonly listService: DataService<List>,
     private readonly route: ActivatedRoute
   ) {}

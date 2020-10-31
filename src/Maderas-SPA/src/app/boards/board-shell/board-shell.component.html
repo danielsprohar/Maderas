@@ -17,7 +17,7 @@
   </div>
 
   <hr />
-  <div *ngIf="lists" class="columns">
+  <div *ngIf="lists" class="columns px-2">
     <div
       *ngFor="let list of lists; index as listIndex"
       class="column swimlane mb-4"
@@ -81,7 +81,7 @@
     <!--  ==================================================================== -->
     <!-- Add a List -->
     <!--  ==================================================================== -->
-    <div class="column create-list-column my-0">
+    <div class="column create-list-column">
       <button id="createListBtn" class="button" (click)="toggleListComponent()">
         Create another list
       </button>
