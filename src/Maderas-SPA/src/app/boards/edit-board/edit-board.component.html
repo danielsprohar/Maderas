@@ -1,0 +1,26 @@
+<div class="form-container">
+  <form [formGroup]="form">
+    <div class="field">
+      <label for="title" class="label">Title</label>
+      <div class="control mb-1">
+        <input class="input" type="text" formControlName="title" />
+      </div>
+
+      <div class="buttons">
+        <button
+          [disabled]="form.invalid"
+          type="submit"
+          class="button is-primary"
+          (click)="onSubmit()"
+        >
+          Save
+        </button>
+        <button class="button button-icon" title="close">
+          <span class="icon is-centered" (click)="close()">
+            <fa-icon [icon]="faTimes"></fa-icon>
+          </span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

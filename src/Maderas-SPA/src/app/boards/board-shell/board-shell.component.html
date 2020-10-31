@@ -1,10 +1,11 @@
 <div *ngIf="board$ | async as board" class="container is-fluid">
   <div class="level">
+    <!-- Board information -->
     <div class="level-left">
-      <div class="level-item">
+      <div class="level-item mr-3">
         <div class="container">
           <p class="heading">Board Name</p>
-          <p class="is-centered">{{ board.title }}</p>
+          <p class="mr-1">{{ board.title }}</p>
         </div>
       </div>
       <div class="level-item">
@@ -14,19 +15,36 @@
         </div>
       </div>
     </div>
+    <!-- Edit button -->
+    <div class="level-right">
+      <button class="button" (click)="openEditBoardModal(board)">Edit</button>
+    </div>
   </div>
 
   <hr />
+
   <div *ngIf="lists" class="columns px-2">
     <div
       *ngFor="let list of lists; index as listIndex"
       class="column swimlane mb-4"
     >
-      <p class="title list-title">{{ list.title }}</p>
+      <!-- ==================================================================== -->
+      <!-- List title -->
+      <!-- ==================================================================== -->
+      <div class="level is-align-content-center">
+        <div class="level-left">
+          <h3 class="is-size-4">{{ list.title }}</h3>
+        </div>
+        <div class="level-right">
+          <span class="is-clickable">
+            <fa-icon [icon]="faEdit"></fa-icon>
+          </span>
+        </div>
+      </div>
       <hr />
-      <!--  ==================================================================== -->
+      <!-- ==================================================================== -->
       <!-- Items -->
-      <!--  ==================================================================== -->
+      <!-- ==================================================================== -->
       <div *ngFor="let item of list.items; index as itemIndex" class="box mb-2">
         <!-- Card header -->
         <div class="item-header">
@@ -102,11 +120,19 @@
 <!-- ======================================================================= -->
 <div id="editItemModal" class="modal">
   <div class="modal-content">
-    <!-- Component -->
     <app-edit-item
       (itemUpdatedEvent)="handleItemUpdatedEvent($event)"
-      (closeModalEvent)="closeModal()"
+      (closeModalEvent)="closeEditItemModal()"
     >
     </app-edit-item>
+  </div>
+</div>
+
+<!-- ===================================================================== -->
+<!-- EditBoard Modal -->
+<!-- ===================================================================== -->
+<div id="editBoardModal" class="modal">
+  <div class="modal-content">
+    <app-edit-board (closeModalEvent)="closeEditBoardModal()"></app-edit-board>
   </div>
 </div>

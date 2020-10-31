@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import {
   faAlignJustify,
   faClock,
+  faEdit,
   faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subscription } from 'rxjs';
@@ -19,6 +20,7 @@ import { Item } from 'src/app/models/item';
 import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
 import { PaginatedResponse } from 'src/app/wrappers/paginated-response';
+import { EditBoardComponent } from '../edit-board/edit-board.component';
 
 @Component({
   selector: 'app-board-shell',
@@ -32,6 +34,10 @@ export class BoardShellComponent implements OnInit, OnDestroy {
   @ViewChild(EditItemComponent)
   private readonly editItemComponent: EditItemComponent;
 
+  @ViewChild(EditBoardComponent)
+  private readonly editBoardComponent: EditBoardComponent;
+
+  public faEdit = faEdit;
   public faEllipsisH = faEllipsisH;
   public faAlignJustify = faAlignJustify;
   public faClock = faClock;
@@ -122,8 +128,24 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  closeModal(): void {
+  closeEditItemModal(): void {
     const modal = document.getElementById('editItemModal');
+    modal.style.display = 'none';
+  }
+
+  // =========================================================================
+
+  openEditBoardModal(board: Board): void {
+    this.editBoardComponent.setBoard(board);
+
+    const modal = document.getElementById('editBoardModal');
+    modal.style.display = 'block';
+  }
+
+  // =========================================================================
+
+  closeEditBoardModal(): void {
+    const modal = document.getElementById('editBoardModal');
     modal.style.display = 'none';
   }
 
