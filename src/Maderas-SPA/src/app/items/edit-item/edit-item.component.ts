@@ -139,13 +139,13 @@ export class EditItemComponent implements OnInit, OnDestroy {
     }
 
     const item = this.getItem();
-    console.log(item);
+    Object.assign(this.item, item);
 
     this.subscription = this.itemsService
       .update(`/items/${this.item._id}`, item)
       .subscribe(
         () => {
-          this.itemUpdatedEvent.emit(item);
+          this.itemUpdatedEvent.emit(this.item);
 
           this.snackbar.show(
             'Your item was updated.',

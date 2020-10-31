@@ -115,8 +115,8 @@ export class BoardShellComponent implements OnInit, OnDestroy {
    */
   handleItemUpdatedEvent(item: Item): void {
     const list = this.lists.find((l) => l._id === item.list);
-    const i = list.items.findIndex((i) => i._id === item._id);
-    list.items[i] = item;
+    const idx = list.items.findIndex((i) => i._id === item._id);
+    list.items[idx] = item;
     list.items = [...list.items];
   }
 
@@ -139,11 +139,7 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  toggleItemComponent(list: List, index: number): void {
-    // if (list !== this.store.getList()) {
-    //   this.store.setList(list);
-    // }
-
+  toggleItemComponent(index: number): void {
     const div = document.getElementById(index.toString());
     div.classList.toggle('is-hidden');
 
