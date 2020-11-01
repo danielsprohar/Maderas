@@ -67,7 +67,7 @@ export class EditBoardComponent implements OnInit, OnDestroy {
   getBoard(): Board {
     return new Board({
       title: this.title.value,
-      user: this.board.user
+      user: this.board.user,
     });
   }
 
@@ -92,19 +92,19 @@ export class EditBoardComponent implements OnInit, OnDestroy {
     this.subscription = this.boardsService
       .update(`/boards/${this.board._id}`, board)
       .subscribe(
-        () => {
+        (res: Board) => {
           this.snackbar.show(
             'Your board was updated.',
             SnackbarMessageType.Success
           );
-          Object.assign(this.board, board);
-          this.close();
+          Object.assign(this.board, res);
         },
         (err) => {
           this.snackbar.show(err, SnackbarMessageType.Danger);
         },
         () => {
           // Close component
+          this.close();
         }
       );
   }
