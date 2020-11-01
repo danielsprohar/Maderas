@@ -54,9 +54,11 @@
       </ng-container>
 
       <div class="tile is-3 is-parent">
-        <div class="tile is-child box create-new-board-box">
-          <p routerLink="create">Create new board</p>
-        </div>
+        <a
+          routerLink="/boards/create"
+          class="tile is-child box create-new-board-box"
+          >Create new board</a
+        >
       </div>
       <!-- A hack to deal with Bulma's .box:not(:last-child) { margin: 0 }  -->
       <div class="box is-shadowless is-invisible"></div>

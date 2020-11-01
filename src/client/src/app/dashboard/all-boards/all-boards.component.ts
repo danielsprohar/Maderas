@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { faUser, faClock } from '@fortawesome/free-solid-svg-icons';
+import { ActivatedRoute, Router } from '@angular/router';
+import { faClock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Board } from 'src/app/models/board';
 import { DataService } from 'src/app/services/data.service';
-import { StoreService } from 'src/app/store/store.service';
 import { PaginatedResponse } from 'src/app/wrappers/paginated-response';
 
 @Component({
@@ -27,7 +26,6 @@ export class AllBoardsComponent implements OnInit {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly dataService: DataService<Board>,
-    private readonly store: StoreService,
     public readonly auth: AuthService
   ) {}
 
@@ -40,8 +38,7 @@ export class AllBoardsComponent implements OnInit {
   // =========================================================================
 
   view(board: Board): void {
-    this.store.setBoard(board);
-    this.router.navigate([board._id, 'shell'], { relativeTo: this.route });
+    this.router.navigate(['/boards', board._id]);
   }
 
   // =========================================================================

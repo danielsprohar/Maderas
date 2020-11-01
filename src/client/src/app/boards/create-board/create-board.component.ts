@@ -19,7 +19,6 @@ import { Board } from 'src/app/models/board';
 import { DataService } from 'src/app/services/data.service';
 import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
-import { StoreService } from 'src/app/store/store.service';
 
 @Component({
   selector: 'app-create-board',
@@ -94,7 +93,7 @@ export class CreateBoardComponent implements OnInit, OnDestroy {
       .create('/boards', board)
       .subscribe(
         (data: Board) => {
-          this.router.navigate(['boards']);
+          this.router.navigate(['/dashboard/boards']);
         },
         (err) => {
           this.snackbar.show(err.message, SnackbarMessageType.Danger);

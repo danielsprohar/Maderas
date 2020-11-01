@@ -10,7 +10,7 @@ import { ItemsModule } from '../items/items.module';
 import { EditBoardComponent } from './edit-board/edit-board.component';
 
 @NgModule({
-  declarations: [BoardsComponent, CreateBoardComponent, , EditBoardComponent],
+  declarations: [BoardsComponent, CreateBoardComponent, EditBoardComponent],
   imports: [
     CommonModule,
     BoardsRoutingModule,

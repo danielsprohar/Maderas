@@ -25,6 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private addRouterListener(): void {
     this.router.setUpLocationChangeListener();
 
+    // This closed the navbar for mobile users when they navigate to a view.
     this.routerSubscription = this.router.events.subscribe((next) => {
       const navbarMenu = document.getElementById('navbarMenu');
       navbarMenu.classList.remove('is-active');

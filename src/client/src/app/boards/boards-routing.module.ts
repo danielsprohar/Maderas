@@ -8,7 +8,7 @@ import { BoardDetailResolverService } from './services/board-detail-resolver.ser
 const routes: Routes = [
   { path: 'create', component: CreateBoardComponent },
   {
-    path: ':id/shell',
+    path: ':id',
     component: BoardsComponent,
     resolve: {
       board: BoardDetailResolverService,
