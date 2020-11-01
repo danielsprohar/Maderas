@@ -12,6 +12,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { Board } from 'src/app/models/board';
@@ -37,7 +38,8 @@ export class CreateListComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly listService: DataService<List>,
-    private readonly snackbar: SnackbarService
+    private readonly snackbar: SnackbarService,
+    private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +67,12 @@ export class CreateListComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
+  resetForm(): void {
+    this.title.setValue('');
+  }
+
+  // =========================================================================
+
   close(): void {
     this.toggleVisibilityEvent.emit(true);
   }
@@ -78,12 +86,14 @@ export class CreateListComponent implements OnInit, OnDestroy {
 
     const list = new List({
       title: (this.title.value as string).trim(),
-      board: this.board._id,
+      board: this.board._id ?? this.route.snapshot.queryParamMap.get('id'),
     });
 
     this.subscription = this.listService.create('/lists', list).subscribe(
       (res: List) => {
+        this.resetForm();
         this.newListEvent.emit(res);
+        this.close();
         this.snackbar.show('New list created', SnackbarMessageType.Success);
       },
       (err) => {

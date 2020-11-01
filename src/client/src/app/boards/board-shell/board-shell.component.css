@@ -4,6 +4,7 @@
 
 .swimlane {
   max-width: 300px;
+  width: 300px;
   min-height: 20px;
   margin: 0 4px;
   /* background-color: #f0f0f0; */
@@ -29,7 +30,7 @@
 .create-list-column {
   display: block;
   flex-basis: 0;
-  flex-grow: 0;
+  flex-grow: 1;
   flex-shrink: 1;
   margin: 0;
   padding: 0;

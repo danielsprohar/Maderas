@@ -151,7 +151,7 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  toggleListComponent(): void {
+  toggleCreateListComponent(): void {
     const div = document.getElementById('newListFormBox');
     div.classList.toggle('is-hidden');
 
@@ -161,7 +161,7 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  toggleItemComponent(index: number): void {
+  toggleCreateItemComponent(index: number): void {
     const div = document.getElementById(index.toString());
     div.classList.toggle('is-hidden');
 

@@ -14,10 +14,14 @@
           <p class="is-centered">{{ board.lists?.length }}</p>
         </div>
       </div>
-    </div>
-    <!-- Edit button -->
-    <div class="level-right">
-      <button class="button" (click)="openEditBoardModal(board)">Edit</button>
+      <!-- Edit button -->
+      <div class="level-item">
+        <div class="container">
+          <button class="button is-primary" (click)="openEditBoardModal(board)">
+            Edit
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -81,7 +85,7 @@
       <!-- Add an Item to a List -->
       <!--  ==================================================================== -->
       <div id="button{{ listIndex }}" class="mt-2">
-        <button class="button" (click)="toggleItemComponent(list, listIndex)">
+        <button class="button" (click)="toggleCreateItemComponent(listIndex)">
           Add another item
         </button>
       </div>
@@ -91,7 +95,7 @@
         <app-create-item
           [list]="list"
           (newItemEvent)="handleNewItemEvent($event)"
-          (toggleVisibilityEvent)="toggleItemComponent(list, listIndex)"
+          (toggleVisibilityEvent)="toggleCreateItemComponent(listIndex)"
         ></app-create-item>
       </div>
     </div>
@@ -100,14 +104,19 @@
     <!-- Add a List -->
     <!--  ==================================================================== -->
     <div class="column create-list-column">
-      <button id="createListBtn" class="button" (click)="toggleListComponent()">
+      <button
+        id="createListBtn"
+        class="button"
+        (click)="toggleCreateListComponent()"
+      >
         Create another list
       </button>
       <div class="box mt-0" id="newListFormBox" class="is-hidden">
         <!-- Component -->
         <app-create-list
+          [board]="board"
           (newListEvent)="handleNewListEvent($event)"
-          (toggleVisibilityEvent)="toggleListComponent()"
+          (toggleVisibilityEvent)="toggleCreateListComponent()"
         >
         </app-create-list>
       </div>
