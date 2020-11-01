@@ -5,20 +5,18 @@ import { BoardsRoutingModule } from './boards-routing.module';
 import { BoardsComponent } from './boards.component';
 import { SharedModule } from '../shared/shared.module';
 import { CreateBoardComponent } from './create-board/create-board.component';
-import { BoardShellComponent } from './board-shell/board-shell.component';
 import { ListsModule } from '../lists/lists.module';
 import { ItemsModule } from '../items/items.module';
 import { EditBoardComponent } from './edit-board/edit-board.component';
 
-
 @NgModule({
-  declarations: [BoardsComponent, CreateBoardComponent, BoardShellComponent, EditBoardComponent],
+  declarations: [BoardsComponent, CreateBoardComponent, , EditBoardComponent],
   imports: [
     CommonModule,
     BoardsRoutingModule,
     SharedModule,
     ListsModule,
-    ItemsModule
-  ]
+    ItemsModule,
+  ],
 })
-export class BoardsModule { }
+export class BoardsModule {}

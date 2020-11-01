@@ -1,9 +1,56 @@
-.create-new-board-box {
-  cursor: pointer;
-  box-shadow: none;
-  border: 1px solid #dbdbdb;
+.column {
+  align-items: flex-start;
 }
 
-.create-new-board-box:hover {
-  background-color: whitesmoke;
+.swimlane {
+  max-width: 300px;
+  width: 300px;
+  min-height: 20px;
+  margin: 0 4px;
+  /* background-color: #f0f0f0; */
+  border: 1px solid #d9d9d9;
+  border-radius: 3px;
 }
+
+.swimlane > .box {
+  padding: 4px 8px;
+}
+
+.item-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.list-title {
+  text-align: center;
+}
+
+.create-list-column {
+  display: block;
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.card-footer-item:hover,
+.card-footer-item:focus {
+  background-color: #fafafa;
+}
+
+.badges {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.badge {
+  /* margin: auto 8px; */
+  margin-right: 16px;
+}
+

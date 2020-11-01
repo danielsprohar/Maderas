@@ -1,74 +1,160 @@
-<ng-container *ngIf="boards$ | async as boards; else noBoards">
-  <div class="column">
-    <!-- ===================================================================== -->
-    <!-- Recently viewed boards -->
-    <!-- ===================================================================== -->
-    <div class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <fa-icon [icon]="faClock"></fa-icon>
-          <span class="ml-2">
-            <strong>Recently viewed</strong>
+<div *ngIf="board$ | async as board" class="container is-fluid">
+  <div class="level">
+    <!-- Board information -->
+    <div class="level-left">
+      <div class="level-item mr-3">
+        <div class="container">
+          <p class="heading">Board Name</p>
+          <p class="mr-1">{{ board.title }}</p>
+        </div>
+      </div>
+      <div class="level-item">
+        <div class="container">
+          <p class="heading">No. of Lists</p>
+          <p class="is-centered">{{ board.lists?.length }}</p>
+        </div>
+      </div>
+      <!-- Edit button -->
+      <div class="level-item">
+        <div class="container">
+          <button class="button is-primary" (click)="openEditBoardModal(board)">
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <div *ngIf="lists" class="columns px-2">
+    <div
+      *ngFor="let list of lists; index as listIndex"
+      class="column swimlane mb-4"
+    >
+      <!-- ==================================================================== -->
+      <!-- List title -->
+      <!-- ==================================================================== -->
+      <div class="level is-align-content-center">
+        <div class="level-left">
+          <h3 class="is-size-4">{{ list.title }}</h3>
+        </div>
+        <div class="level-right">
+          <span class="is-clickable" (click)="openEditListModal(list)">
+            <fa-icon [icon]="faEdit"></fa-icon>
           </span>
         </div>
       </div>
-    </div>
+      <hr />
+      <!-- ==================================================================== -->
+      <!-- Items -->
+      <!-- ==================================================================== -->
+      <div *ngFor="let item of list.items; index as itemIndex" class="box mb-2">
+        <!-- Card header -->
+        <div class="item-header">
+          <p>{{ item.title }}</p>
+          <!-- ================================================================ -->
+          <!-- Item Action Menu -->
+          <!-- ================================================================ -->
+          <app-item-actions-menu
+            [item]="item"
+            (editItemEvent)="handleEditItem($event)"
+          ></app-item-actions-menu>
+        </div>
 
-    <!-- ===================================================================== -->
-    <div class="tile is-ancestor">
-      <ng-container *ngFor="let board of getRecentlyViewed(boards)">
-        <div class="tile is-3 is-parent" (click)="view(board)">
-          <div class="tile is-child box is-clickable">
-            <p>{{ board.title }}</p>
+        <!--  Card content -->
+        <ng-container *ngIf="item.description || item.dueDate">
+          <div class="badges">
+            <ng-container *ngIf="item.dueDate">
+              <div class="badge" title="This item has a due date">
+                <fa-icon [icon]="faClock"></fa-icon>
+                <span class="ml-1">{{ item.dueDate | date: "MMM d" }}</span>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="item.description">
+              <div class="badge" title="This item has a description">
+                <fa-icon [icon]="faAlignJustify"></fa-icon>
+              </div>
+            </ng-container>
           </div>
-        </div>
-      </ng-container>
+        </ng-container>
+      </div>
 
-      <!-- A hack to deal with Bulma's .box:not(:last-child) { margin: 0 }  -->
-      <div class="box is-shadowless is-invisible"></div>
-    </div>
+      <!--  ==================================================================== -->
+      <!-- Add an Item to a List -->
+      <!--  ==================================================================== -->
+      <div id="button{{ listIndex }}" class="mt-2">
+        <button class="button" (click)="toggleCreateItemComponent(listIndex)">
+          Add another item
+        </button>
+      </div>
 
-    <!-- ===================================================================== -->
-    <!-- Personal Boards -->
-    <!-- ===================================================================== -->
-    <div class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <fa-icon [icon]="faUser"></fa-icon>
-          <span class="ml-2">
-            <strong>Personal Boards</strong>
-          </span>
-        </div>
+      <div id="{{ listIndex }}" class="is-hidden">
+        <!-- Component -->
+        <app-create-item
+          [list]="list"
+          (newItemEvent)="handleNewItemEvent($event)"
+          (toggleVisibilityEvent)="toggleCreateItemComponent(listIndex)"
+        ></app-create-item>
       </div>
     </div>
 
-    <!-- ===================================================================== -->
-
-    <div class="tile is-ancestor">
-      <ng-container *ngFor="let board of boards">
-        <div class="tile is-3 is-parent" (click)="view(board)">
-          <div class="tile is-child box is-clickable">
-            <p>{{ board.title }}</p>
-          </div>
-        </div>
-      </ng-container>
-
-      <div class="tile is-3 is-parent">
-        <div class="tile is-child box create-new-board-box">
-          <p routerLink="create">Create new board</p>
-        </div>
+    <!--  ==================================================================== -->
+    <!-- Add a List -->
+    <!--  ==================================================================== -->
+    <div class="column create-list-column">
+      <button
+        id="createListBtn"
+        class="button"
+        (click)="toggleCreateListComponent()"
+      >
+        Create another list
+      </button>
+      <div class="box mt-0" id="newListFormBox" class="is-hidden">
+        <!-- Component -->
+        <app-create-list
+          [board]="board"
+          (newListEvent)="handleNewListEvent($event)"
+          (toggleVisibilityEvent)="toggleCreateListComponent()"
+        >
+        </app-create-list>
       </div>
-      <!-- A hack to deal with Bulma's .box:not(:last-child) { margin: 0 }  -->
-      <div class="box is-shadowless is-invisible"></div>
     </div>
   </div>
-</ng-container>
+</div>
 
-<ng-template #noBoards>
-  <div class="column">
-    <p>You don&rsquo;t have any boards.</p>
-    <p>
-      Let&rsquo;s change that by creating a <a routerLink="create">new board</a>
-    </p>
+<!-- ======================================================================= -->
+<!-- EditItem Modal -->
+<!-- ======================================================================= -->
+<div id="editItemModal" class="modal">
+  <div class="modal-content">
+    <app-edit-item
+      (itemUpdatedEvent)="handleItemUpdatedEvent($event)"
+      (closeModalEvent)="closeEditItemModal()"
+    >
+    </app-edit-item>
   </div>
-</ng-template>
+</div>
+
+<!-- ======================================================================= -->
+<!-- EditList Modal -->
+<!-- ======================================================================= -->
+<div id="editListModal" class="modal">
+  <div class="modal-content">
+    <app-edit-list
+      (listUpdatedEvent)="handleListUpdatedEvent($event)"
+      (closeModalEvent)="closeEditListModal()"
+    >
+    </app-edit-list>
+  </div>
+</div>
+
+<!-- ===================================================================== -->
+<!-- EditBoard Modal -->
+<!-- ===================================================================== -->
+<div id="editBoardModal" class="modal">
+  <div class="modal-content">
+    <app-edit-board (closeModalEvent)="closeEditBoardModal()"></app-edit-board>
+  </div>
+</div>
