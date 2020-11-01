@@ -13,11 +13,13 @@ const itemSchema = new Schema({
     type: String,
     required: true,
     minlength: 1,
-    maxlength: 512
+    maxlength: 512,
+    trim: true
   },
   description: {
     type: String,
-    maxlength: 2048
+    maxlength: 2048,
+    trim: true
   },
   dueDate: {
     type: Date,

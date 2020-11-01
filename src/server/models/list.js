@@ -9,7 +9,8 @@ const listSchema = new Schema({
     type: String,
     required: true,
     minlength: 1,
-    maxlength: 512
+    maxlength: 512,
+    trim: true
   },
   board: {
     type: mongoose.Types.ObjectId,

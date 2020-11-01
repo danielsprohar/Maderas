@@ -15,6 +15,7 @@ import {
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EditItemComponent } from 'src/app/items/edit-item/edit-item.component';
+import { EditListComponent } from 'src/app/lists/edit-list/edit-list.component';
 import { Board } from 'src/app/models/board';
 import { Item } from 'src/app/models/item';
 import { List } from 'src/app/models/list';
@@ -36,6 +37,9 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   @ViewChild(EditBoardComponent)
   private readonly editBoardComponent: EditBoardComponent;
+
+  @ViewChild(EditListComponent)
+  private readonly editListComponent: EditListComponent;
 
   public faEdit = faEdit;
   public faEllipsisH = faEllipsisH;
@@ -77,16 +81,6 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe());
-  }
-
-  // =========================================================================
-
-  /**
-   * Handles the event that is emitted by the `CreateListComponent`.
-   * @param list The `Board` that was just created.
-   */
-  handleNewListEvent(list: List): void {
-    this.lists.push(list);
   }
 
   // =========================================================================
@@ -151,6 +145,18 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
+  toggleCreateItemComponent(index: number): void {
+    const div = document.getElementById(index.toString());
+    div.classList.toggle('is-hidden');
+
+    const button = document.getElementById(`button${index}`);
+    button.classList.toggle('is-hidden');
+  }
+
+  // =========================================================================
+  // List methods
+  // =========================================================================
+
   toggleCreateListComponent(): void {
     const div = document.getElementById('newListFormBox');
     div.classList.toggle('is-hidden');
@@ -161,11 +167,33 @@ export class BoardShellComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  toggleCreateItemComponent(index: number): void {
-    const div = document.getElementById(index.toString());
-    div.classList.toggle('is-hidden');
+  /**
+   * Handles the event that is emitted by the `CreateListComponent`.
+   * @param list The `Board` that was just created.
+   */
+  handleNewListEvent(list: List): void {
+    this.lists.push(list);
+  }
 
-    const button = document.getElementById(`button${index}`);
-    button.classList.toggle('is-hidden');
+  // =========================================================================
+
+  handleListUpdatedEvent(list: List): void {
+    const i = this.lists.findIndex((l) => l._id === list._id);
+    this.lists[i] = list;
+  }
+
+  // =========================================================================
+
+  openEditListModal(list: List): void {
+    this.editListComponent.setList(list);
+    const modal = document.getElementById('editListModal');
+    modal.style.display = 'block';
+  }
+
+  // =========================================================================
+
+  closeEditListModal(): void {
+    const modal = document.getElementById('editListModal');
+    modal.style.display = 'none';
   }
 }

@@ -1,0 +1,25 @@
+<div class="container">
+  <p class="title">Edit your list</p>
+  <hr />
+  <form [formGroup]="form">
+    <!-- ===================================================================== -->
+    <!-- Title -->
+    <!-- ===================================================================== -->
+    <div class="field">
+      <label class="label">Title</label>
+      <div class="control">
+        <input class="input" type="text" formControlName="title" />
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- Actions -->
+    <!-- ===================================================================== -->
+    <div class="buttons mt-3">
+      <button type="submit" class="button is-primary" (click)="onSubmit()">
+        Submit
+      </button>
+      <button class="button" (click)="close()">Close</button>
+    </div>
+  </form>
+</div>

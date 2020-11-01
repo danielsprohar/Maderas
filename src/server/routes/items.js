@@ -69,8 +69,6 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', isValidObjectId, async (req, res, next) => {
   const item = await Item.findById(req.params.id)
-  // TODO: Populate the item
-  // .populate('items')
   res.json(item)
 })
 
@@ -97,7 +95,7 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
     await item.save()
 
     winston.info(`[UpdateItem] An item was updated. Item(_id:${item._id})`)
-    res.status(httpStatusCodes.noContent).send()
+    res.status(httpStatusCodes.ok).send(item)
   } catch (e) {
     winston.error(e)
     next(e)

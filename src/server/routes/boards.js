@@ -86,8 +86,9 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
     board.title = req.body.title
     await board.save()
 
-    winston.info(`A board was updated. Board(_id:${board._id})`)
-    res.status(httpStatusCodes.noContent).send()
+    winston.info(`[UpdateBoard] A board was updated. Board(_id:${board._id})`)
+
+    res.status(httpStatusCodes.ok).send(board)
   } catch (e) {
     winston.error(e)
     next(e)

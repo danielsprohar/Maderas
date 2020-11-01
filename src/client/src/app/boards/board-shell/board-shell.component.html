@@ -40,7 +40,7 @@
           <h3 class="is-size-4">{{ list.title }}</h3>
         </div>
         <div class="level-right">
-          <span class="is-clickable">
+          <span class="is-clickable" (click)="openEditListModal(list)">
             <fa-icon [icon]="faEdit"></fa-icon>
           </span>
         </div>
@@ -134,6 +134,19 @@
       (closeModalEvent)="closeEditItemModal()"
     >
     </app-edit-item>
+  </div>
+</div>
+
+<!-- ======================================================================= -->
+<!-- EditList Modal -->
+<!-- ======================================================================= -->
+<div id="editListModal" class="modal">
+  <div class="modal-content">
+    <app-edit-list
+      (listUpdatedEvent)="handleListUpdatedEvent($event)"
+      (closeModalEvent)="closeEditListModal()"
+    >
+    </app-edit-list>
   </div>
 </div>
 
