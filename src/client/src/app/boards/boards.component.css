@@ -1,9 +1,4 @@
 .board {
-  cursor: pointer;
   max-width: 300px;
   min-height: 20px;
-}
-
-.board:hover {
-  background-color: #f1f1f1;
 }

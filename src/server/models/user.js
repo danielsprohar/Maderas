@@ -10,35 +10,40 @@ const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0
 
 // ===========================================================================
 
-const userSchema = new Schema({
-  username: {
-    type: String,
-    minlength: 1,
-    maxlength: 255,
-    trim: true
-  },
-  email: {
-    type: String,
-    required: true,
-    maxlength: 255,
-    validate: emailRegex,
-    trim: true
-  },
-  normalizedEmail: {
-    type: String,
-    required: true,
-    uppercase: true,
-    index: {
-      unique: true
+const userSchema = new Schema(
+  {
+    username: {
+      type: String,
+      minlength: 1,
+      maxlength: 255,
+      trim: true
+    },
+    email: {
+      type: String,
+      required: true,
+      maxlength: 255,
+      validate: emailRegex,
+      trim: true
+    },
+    normalizedEmail: {
+      type: String,
+      required: true,
+      uppercase: true,
+      index: {
+        unique: true
+      }
+    },
+    // https://www.npmjs.com/package/bcrypt#hash-info
+    password: {
+      type: String,
+      minlength: 6,
+      maxlength: 64
     }
   },
-  // https://www.npmjs.com/package/bcrypt#hash-info
-  password: {
-    type: String,
-    minlength: 6,
-    maxlength: 64
+  {
+    timestamps: true
   }
-})
+)
 
 // ===========================================================================
 

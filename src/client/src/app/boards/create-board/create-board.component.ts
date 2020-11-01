@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -23,6 +23,9 @@ export class CreateBoardComponent implements OnInit, OnDestroy {
   private serviceSubscription: Subscription;
 
   public form: FormGroup;
+
+  @Output() closeModalEvent = new EventEmitter<boolean>();
+  @Output() newBoardCreatedEvent = new EventEmitter<Board>();
 
   constructor(
     private readonly snackbar: SnackbarService,
@@ -67,7 +70,17 @@ export class CreateBoardComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
+  close(): void {
+    this.closeModalEvent.emit(true);
+  }
+
+  // =========================================================================
+
   onSubmit(): void {
+    if (this.form.invalid) {
+      return;
+    }
+
     const board = new Board({
       title: (this.title.value as string).trim(),
       user: this.auth.getUser().id,
@@ -77,7 +90,7 @@ export class CreateBoardComponent implements OnInit, OnDestroy {
       .create('/boards', board)
       .subscribe(
         (data: Board) => {
-          this.store.setBoard(data);
+          this.close();
           this.router.navigate(['boards']);
         },
         (err) => {

@@ -6,6 +6,7 @@ const boards = require('../routes/boards')
 const lists = require('../routes/lists')
 const items = require('../routes/items')
 const users = require('../routes/users')
+const templates = require('../routes/templates')
 
 module.exports = function (app) {
   app.use(express.json())
@@ -14,5 +15,6 @@ module.exports = function (app) {
   app.use('/api/lists', lists)
   app.use('/api/items', items)
   app.use('/api/users', users)
+  app.use('/api/templates', templates)
   app.use(errorHandler)
 }

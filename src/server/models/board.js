@@ -4,25 +4,30 @@ const Joi = require('../extensions/joi-mongodb-object-id')
 
 // ===========================================================================
 
-const boardSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 512
-  },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  lists: [
-    {
+const boardSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      minlength: 1,
+      maxlength: 512
+    },
+    user: {
       type: Schema.Types.ObjectId,
-      ref: 'List'
-    }
-  ]
-})
+      ref: 'User',
+      required: true
+    },
+    lists: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'List'
+      }
+    ]
+  },
+  {
+    timestamps: true
+  }
+)
 
 // ===========================================================================
 

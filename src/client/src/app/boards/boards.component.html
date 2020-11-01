@@ -1,14 +1,24 @@
 <div class="columns">
-  <div class="column is-one-fifth">
+  <!-- <div class="column is-one-fifth">
     <aside class="menu">
       <p class="menu-label">General</p>
       <ul class="menu-list">
-        <li><a routerLink="/boards">Boards</a></li>
-        <li><a>Templates</a></li>
-        <li><a routerLink="/">Home</a></li>
+        <li>
+          <a> Templates </a>
+          <ul>
+            <li>
+              <a
+                (click)="openModal()"
+                title="A simple and visual workflow for engineering teams."
+              >
+                Kanban
+              </a>
+            </li>
+          </ul>
+        </li>
       </ul>
     </aside>
-  </div>
+  </div> -->
 
   <div class="column">
     <div class="box board">
@@ -26,7 +36,11 @@
     <!-- ===================================================================== -->
     <div *ngIf="boards$ | async as boards" class="container">
       <h1 class="title">Your boards</h1>
-      <div *ngFor="let board of boards" class="box board" (click)="view(board)">
+      <div
+        *ngFor="let board of boards"
+        class="box board is-clickable"
+        (click)="view(board)"
+      >
         <p>
           <strong>{{ board.title }}</strong>
         </p>
