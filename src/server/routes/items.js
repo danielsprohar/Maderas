@@ -36,7 +36,6 @@ router.post('/', async (req, res, next) => {
 
     res.status(httpStatusCodes.created).json(item)
   } catch (e) {
-    winston.error(e)
     next(e)
   }
 })
@@ -58,7 +57,6 @@ router.get('/', async (req, res, next) => {
 
     res.json(new PaginatedResponse(pageIndex, pageSize, count, items))
   } catch (e) {
-    winston.error(e)
     next(e)
   }
 })
@@ -97,7 +95,22 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
     winston.info(`[UpdateItem] An item was updated. Item(_id:${item._id})`)
     res.status(httpStatusCodes.ok).send(item)
   } catch (e) {
-    winston.error(e)
+    next(e)
+  }
+})
+
+// ===========================================================================
+
+router.delete('/:id', isValidObjectId, async (req, res, next) => {
+  const item = await Item.findById(req.params.id)
+  if (!item) {
+    return res.status(httpStatusCodes.notFound).send('Item does not exist')
+  }
+
+  try {
+    await item.remove()
+    res.status(httpStatusCodes.noContent).send()
+  } catch (e) {
     next(e)
   }
 })
