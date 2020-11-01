@@ -7,14 +7,23 @@
       <!-- =================================================================== -->
       <ul class="menu-list">
         <li>
-          <a routerLink="boards" routerLinkActive="is-active">Boards</a>
+          <a routerLink="/dashboard/boards" routerLinkActive="is-active">Boards</a>
         </li>
 
         <!-- =================================================================== -->
         <!-- Templates -->
         <!-- =================================================================== -->
         <li>
-          <a routerLink="/templates" routerLinkActive="is-active"> Templates </a>
+          <a routerLink="/templates" routerLinkActive="is-active">
+            Templates
+          </a>
+          <ng-container *ngIf="templates$ | async as templates">
+            <ul>
+              <li *ngFor="let template of templates">
+                <a [routerLink]="[template._id]">{{ template.name }}</a>
+              </li>
+            </ul>
+          </ng-container>
         </li>
       </ul>
     </aside>

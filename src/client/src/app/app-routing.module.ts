@@ -18,6 +18,7 @@ const routes: Routes = [
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   { path: '', redirectTo: 'dashboard/boards', pathMatch: 'full' },
+  { path: 'templates', loadChildren: () => import('./templates/templates.module').then(m => m.TemplatesModule) },
   { path: '**', component: NotFoundComponent },
 ];
 

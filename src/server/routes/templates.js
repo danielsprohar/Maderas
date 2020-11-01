@@ -1,9 +1,33 @@
 const express = require('express')
+const { PaginatedResponse } = require('../application/paginated-response')
 const router = express.Router()
 const winston = require('../config/winston')
 const httpStatusCodes = require('../constants/http-status-codes')
 const { Board, validate } = require('../models/board')
 const { List } = require('../models/list')
+const { Template } = require('../models/template')
+
+// ===========================================================================
+// Get all
+// ===========================================================================
+router.get('', async (req, res, next) => {
+  const pageIndex = req.query.pageIndex || 0
+  const pageSize = req.query.pageSize || 50
+
+  try {
+    const count = await Template.countDocuments()
+
+    const templates = await Template.find()
+      .select('-lists')
+      .sort('_id')
+      .skip(pageIndex * pageSize)
+      .limit(pageSize)
+
+    res.json(new PaginatedResponse(pageIndex, pageSize, count, templates))
+  } catch (e) {
+    next(e)
+  }
+})
 
 // ===========================================================================
 // Kanban
