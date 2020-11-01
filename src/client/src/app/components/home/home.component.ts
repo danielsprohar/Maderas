@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-home',
@@ -8,11 +6,9 @@ import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  constructor(private readonly snackbar: SnackbarService) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
-  showSnackbar(): void {
-    this.snackbar.show('Hello world', SnackbarMessageType.Warning);
-  }
+  showSnackbar(): void {}
 }

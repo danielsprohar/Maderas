@@ -1,0 +1,65 @@
+<ng-container *ngIf="boards$ | async as boards">
+  <div class="column">
+    <!-- ===================================================================== -->
+    <!-- Recently viewed boards -->
+    <!-- ===================================================================== -->
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <fa-icon [icon]="faClock"></fa-icon>
+          <span class="ml-2">
+            <strong>Recently viewed</strong>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <div class="tile is-ancestor">
+      <ng-container *ngFor="let board of getRecentlyViewed(boards)">
+        <div class="tile is-3 is-parent" (click)="view(board)">
+          <div class="tile is-child box is-clickable">
+            <p>{{ board.title }}</p>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- A hack to deal with Bulma's .box:not(:last-child) { margin: 0 }  -->
+      <div class="box is-shadowless is-invisible"></div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- Personal Boards -->
+    <!-- ===================================================================== -->
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <fa-icon [icon]="faUser"></fa-icon>
+          <span class="ml-2">
+            <strong>Personal Boards</strong>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+
+    <div class="tile is-ancestor">
+      <ng-container *ngFor="let board of boards">
+        <div class="tile is-3 is-parent" (click)="view(board)">
+          <div class="tile is-child box is-clickable">
+            <p>{{ board.title }}</p>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="tile is-3 is-parent">
+        <div class="tile is-child box create-new-board-box">
+          <p routerLink="create">Create new board</p>
+        </div>
+      </div>
+      <!-- A hack to deal with Bulma's .box:not(:last-child) { margin: 0 }  -->
+      <div class="box is-shadowless is-invisible"></div>
+    </div>
+  </div>
+</ng-container>

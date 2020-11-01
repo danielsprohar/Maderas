@@ -1,34 +1,7 @@
 <app-navbar></app-navbar>
 
 <main class="main-content">
-  <div class="columns">
-    <div class="column is-one-fifth">
-      <aside class="menu">
-        <p class="menu-label">General</p>
-        <ul class="menu-list">
-          <li>
-            <a routerLink="/boards" routerLinkActive="is-active">Boards</a>
-          </li>
-          <li>
-            <a routerLink="/templates" routerLinkActive="is-active">
-              Templates
-            </a>
-            <ul>
-              <li>
-                <a routerLink="#"> Kanban </a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a routerLink="/home" routerLinkActive="is-active">Home</a>
-          </li>
-        </ul>
-      </aside>
-    </div>
-    <div class="column">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+  <router-outlet></router-outlet>
 </main>
 
 <app-snackbar></app-snackbar>

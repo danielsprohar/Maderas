@@ -1,0 +1,33 @@
+<div class="columns">
+  <div class="column is-one-fifth">
+    <aside class="menu">
+      <p class="menu-label">General</p>
+      <!-- =================================================================== -->
+      <!-- Boards -->
+      <!-- =================================================================== -->
+      <ul class="menu-list">
+        <li>
+          <a routerLink="boards" routerLinkActive="is-active">Boards</a>
+        </li>
+
+        <!-- =================================================================== -->
+        <!-- Templates -->
+        <!-- =================================================================== -->
+        <li>
+          <a routerLink="/templates" routerLinkActive="is-active">
+            Templates
+          </a>
+          <ul class="is-hidden">
+            <li>
+              <a routerLink="#"> Kanban </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </aside>
+  </div>
+
+  <div class="column">
+    <router-outlet></router-outlet>
+  </div>
+</div>

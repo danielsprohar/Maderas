@@ -1,0 +1,9 @@
+.create-new-board-box {
+  cursor: pointer;
+  box-shadow: none;
+  border: 1px solid #dbdbdb;
+}
+
+.create-new-board-box:hover {
+  background-color: whitesmoke;
+}
