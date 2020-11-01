@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  faChevronDown,
-  faChevronUp,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
+import { faClock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../auth/services/auth.service';
@@ -20,9 +16,12 @@ import { PaginatedResponse } from '../wrappers/paginated-response';
 })
 export class BoardsComponent implements OnInit {
   public faUser = faUser;
-  public faChevronUp = faChevronUp;
-  public faChevronDown = faChevronDown;
+  public faClock = faClock;
+
   public boards$: Observable<Board[]>;
+  public readonly lastWeek = new Date(
+    new Date().valueOf() - 1000 * 60 * 60 * 24 * 7
+  );
 
   constructor(
     private readonly router: Router,
@@ -54,16 +53,10 @@ export class BoardsComponent implements OnInit {
 
   // =========================================================================
 
-  openModal(): void {
-    const modal = document.getElementById('createBoardModal');
-    modal.style.display = 'block';
-  }
-
-  // =========================================================================
-
-  closeModal(): void {
-    const modal = document.getElementById('createBoardModal');
-    modal.style.display = 'none';
+  getRecentlyViewed(boards: Board[]): Board[] {
+    return boards.filter(
+      (board) => new Date(board.updatedAt).valueOf() >= this.lastWeek.valueOf()
+    );
   }
 
   // =========================================================================

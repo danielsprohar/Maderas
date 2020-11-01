@@ -11,12 +11,16 @@ export class Board {
   user: string;
 
   lists: List[];
+  createdAt: Date;
+  updatedAt: Date;
 
   constructor(fields: {
     _id?: string;
     title: string;
     user?: string;
     lists?: List[];
+    createdAt?: Date;
+    updatedAt?: Date;
   }) {
     Object.assign(this, fields);
   }

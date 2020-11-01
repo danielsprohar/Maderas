@@ -1,4 +1,11 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Location } from '@angular/common';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -24,16 +31,13 @@ export class CreateBoardComponent implements OnInit, OnDestroy {
 
   public form: FormGroup;
 
-  @Output() closeModalEvent = new EventEmitter<boolean>();
-  @Output() newBoardCreatedEvent = new EventEmitter<Board>();
-
   constructor(
     private readonly snackbar: SnackbarService,
     private readonly router: Router,
     private readonly fb: FormBuilder,
     private readonly auth: AuthService,
     private readonly boardService: DataService<Board>,
-    private readonly store: StoreService
+    private readonly location: Location
   ) {}
 
   ngOnInit(): void {
@@ -70,8 +74,8 @@ export class CreateBoardComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  close(): void {
-    this.closeModalEvent.emit(true);
+  back(): void {
+    this.location.back();
   }
 
   // =========================================================================
@@ -90,7 +94,6 @@ export class CreateBoardComponent implements OnInit, OnDestroy {
       .create('/boards', board)
       .subscribe(
         (data: Board) => {
-          this.close();
           this.router.navigate(['boards']);
         },
         (err) => {
