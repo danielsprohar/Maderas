@@ -3,11 +3,13 @@ const router = express.Router()
 const winston = require('../config/winston')
 const httpStatusCodes = require('../constants/http-status-codes')
 const { Board, validate } = require('../models/board')
+const { Template } = require('../models/template')
+const { List } = require('../models/list')
 const { PaginatedResponse } = require('../application/paginated-response')
 const isValidObjectId = require('../middleware/http-param-validation')
 
 // ===========================================================================
-// Add
+// Create
 // ===========================================================================
 
 router.post('/', async (req, res, next) => {
@@ -94,6 +96,57 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
     next(e)
   }
 })
+
+// ===========================================================================
+// Create from a template
+// ===========================================================================
+router.post(
+  '/create-from/template/:id',
+  isValidObjectId,
+  async (req, res, next) => {
+    const { error } = validate(req.body)
+    if (error) {
+      return res
+        .status(httpStatusCodes.unprocessableEntity)
+        .send(error.details[0].message)
+    }
+
+    const template = await Template.findById(req.params.id)
+
+    if (!template) {
+      return res
+        .status(httpStatusCodes.notFound)
+        .send('Template does not exist.')
+    }
+
+    try {
+      const board = new Board(req.body)
+      await board.save()
+
+      const temp = []
+
+      template.lists.forEach((list) => {
+        temp.push(
+          new List({
+            title: list.title,
+            board: board._id
+          })
+        )
+      })
+
+      await List.insertMany(temp)
+
+      winston.info(
+        `[Board::CreateFromTemplate] Board(_id: ${board._id}, user: ${board.user}), Template(_id: ${template._id})`
+      )
+
+      res.status(httpStatusCodes.created).json(board)
+    } catch (e) {
+      winston.error(e)
+      next(e)
+    }
+  }
+)
 
 // ===========================================================================
 

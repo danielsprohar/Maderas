@@ -1,1 +1,76 @@
-<p>template-details works!</p>
+<ng-container *ngIf="template$ | async as template">
+  <div class="row container">
+    <div>
+      <h1 class="title">{{ template.name }}</h1>
+      <h2 class="subtitle">Created by ME!</h2>
+    </div>
+    <!--  -->
+    <span class="spacer"></span>
+    <!--  Dropdown -->
+    <div id="dropdown" class="dropdown is-right">
+      <!-- Trigger -->
+      <div class="dropdown-trigger">
+        <button
+          class="button is-primary"
+          aria-haspopup="true"
+          aria-controls="dropdownMenu"
+          (click)="toggleModal()"
+        >
+          Use template
+        </button>
+      </div>
+      <!-- Menu -->
+      <div class="dropdown-menu" id="dropdownMenu" role="menu">
+        <div class="dropdown-content">
+          <div class="dropdown-item">
+            <!-- Title -->
+            <div class="field">
+              <!-- Dropdown header -->
+              <div class="row">
+                <p>Create board from template</p>
+                <span class="spacer"></span>
+                <span
+                  title="close"
+                  class="is-clickable"
+                  (click)="toggleModal()"
+                >
+                  <fa-icon [icon]="faTimes"></fa-icon>
+                </span>
+              </div>
+
+              <hr class="dropdown-divider" />
+
+              <label class="label">Title</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="The board's title"
+                  [formControl]="title"
+                />
+              </div>
+
+              <button
+                class="button is-primary mt-2"
+                [disabled]="title.invalid"
+                (click)="createFromTemplate(template._id)"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <h5 class="title is-5">About this template</h5>
+  <p>
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex placeat eos
+    labore iure facilis dolorem voluptatum? Modi provident optio tempora.
+    Consequuntur ex, error tempore totam magnam molestiae? Voluptatibus,
+    temporibus sequi?
+  </p>
+</ng-container>
