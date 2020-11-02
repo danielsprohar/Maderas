@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
@@ -12,7 +19,7 @@ import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
   styleUrls: ['./item-actions-menu.component.css'],
 })
 export class ItemActionsMenuComponent implements OnInit, OnDestroy {
-  private readonly delSubscription: Subscription;
+  private subscription: Subscription;
 
   @Input() item: Item;
 
@@ -31,8 +38,8 @@ export class ItemActionsMenuComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   ngOnDestroy(): void {
-    if (this.delSubscription) {
-      this.delSubscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
@@ -44,7 +51,14 @@ export class ItemActionsMenuComponent implements OnInit, OnDestroy {
       return;
     }
 
-
+    const path = `/items/${this.item._id}`;
+    this.subscription = this.itemsService.remove(path).subscribe(
+      (res) => {
+        this.snackbar.show('Item was deleted', SnackbarMessageType.Success);
+        this.deletedItemEvent.emit(this.item);
+      },
+      (err) => this.snackbar.show(err, SnackbarMessageType.Danger)
+    );
   }
 
   // =========================================================================

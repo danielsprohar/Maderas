@@ -65,6 +65,7 @@ export class CreateItemComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   close(): void {
+    this.title.setValue('');
     this.toggleVisibilityEvent.emit(true);
   }
 
@@ -83,7 +84,7 @@ export class CreateItemComponent implements OnInit, OnDestroy {
     this.subscription = this.itemsService.create('/items', item).subscribe(
       (res: Item) => {
         this.newItemEvent.emit(res);
-        this.toggleVisibilityEvent.emit(true);
+        this.close();
         this.snackbar.show('New item created', SnackbarMessageType.Success);
       },
       (err) => {

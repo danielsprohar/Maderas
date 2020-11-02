@@ -67,6 +67,16 @@ export class DataService<T> {
 
   // ==========================================================================
 
+  remove(path: string): Observable<T> {
+    const url = environment.apiUrl + path;
+
+    return this.http
+      .delete<T>(url, { headers: httpHeaders })
+      .pipe(catchError(this.handleError));
+  }
+
+  // ==========================================================================
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

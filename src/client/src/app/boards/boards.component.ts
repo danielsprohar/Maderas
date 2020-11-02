@@ -77,6 +77,83 @@ export class BoardsComponent implements OnInit, OnDestroy {
   }
 
   // =========================================================================
+  // Board methods
+  // =========================================================================
+
+  openEditBoardModal(board: Board): void {
+    this.editBoardComponent.setBoard(board);
+
+    const modal = document.getElementById('editBoardModal');
+    modal.style.display = 'block';
+  }
+
+  // =========================================================================
+
+  closeEditBoardModal(): void {
+    const modal = document.getElementById('editBoardModal');
+    modal.style.display = 'none';
+  }
+
+  // =========================================================================
+  // List methods
+  // =========================================================================
+
+  toggleCreateListComponent(): void {
+    const div = document.getElementById('newListFormBox');
+    div.classList.toggle('is-hidden');
+
+    const button = document.getElementById(`createListBtn`);
+    button.classList.toggle('is-hidden');
+  }
+
+  // =========================================================================
+
+  /**
+   * Handles the event that is emitted by the `CreateListComponent`.
+   * @param list The `Board` that was just created.
+   */
+  handleNewListEvent(list: List): void {
+    this.lists.push(list);
+  }
+
+  // =========================================================================
+
+  handleListUpdatedEvent(list: List): void {
+    const i = this.lists.findIndex((l) => l._id === list._id);
+    this.lists[i] = list;
+  }
+
+  // =========================================================================
+
+  openEditListModal(list: List): void {
+    this.editListComponent.setList(list);
+    const modal = document.getElementById('editListModal');
+    modal.style.display = 'block';
+  }
+
+  // =========================================================================
+
+  closeEditListModal(): void {
+    const modal = document.getElementById('editListModal');
+    modal.style.display = 'none';
+  }
+
+  // =========================================================================
+  // Item methods
+  // =========================================================================
+
+  handleDeletedItemEvent(item: Item): void {
+    const list = this.lists.find((l) => l._id === item.list);
+    const itemIndex = list.items.findIndex((i) => i._id === item._id);
+    console.log(list);
+    console.log(itemIndex);
+    const temp = list.items.splice(itemIndex, 1);
+    console.log(temp);
+
+    list.items = [...temp];
+  }
+
+  // =========================================================================
 
   /**
    * Handles the event that is emitted by the `CreateItemComponent`.
@@ -122,71 +199,11 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  openEditBoardModal(board: Board): void {
-    this.editBoardComponent.setBoard(board);
-
-    const modal = document.getElementById('editBoardModal');
-    modal.style.display = 'block';
-  }
-
-  // =========================================================================
-
-  closeEditBoardModal(): void {
-    const modal = document.getElementById('editBoardModal');
-    modal.style.display = 'none';
-  }
-
-  // =========================================================================
-
   toggleCreateItemComponent(index: number): void {
     const div = document.getElementById(index.toString());
     div.classList.toggle('is-hidden');
 
     const button = document.getElementById(`button${index}`);
     button.classList.toggle('is-hidden');
-  }
-
-  // =========================================================================
-  // List methods
-  // =========================================================================
-
-  toggleCreateListComponent(): void {
-    const div = document.getElementById('newListFormBox');
-    div.classList.toggle('is-hidden');
-
-    const button = document.getElementById(`createListBtn`);
-    button.classList.toggle('is-hidden');
-  }
-
-  // =========================================================================
-
-  /**
-   * Handles the event that is emitted by the `CreateListComponent`.
-   * @param list The `Board` that was just created.
-   */
-  handleNewListEvent(list: List): void {
-    this.lists.push(list);
-  }
-
-  // =========================================================================
-
-  handleListUpdatedEvent(list: List): void {
-    const i = this.lists.findIndex((l) => l._id === list._id);
-    this.lists[i] = list;
-  }
-
-  // =========================================================================
-
-  openEditListModal(list: List): void {
-    this.editListComponent.setList(list);
-    const modal = document.getElementById('editListModal');
-    modal.style.display = 'block';
-  }
-
-  // =========================================================================
-
-  closeEditListModal(): void {
-    const modal = document.getElementById('editListModal');
-    modal.style.display = 'none';
   }
 }

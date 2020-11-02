@@ -65,11 +65,12 @@ export class SnackbarComponent implements OnInit, OnDestroy {
         break;
     }
 
-    snackbar.classList.toggle('show');
+    // snackbar.classList.toggle('show')
+    this.renderer.addClass(snackbar, 'show');
 
     setTimeout(() => {
-      // snackbar.className = snackbar.className.replace('show', '');
-      snackbar.classList.remove('show');
+      // snackbar.classList.remove('show');
+      this.renderer.removeClass(snackbar, 'show');
     }, 3000);
   }
 }

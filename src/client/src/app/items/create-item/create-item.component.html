@@ -1,5 +1,5 @@
 <div class="form-container">
-  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="itemForm">
     <div class="field">
       <div class="control mb-1">
         <input
@@ -16,6 +16,7 @@
           [disabled]="itemForm.invalid"
           type="submit"
           class="button is-primary"
+          (click)="onSubmit()"
         >
           Create Item
         </button>
