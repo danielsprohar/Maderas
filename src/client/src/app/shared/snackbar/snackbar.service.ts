@@ -8,7 +8,7 @@ import { SnackbarState } from './snackbar-state';
 })
 export class SnackbarService {
   private snackbarSubject = new Subject<SnackbarState>();
-  public state = this.snackbarSubject.asObservable();
+  public state$ = this.snackbarSubject.asObservable();
 
   constructor() {}
 

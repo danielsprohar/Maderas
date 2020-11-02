@@ -1,21 +1,51 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
+import { DataService } from 'src/app/services/data.service';
+import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
+import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-item-actions-menu',
   templateUrl: './item-actions-menu.component.html',
   styleUrls: ['./item-actions-menu.component.css'],
 })
-export class ItemActionsMenuComponent implements OnInit {
+export class ItemActionsMenuComponent implements OnInit, OnDestroy {
+  private readonly delSubscription: Subscription;
+
   @Input() item: Item;
+
+  @Output() deletedItemEvent = new EventEmitter<Item>();
   @Output() editItemEvent = new EventEmitter<Item>();
 
   public faEllipsisH = faEllipsisH;
 
-  constructor() {}
+  constructor(
+    private readonly itemsService: DataService<Item>,
+    private readonly snackbar: SnackbarService
+  ) {}
 
   ngOnInit(): void {}
+
+  // =========================================================================
+
+  ngOnDestroy(): void {
+    if (this.delSubscription) {
+      this.delSubscription.unsubscribe();
+    }
+  }
+
+  // =========================================================================
+
+  delete(): void {
+    if (!this.item) {
+      this.snackbar.show('No item selected', SnackbarMessageType.Info);
+      return;
+    }
+
+
+  }
 
   // =========================================================================
 

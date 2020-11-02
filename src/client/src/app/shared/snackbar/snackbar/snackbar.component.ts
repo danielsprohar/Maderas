@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SnackbarMessageType } from '../snackbar-message-type';
 import { SnackbarState } from '../snackbar-state';
@@ -10,7 +10,7 @@ import { SnackbarService } from '../snackbar.service';
   styleUrls: ['./snackbar.component.css'],
 })
 export class SnackbarComponent implements OnInit, OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
+  private subscription: Subscription;
   private readonly bulmaHelpers = [
     'has-background-danger',
     'has-background-info',
@@ -20,18 +20,23 @@ export class SnackbarComponent implements OnInit, OnDestroy {
 
   public message: string;
 
-  constructor(public readonly snackbarService: SnackbarService) {}
+  constructor(
+    private readonly renderer: Renderer2,
+    public readonly snackbarService: SnackbarService
+  ) {}
 
   ngOnInit(): void {
-    const sub = this.snackbarService.state.subscribe((state: SnackbarState) => {
-      this.show(state);
-    });
-
-    this.subscriptions.push(sub);
+    this.subscription = this.snackbarService.state$.subscribe(
+      (state: SnackbarState) => {
+        this.show(state);
+      }
+    );
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((s) => s.unsubscribe());
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   private show(state: SnackbarState): void {
@@ -41,20 +46,20 @@ export class SnackbarComponent implements OnInit, OnDestroy {
 
     switch (state.type) {
       case SnackbarMessageType.Danger:
-        snackbar.classList.add(this.bulmaHelpers[0]);
-        snackbar.style.color = '#fff';
+        this.renderer.addClass(snackbar, this.bulmaHelpers[0]);
+        this.renderer.setStyle(snackbar, 'color', '#fff');
         break;
       case SnackbarMessageType.Info:
-        snackbar.classList.add(this.bulmaHelpers[1]);
-        snackbar.style.color = '#fff';
+        this.renderer.addClass(snackbar, this.bulmaHelpers[1]);
+        this.renderer.setStyle(snackbar, 'color', '#fff');
         break;
       case SnackbarMessageType.Success:
-        snackbar.classList.add(this.bulmaHelpers[2]);
-        snackbar.style.color = '#fff';
+        this.renderer.addClass(snackbar, this.bulmaHelpers[2]);
+        this.renderer.setStyle(snackbar, 'color', '#fff');
         break;
       case SnackbarMessageType.Warning:
-        snackbar.classList.add(this.bulmaHelpers[3]);
-        snackbar.style.color = '#000';
+        this.renderer.addClass(snackbar, this.bulmaHelpers[3]);
+        this.renderer.setStyle(snackbar, 'color', '#000');
         break;
       default:
         break;

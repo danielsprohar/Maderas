@@ -186,8 +186,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
       },
       (err) => {
         this.snackbar.show(err.message, SnackbarMessageType.Danger);
-        // TODO: Log error
-        console.error(err);
       }
     );
 
