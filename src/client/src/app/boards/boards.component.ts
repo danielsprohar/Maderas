@@ -145,12 +145,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   handleDeletedItemEvent(item: Item): void {
     const list = this.lists.find((l) => l._id === item.list);
     const itemIndex = list.items.findIndex((i) => i._id === item._id);
-    console.log(list);
-    console.log(itemIndex);
-    const temp = list.items.splice(itemIndex, 1);
-    console.log(temp);
-
-    list.items = [...temp];
+    list.items.splice(itemIndex, 1);
   }
 
   // =========================================================================
