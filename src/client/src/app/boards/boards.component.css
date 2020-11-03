@@ -1,9 +1,14 @@
+.pool {
+  width: max-content;
+}
+
 .column {
   align-items: flex-start;
 }
 
 .swimlane {
   max-width: 300px;
+  min-width: 300px;
   width: 300px;
   min-height: 20px;
   margin: 0 4px;
