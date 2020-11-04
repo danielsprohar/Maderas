@@ -6,7 +6,7 @@
     <div class="level">
       <div class="level-left">
         <div class="level-item">
-          <fa-icon [icon]="faClock"></fa-icon>
+          <mat-icon>access_time</mat-icon>
           <span class="ml-2">
             <strong>Recently viewed</strong>
           </span>
@@ -18,9 +18,9 @@
     <div class="tile is-ancestor">
       <ng-container *ngFor="let board of getRecentlyViewed(boards)">
         <div class="tile is-3 is-parent" (click)="view(board)">
-          <div class="tile is-child box is-clickable">
+          <mat-card class="tile is-child is-clickable">
             <p>{{ board.title }}</p>
-          </div>
+          </mat-card>
         </div>
       </ng-container>
 
@@ -34,7 +34,7 @@
     <div class="level">
       <div class="level-left">
         <div class="level-item">
-          <fa-icon [icon]="faUser"></fa-icon>
+          <mat-icon>person</mat-icon>
           <span class="ml-2">
             <strong>Personal Boards</strong>
           </span>
@@ -47,17 +47,19 @@
     <div class="tile is-ancestor">
       <ng-container *ngFor="let board of boards">
         <div class="tile is-3 is-parent" (click)="view(board)">
-          <div class="tile is-child box is-clickable">
+          <mat-card class="tile is-child is-clickable">
             <p>{{ board.title }}</p>
-          </div>
+          </mat-card>
         </div>
       </ng-container>
 
       <div class="tile is-3 is-parent">
         <a
+          mat-raised-button
+          color="primary"
           routerLink="/boards/create"
-          class="tile is-child box create-new-board-box"
-          >Create new board</a
+          class="tile is-child"
+          >Create board</a
         >
       </div>
       <!-- A hack to deal with Bulma's .box:not(:last-child) { margin: 0 }  -->

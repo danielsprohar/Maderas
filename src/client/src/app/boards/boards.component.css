@@ -2,6 +2,39 @@
   width: max-content;
 }
 
+.item {
+  cursor: pointer !important;
+  margin-bottom: 0.5rem;
+  padding: 0.25rem;
+}
+
+.item-title {
+  margin: 0;
+}
+
+.item-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.list-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.list-edit-icon {
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.list-header:hover .list-edit-icon {
+  visibility: visible;
+}
+
 .column {
   align-items: flex-start;
 }
@@ -19,13 +52,6 @@
 
 .swimlane > .box {
   padding: 4px 8px;
-}
-
-.item-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .list-title {
@@ -58,4 +84,3 @@
   /* margin: auto 8px; */
   margin-right: 16px;
 }
-

@@ -15,13 +15,13 @@
         </div>
       </div>
       <!-- Edit button -->
-      <div class="level-item">
+      <!-- <div class="level-item">
         <div class="container">
-          <button class="button is-primary" (click)="openEditBoardModal(board)">
-            Edit
+          <button mat-icon-button (click)="openEditBoardModal(board)">
+            <mat-icon>edit</mat-icon>
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -35,27 +35,26 @@
       <!-- ==================================================================== -->
       <!-- List title -->
       <!-- ==================================================================== -->
-      <div class="level is-align-content-center">
-        <div class="level-left">
-          <h3 class="is-size-4">{{ list.title }}</h3>
-        </div>
-        <div class="level-right">
-          <span class="is-clickable" (click)="openEditListModal(list)">
-            <fa-icon [icon]="faEdit"></fa-icon>
-          </span>
-        </div>
+      <div class="list-header">
+        <h3 class="is-size-4">{{ list.title }}</h3>
+        <span class="list-edit-icon" (click)="openEditListModal(list)">
+          <mat-icon>edit</mat-icon>
+        </span>
       </div>
-      <hr />
+
+      <mat-divider></mat-divider>
+      <br />
+
       <!-- ==================================================================== -->
       <!-- Items -->
       <!-- ==================================================================== -->
-      <div
+      <mat-card
         *ngFor="let item of list.items; index as itemIndex"
-        class="box mb-2 is-clickable"
+        class="item"
       >
         <!-- Card header -->
         <div class="item-header">
-          <p>{{ item.title }}</p>
+          <p class="item-title">{{ item.title }}</p>
           <!-- ================================================================ -->
           <!-- Item Action Menu -->
           <!-- ================================================================ -->
@@ -70,27 +69,30 @@
         <ng-container *ngIf="item.description || item.dueDate">
           <div class="badges">
             <ng-container *ngIf="item.dueDate">
-              <div class="badge" title="This item has a due date">
+              <div class="badge" matTooltip="This item has a due date">
                 <fa-icon [icon]="faClock"></fa-icon>
                 <span class="ml-1">{{ item.dueDate | date: "MMM d" }}</span>
               </div>
             </ng-container>
 
             <ng-container *ngIf="item.description">
-              <div class="badge" title="This item has a description">
-                <fa-icon [icon]="faAlignJustify"></fa-icon>
+              <div class="badge" matTooltip="This item has a description">
+                <mat-icon>article</mat-icon>
               </div>
             </ng-container>
           </div>
         </ng-container>
-      </div>
+      </mat-card>
 
       <!--  ==================================================================== -->
       <!-- Add an Item to a List -->
       <!--  ==================================================================== -->
       <div id="button{{ listIndex }}" class="mt-2">
-        <button class="button" (click)="toggleCreateItemComponent(listIndex)">
-          Add another item
+        <button
+          mat-stroked-button
+          (click)="toggleCreateItemComponent(listIndex)"
+        >
+          Add item
         </button>
       </div>
 
@@ -110,10 +112,11 @@
     <div class="column create-list-column">
       <button
         id="createListBtn"
-        class="button"
+        mat-raised-button
+        color="primary"
         (click)="toggleCreateListComponent()"
       >
-        Create another list
+        Create list
       </button>
       <div class="box mt-0" id="newListFormBox" class="is-hidden">
         <!-- Component -->

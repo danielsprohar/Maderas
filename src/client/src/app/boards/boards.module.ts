@@ -9,6 +9,12 @@ import { ListsModule } from '../lists/lists.module';
 import { ItemsModule } from '../items/items.module';
 import { EditBoardComponent } from './edit-board/edit-board.component';
 
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+
 @NgModule({
   declarations: [BoardsComponent, CreateBoardComponent, EditBoardComponent],
   imports: [
@@ -17,6 +23,11 @@ import { EditBoardComponent } from './edit-board/edit-board.component';
     SharedModule,
     ListsModule,
     ItemsModule,
+    MatCardModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatButtonModule,
+    MatDividerModule
   ],
 })
 export class BoardsModule {}

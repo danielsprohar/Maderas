@@ -6,7 +6,6 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { DataService } from 'src/app/services/data.service';
@@ -26,7 +25,6 @@ export class ItemActionsMenuComponent implements OnInit, OnDestroy {
   @Output() deletedItemEvent = new EventEmitter<Item>();
   @Output() editItemEvent = new EventEmitter<Item>();
 
-  public faEllipsisH = faEllipsisH;
 
   constructor(
     private readonly itemsService: DataService<Item>,
