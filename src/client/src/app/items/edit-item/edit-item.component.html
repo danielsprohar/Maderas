@@ -1,58 +1,62 @@
 <div class="container is-fluid">
-  <p class="title">Edit your item</p>
-  <hr />
+  <div class="modal-header">
+    <h3>Edit your item</h3>
+    <button mat-icon-button>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <mat-divider></mat-divider>
   <form [formGroup]="form">
     <!-- ===================================================================== -->
     <!-- Title -->
     <!-- ===================================================================== -->
-    <div class="field">
-      <label class="label">Title</label>
-      <div class="control">
-        <input class="input" type="text" formControlName="title" />
-      </div>
-    </div>
+    <mat-form-field class="full-width">
+      <mat-label>Title</mat-label>
+      <input matInput type="text" formControlName="title" />
+    </mat-form-field>
 
     <!-- ===================================================================== -->
     <!-- Description -->
     <!-- ===================================================================== -->
-    <div class="field">
-      <label class="label">Description</label>
-      <div class="control">
-        <textarea
-          class="textarea"
-          placeholder="add a description"
-          formControlName="description"
-        ></textarea>
-      </div>
-    </div>
+    <mat-form-field class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        placeholder="add a description"
+        formControlName="description"
+      ></textarea>
+    </mat-form-field>
 
     <!-- ===================================================================== -->
     <!-- Due Date -->
     <!-- ===================================================================== -->
     <div class="field-body">
-      <div class="field">
-        <label class="label">Date</label>
-        <div class="control">
-          <input class="input" type="date" formControlName="date" />
-        </div>
-      </div>
+      <mat-form-field>
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="dp3" disabled />
+        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+        <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+      </mat-form-field>
 
-      <div class="field">
-        <label class="label">Time</label>
-        <div class="control">
-          <input class="input" type="time" formControlName="time" />
-        </div>
-      </div>
+      <mat-form-field>
+        <mat-label>Time</mat-label>
+        <input matInput type="time" formControlName="time" />
+      </mat-form-field>
     </div>
 
     <!-- ===================================================================== -->
     <!-- Actions -->
     <!-- ===================================================================== -->
-    <div class="buttons mt-3">
-      <button type="submit" class="button is-primary" (click)="onSubmit()">
+    <div class="button-bar">
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+        (click)="onSubmit()"
+      >
         Submit
       </button>
-      <button class="button" (click)="close()">Close</button>
+      <button mat-stroked-button (click)="close()">Close</button>
     </div>
   </form>
 </div>

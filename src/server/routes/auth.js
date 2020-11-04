@@ -52,7 +52,6 @@ router.post('/login', async (req, res, next) => {
     // Good to go!
     res.json(buildResponse(userDoc))
   } catch (e) {
-    winston.error(e)
     next(e)
   }
 })
@@ -88,7 +87,6 @@ router.post('/register', async (req, res, next) => {
 
     res.json(buildResponse(user))
   } catch (e) {
-    winston.error(e)
     next(e)
   }
 })

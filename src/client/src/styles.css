@@ -11,6 +11,8 @@ html {
 }
 
 body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   height: inherit;
   width: inherit;
   overflow-x: auto;
@@ -54,6 +56,18 @@ hr {
   justify-content: center;
 }
 
+.button-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.button-bar > button:not(:last-child),
+a:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
 /* =========================================================================== */
 /* Modal */
 /* =========================================================================== */
@@ -71,6 +85,13 @@ hr {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
 }
 
 /* Modal Content */
@@ -96,6 +117,3 @@ hr {
   text-decoration: none;
   cursor: pointer;
 }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

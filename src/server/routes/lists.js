@@ -14,11 +14,11 @@ const isValidObjectId = require('../middleware/http-param-validation')
 router.post('/', async (req, res, next) => {
   const { error } = validate(req.body)
   if (error) {
-    winston.error(error)
     return res
       .status(httpStatusCodes.unprocessableEntity)
       .send(error.details[0].message)
   }
+
   const board = await Board.findById(req.body.board)
   if (!board) {
     return res.status(httpStatusCodes.notFound).send('Board does not exist')
@@ -35,7 +35,6 @@ router.post('/', async (req, res, next) => {
 
     res.status(httpStatusCodes.created).json(list)
   } catch (e) {
-    winston.error(e)
     next(e)
   }
 })
@@ -48,6 +47,7 @@ router.get('/', async (req, res, next) => {
   const pageIndex = req.query.pageIndex || 0
   const pageSize = req.query.pageSize || 50
 
+  // TODO: Validate ObjectId
   const query = {
     board: req.query.board
   }
@@ -62,7 +62,6 @@ router.get('/', async (req, res, next) => {
 
     res.json(new PaginatedResponse(pageIndex, pageSize, count, lists))
   } catch (e) {
-    winston.error(e)
     next(e)
   }
 })
@@ -83,7 +82,6 @@ router.get('/:id', isValidObjectId, async (req, res, next) => {
 router.put('/:id', isValidObjectId, async (req, res, next) => {
   const { error } = validate(req.body)
   if (error) {
-    winston.error(error)
     return res
       .status(httpStatusCodes.unprocessableEntity)
       .send(error.details[0].message)
@@ -102,7 +100,6 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
 
     res.status(httpStatusCodes.ok).send(list)
   } catch (e) {
-    winston.error(e)
     next(e)
   }
 })

@@ -9,14 +9,22 @@
   <a mat-button routerLink="/dashboard/boards"> Boards </a>
   <a mat-button routerLink="/templates"> Templates </a>
 
+  <!-- ======================================================================= -->
   <!-- Register/Login buttons -->
+  <!-- ======================================================================= -->
   <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn" class="navbar-end">
-    <a mat-raised-button color="primary" routerLink="/register">
-      <strong>Sign up</strong>
-    </a>
-    <a mat-stroked-button routerLink="login"> Log in </a>
+    <span class="spacer"></span>
+    <div class="button-bar">
+      <a mat-raised-button color="primary" routerLink="/register">
+        <strong>Sign up</strong>
+      </a>
+      <a mat-stroked-button routerLink="login"> Log in </a>
+    </div>
   </ng-container>
+
+  <!-- ======================================================================= -->
   <!-- User info -->
+  <!-- ======================================================================= -->
   <ng-template #loggedIn>
     <span class="spacer"></span>
     <a mat-stroked-button (click)="logout()">Log out</a>

@@ -14,7 +14,6 @@ const isValidObjectId = require('../middleware/http-param-validation')
 router.post('/', async (req, res, next) => {
   const { error } = validate(req.body)
   if (error) {
-    winston.error(error)
     return res
       .status(httpStatusCodes.unprocessableEntity)
       .send(error.details[0].message)
@@ -77,7 +76,6 @@ router.get('/:id', isValidObjectId, async (req, res, next) => {
 router.put('/:id', isValidObjectId, async (req, res, next) => {
   const { error } = validate(req.body)
   if (error) {
-    winston.error(error)
     return res
       .status(httpStatusCodes.unprocessableEntity)
       .send(error.details[0].message)
@@ -93,6 +91,7 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
     await item.save()
 
     winston.info(`[UpdateItem] An item was updated. Item(_id:${item._id})`)
+
     res.status(httpStatusCodes.ok).send(item)
   } catch (e) {
     next(e)
