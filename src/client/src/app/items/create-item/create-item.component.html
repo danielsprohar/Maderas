@@ -1,5 +1,5 @@
 <div class="form-container">
-  <form [formGroup]="itemForm" novalidate>
+  <form [formGroup]="itemForm">
     <mat-form-field>
       <input
         matInput
@@ -11,6 +11,7 @@
     </mat-form-field>
 
     <div class="button-bar">
+      <!-- Submit button -->
       <button
         mat-raised-button
         color="primary"
@@ -20,6 +21,7 @@
       >
         Create Item
       </button>
+      <!-- Close button -->
       <button mat-icon-button matTooltip="close" (click)="close()">
         <mat-icon>close</mat-icon>
       </button>

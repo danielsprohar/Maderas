@@ -93,7 +93,7 @@ export class CreateListComponent implements OnInit, OnDestroy {
       (res: List) => {
         this.resetForm();
         this.newListEvent.emit(res);
-        this.close();
+        this.title.setValue('');
         this.snackbar.show('New list created', SnackbarMessageType.Success);
       },
       (err) => {
