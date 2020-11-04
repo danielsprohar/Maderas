@@ -13,7 +13,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
-    this.addRouterListener();
+    // this.addRouterListener();
   }
 
   ngOnDestroy(): void {
@@ -22,16 +22,16 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  private addRouterListener(): void {
-    this.router.setUpLocationChangeListener();
+  // private addRouterListener(): void {
+  //   this.router.setUpLocationChangeListener();
 
-    // This closed the navbar for mobile users when they navigate to a view.
-    this.routerSubscription = this.router.events.subscribe((next) => {
-      const navbarMenu = document.getElementById('navbarMenu');
-      navbarMenu.classList.remove('is-active');
+  //   // This closed the navbar for mobile users when they navigate to a view.
+  //   this.routerSubscription = this.router.events.subscribe((next) => {
+  //     const navbarMenu = document.getElementById('navbarMenu');
+  //     navbarMenu.classList.remove('is-active');
 
-      const navbarBurger = document.getElementById('navbarBurger');
-      navbarBurger.classList.remove('is-active');
-    });
-  }
+  //     const navbarBurger = document.getElementById('navbarBurger');
+  //     navbarBurger.classList.remove('is-active');
+  //   });
+  // }
 }

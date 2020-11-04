@@ -1,66 +1,24 @@
-<nav
-  class="navbar has-shadow is-fixed-top is-transparent"
+<mat-toolbar
+  id="topNav"
+  mat-elevation-z6
   role="navigation"
   aria-label="main navigation"
 >
-  <div class="navbar-brand">
-    <a class="navbar-item" routerLink="/" tabindex="-1">
-      <strong>MADERAS</strong>
+  <span class="app-name">MADERAS</span>
+
+  <a mat-button routerLink="/dashboard/boards"> Boards </a>
+  <a mat-button routerLink="/templates"> Templates </a>
+
+  <!-- Register/Login buttons -->
+  <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn" class="navbar-end">
+    <a mat-raised-button color="primary" routerLink="/register">
+      <strong>Sign up</strong>
     </a>
-
-    <a
-      role="button"
-      class="navbar-burger burger"
-      aria-label="menu"
-      aria-expanded="false"
-      id="navbarBurger"
-      data-target="navbarMenu"
-      (click)="toggleMenu()"
-    >
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-
-  <div id="navbarMenu" class="navbar-menu">
-    <div class="navbar-start">
-      <a class="navbar-item" routerLink="/dashboard/boards"> Boards </a>
-      <a class="navbar-item" routerLink="/templates"> Templates </a>
-
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link"> More </a>
-
-        <div class="navbar-dropdown is-boxed">
-          <a class="navbar-item"> About </a>
-          <a class="navbar-item"> Contact </a>
-          <hr class="navbar-divider" />
-          <a class="navbar-item"> Report an issue </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Register/Login buttons -->
-    <div *ngIf="!auth.isLoggedIn(); else loggedIn" class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <a class="button is-primary" routerLink="/register">
-            <strong>Sign up</strong>
-          </a>
-          <a class="button is-light" routerLink="login"> Log in </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- User info -->
-    <ng-template #loggedIn>
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="buttons">
-            <button class="button" (click)="logout()">Log out</button>
-          </div>
-        </div>
-      </div>
-    </ng-template>
-  </div>
-</nav>
+    <a mat-stroked-button routerLink="login"> Log in </a>
+  </ng-container>
+  <!-- User info -->
+  <ng-template #loggedIn>
+    <span class="spacer"></span>
+    <a mat-stroked-button (click)="logout()">Log out</a>
+  </ng-template>
+</mat-toolbar>

@@ -1,0 +1,14 @@
+#topNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.app-name {
+  margin-right: 0.5rem;
+}
+
+.mat-toolbar > .mat-button {
+  margin-left: 0.25rem !important;
+}
