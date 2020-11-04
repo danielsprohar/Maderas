@@ -1,25 +1,32 @@
-<div class="container">
-  <p class="title">Edit your list</p>
-  <hr />
+<div>
+  <div class="modal-header">
+    <h3>Edit your list</h3>
+    <button mat-icon-button matTooltip="close" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+  <br />
+
   <form [formGroup]="form">
     <!-- ===================================================================== -->
     <!-- Title -->
     <!-- ===================================================================== -->
-    <div class="field">
-      <label class="label">Title</label>
-      <div class="control">
-        <input class="input" type="text" formControlName="title" />
-      </div>
-    </div>
+    <mat-form-field class="full-width">
+      <mat-label>Title</mat-label>
+      <input matInput type="text" formControlName="title" />
+    </mat-form-field>
 
     <!-- ===================================================================== -->
     <!-- Actions -->
     <!-- ===================================================================== -->
-    <div class="buttons mt-3">
-      <button type="submit" class="button is-primary" (click)="onSubmit()">
-        Submit
-      </button>
-      <button class="button" (click)="close()">Close</button>
-    </div>
+    <button
+      type="submit"
+      mat-raised-button
+      color="primary"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
   </form>
 </div>
