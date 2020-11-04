@@ -142,9 +142,6 @@ export class EditItemComponent implements OnInit, OnDestroy {
 
     const item = this.getItem();
 
-    console.log(item);
-    return;
-
     Object.assign(this.item, item);
 
     this.subscription = this.itemsService

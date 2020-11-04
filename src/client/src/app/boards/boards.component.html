@@ -37,7 +37,11 @@
       <!-- ==================================================================== -->
       <div class="list-header">
         <h3 class="is-size-4">{{ list.title }}</h3>
-        <span class="list-edit-icon" (click)="openEditListModal(list)">
+        <span
+          class="list-edit-icon"
+          (click)="openEditListModal(list)"
+          matTooltip="Edit list"
+        >
           <mat-icon>edit</mat-icon>
         </span>
       </div>
@@ -65,19 +69,26 @@
           ></app-item-actions-menu>
         </div>
 
-        <!--  Card content -->
+        <!--  Badges -->
         <ng-container *ngIf="item.description || item.dueDate">
           <div class="badges">
-            <ng-container *ngIf="item.dueDate">
-              <div class="badge" matTooltip="This item has a due date">
-                <fa-icon [icon]="faClock"></fa-icon>
-                <span class="ml-1">{{ item.dueDate | date: "MMM d" }}</span>
+            <ng-container *ngIf="item.description">
+              <div class="badge">
+                <button
+                  mat-icon-button
+                  matTooltip="This item has a description"
+                >
+                  <mat-icon>article</mat-icon>
+                </button>
               </div>
             </ng-container>
 
-            <ng-container *ngIf="item.description">
-              <div class="badge" matTooltip="This item has a description">
-                <mat-icon>article</mat-icon>
+            <ng-container *ngIf="item.dueDate">
+              <div class="badge">
+                <button mat-icon-button matTooltip="This item has a due date">
+                  <mat-icon>access_time</mat-icon>
+                  <span class="ml-1">{{ item.dueDate | date: "MMM d" }}</span>
+                </button>
               </div>
             </ng-container>
           </div>
