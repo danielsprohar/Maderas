@@ -1,16 +1,19 @@
 <div class="container is-fluid">
   <div class="modal-header">
     <h3>Edit your item</h3>
-    <button mat-icon-button>
+    <button mat-icon-button (click)="close()">
       <mat-icon>close</mat-icon>
     </button>
   </div>
+
   <mat-divider></mat-divider>
+  <br />
+
   <form [formGroup]="form">
     <!-- ===================================================================== -->
     <!-- Title -->
     <!-- ===================================================================== -->
-    <mat-form-field class="full-width">
+    <mat-form-field class="full-width" appearance="fill">
       <mat-label>Title</mat-label>
       <input matInput type="text" formControlName="title" />
     </mat-form-field>
@@ -18,7 +21,7 @@
     <!-- ===================================================================== -->
     <!-- Description -->
     <!-- ===================================================================== -->
-    <mat-form-field class="full-width">
+    <mat-form-field class="full-width" appearance="fill">
       <mat-label>Description</mat-label>
       <textarea
         matInput
@@ -30,15 +33,15 @@
     <!-- ===================================================================== -->
     <!-- Due Date -->
     <!-- ===================================================================== -->
-    <div class="field-body">
-      <mat-form-field>
-        <mat-label>Date</mat-label>
-        <input matInput [matDatepicker]="dp3" disabled />
-        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-        <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+    <div class="horizontal-fields">
+      <mat-form-field appearance="fill">
+        <mat-label>Due Date</mat-label>
+        <input matInput [matDatepicker]="date" formControlName="dueDate" />
+        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker #date></mat-datepicker>
       </mat-form-field>
-
-      <mat-form-field>
+      <!-- <span class="spacer"></span> -->
+      <mat-form-field appearance="fill">
         <mat-label>Time</mat-label>
         <input matInput type="time" formControlName="time" />
       </mat-form-field>
@@ -47,16 +50,13 @@
     <!-- ===================================================================== -->
     <!-- Actions -->
     <!-- ===================================================================== -->
-    <div class="button-bar">
-      <button
-        type="submit"
-        mat-raised-button
-        color="primary"
-        (click)="onSubmit()"
-      >
-        Submit
-      </button>
-      <button mat-stroked-button (click)="close()">Close</button>
-    </div>
+    <button
+      type="submit"
+      mat-raised-button
+      color="primary"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
   </form>
 </div>

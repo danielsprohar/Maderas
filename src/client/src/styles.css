@@ -117,3 +117,13 @@ a:not(:last-child) {
   text-decoration: none;
   cursor: pointer;
 }
+
+/* =========================================================================== */
+/* Form */
+/* =========================================================================== */
+.horizontal-fields {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}

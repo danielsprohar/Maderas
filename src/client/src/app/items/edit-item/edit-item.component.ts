@@ -59,8 +59,8 @@ export class EditItemComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(512)]],
       description: ['', [Validators.maxLength(2048)]],
-      date: [''],
-      time: [''],
+      dueDate: [null],
+      time: [null],
     });
   }
 
@@ -81,9 +81,9 @@ export class EditItemComponent implements OnInit, OnDestroy {
     this.title.setValue(item.title);
     this.description.setValue(item.description);
     if (item.dueDate) {
-      const dueDate = new Date(item.dueDate);
-      this.date.setValue(dueDate.toLocaleDateString());
-      this.time.setValue(dueDate.toLocaleTimeString());
+      const date = new Date(item.dueDate);
+      this.dueDate.setValue(date.toLocaleDateString());
+      this.time.setValue(date.toLocaleTimeString());
     }
   }
 
@@ -97,8 +97,8 @@ export class EditItemComponent implements OnInit, OnDestroy {
     return this.form.get('description');
   }
 
-  get date(): AbstractControl {
-    return this.form.get('date');
+  get dueDate(): AbstractControl {
+    return this.form.get('dueDate');
   }
 
   get time(): AbstractControl {
@@ -114,12 +114,14 @@ export class EditItemComponent implements OnInit, OnDestroy {
       list: this.item.list,
     });
 
-    if (this.date.value && this.time.value) {
+    if (this.dueDate.value && this.time.value) {
       item.dueDate = new Date(
-        this.date.value + ' ' + this.time.value
+        this.dueDate.value + ' ' + this.time.value
       ).toISOString();
-    } else if (this.date.value && !this.time.value) {
-      item.dueDate = new Date(this.date.value + ' 00:00').toISOString();
+    } else if (this.dueDate.value && !this.time.value) {
+      item.dueDate = new Date(
+        (this.dueDate.value as Date).valueOf()
+      ).toISOString();
     }
 
     return item;
@@ -139,6 +141,10 @@ export class EditItemComponent implements OnInit, OnDestroy {
     }
 
     const item = this.getItem();
+
+    console.log(item);
+    return;
+
     Object.assign(this.item, item);
 
     this.subscription = this.itemsService
