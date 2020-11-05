@@ -18,23 +18,12 @@ body {
   overflow-x: auto;
 }
 
-/* Style the horizontal ruler */
-hr {
-  border: 1px solid #d9d9d9 !important;
-}
-
 .spacer {
   flex: 1 1 auto;
 }
 
 .full-width {
   width: 100%;
-}
-
-.button-icon {
-  /* This is to be used in tandem with Bulma's "button" class */
-  border: none !important;
-  background-color: inherit !important;
 }
 
 .main-content {
@@ -48,18 +37,55 @@ hr {
   /* align-items: center; */
 }
 
+/* =========================================================================== */
+/* Flex layout */
+/* =========================================================================== */
+
 .row {
   display: flex;
-  flex-direction: row;
-  flex: 1;
+  flex-flow: row wrap;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-centered-y {
   align-items: center;
+}
+
+.flex-centered-x {
   justify-content: center;
 }
+
+.align-at-top {
+  align-items: flex-start;
+}
+
+.align-at-bottom {
+  align-items: flex-end;
+}
+
+.align-at-baseline {
+  align-items: baseline;
+}
+
+@media (max-width: 800px) {
+  .row {
+    flex-direction: column;
+    flex-flow: column;
+  }
+}
+
+/* =========================================================================== */
+/* Buttons */
+/* =========================================================================== */
 
 .button-bar {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: baseline;
   justify-content: flex-start;
 }
 
@@ -121,6 +147,7 @@ a:not(:last-child) {
 /* =========================================================================== */
 /* Form */
 /* =========================================================================== */
+
 .horizontal-fields {
   display: flex;
   flex-direction: row;
