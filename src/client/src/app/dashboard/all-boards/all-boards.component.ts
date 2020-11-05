@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faClock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -14,9 +13,6 @@ import { PaginatedResponse } from 'src/app/wrappers/paginated-response';
   styleUrls: ['./all-boards.component.css'],
 })
 export class AllBoardsComponent implements OnInit {
-  public faUser = faUser;
-  public faClock = faClock;
-
   public boards$: Observable<Board[]>;
   public readonly lastWeek = new Date(
     new Date().valueOf() - 1000 * 60 * 60 * 24 * 7

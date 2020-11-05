@@ -1,141 +1,110 @@
-<div class="container">
-  <h1 class="title">Create an account</h1>
-  <hr />
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <!-- ====================================================================== -->
-    <!-- Username control -->
-    <!-- ====================================================================== -->
-    <div class="field">
-      <label class="label">Username</label>
-      <div class="control has-icons-left has-icons-right">
-        <input
-          [class]="username.touched && username.valid ? 'is-success' : ''"
-          formControlName="username"
-          class="input"
-          type="text"
-          autofocus
-          tabindex="1"
-        />
-        <span class="icon is-small is-left">
-          <fa-icon [icon]="faUser"></fa-icon>
-        </span>
-        <ng-container *ngIf="username.touched && username.valid">
-          <span class="icon is-small is-right">
-            <fa-icon [icon]="faCheck"></fa-icon>
-          </span>
-        </ng-container>
-      </div>
-      <!-- error message -->
-      <ng-container
-        *ngIf="username.invalid && (username.dirty || username.touched)"
-      >
-        <p class="help is-danger">{{ getUsernameError() }}</p>
-      </ng-container>
-      <!-- <p class="help is-success">This username is available</p> -->
-    </div>
+<div class="flex-container full-height">
+  <div class="flex-centered full-width">
+    <mat-card>
+      <h2>Create an account</h2>
+      <form [formGroup]="form">
+        <!-- ====================================================================== -->
+        <!-- Username control -->
+        <!-- ====================================================================== -->
+        <mat-form-field class="full-width">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            [class]="username.touched && username.valid ? 'is-success' : ''"
+            formControlName="username"
+            type="text"
+            autofocus
+          />
+          <button mat-icon-button matPrefix>
+            <mat-icon>person</mat-icon>
+          </button>
+          <!-- error message -->
+          <mat-error>{{ getUsernameError() }}</mat-error>
+        </mat-form-field>
 
-    <!-- ====================================================================== -->
-    <!-- Email control -->
-    <!-- ====================================================================== -->
-    <div class="field">
-      <label class="label">Email</label>
-      <div class="control has-icons-left has-icons-right">
-        <input
-          [class]="email.touched && email.valid ? 'is-success' : ''"
-          formControlName="email"
-          class="input"
-          type="email"
-          tabindex="2"
-        />
-        <span class="icon is-small is-left">
-          <fa-icon [icon]="faEnvelope"></fa-icon>
-        </span>
+        <!-- ====================================================================== -->
+        <!-- Email control -->
+        <!-- ====================================================================== -->
+        <mat-form-field class="full-width">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            [class]="email.touched && email.valid ? 'is-success' : ''"
+            formControlName="email"
+            type="email"
+            appUniqueEmailValidator
+          />
+          <button mat-icon-button matPrefix>
+            <mat-icon>email</mat-icon>
+          </button>
 
-        <ng-container *ngIf="email.touched && email.valid">
-          <span class="icon is-small is-right">
-            <fa-icon [icon]="faCheck"></fa-icon>
-          </span>
-        </ng-container>
-      </div>
+          <!-- error message -->
+          <mat-error>{{ getEmailError() }}</mat-error>
+        </mat-form-field>
 
-      <!-- error message -->
-      <ng-container *ngIf="email.invalid && (email.dirty || email.touched)">
-        <p class="help is-danger">{{ getEmailError() }}</p>
-      </ng-container>
-    </div>
+        <!-- ====================================================================== -->
+        <!-- Password -->
+        <!-- ====================================================================== -->
+        <mat-form-field class="full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [class]="isPasswordValid() ? 'is-success' : ''"
+            [type]="isTextHidden ? 'password' : 'text'"
+            formControlName="password"
+            appUniqueEmailValidator
+          />
+          <button mat-icon-button matPrefix>
+            <mat-icon>lock</mat-icon>
+          </button>
+          <button mat-icon-button matSuffix>
+            <mat-icon>
+              {{ isTextHidden ? "visibility_off" : "visibility" }}
+            </mat-icon>
+          </button>
+          <!-- Give the user a hint -->
+          <mat-hint>
+            Password must be between 6 and 64 characters in length
+          </mat-hint>
 
-    <!-- ====================================================================== -->
-    <!-- Password -->
-    <!-- ====================================================================== -->
-    <div class="field">
-      <label class="label">Password</label>
-      <div class="control has-icons-left has-icons-right">
-        <input
-          [class]="isPasswordValid() ? 'is-success' : ''"
-          formControlName="password"
-          class="input"
-          type="password"
-          tabindex="3"
-          appUniqueEmailValidator
-        />
-        <span class="icon is-small is-left">
-          <fa-icon [icon]="faKey"></fa-icon>
-        </span>
-        <ng-container *ngIf="isPasswordValid()">
-          <span class="icon is-small is-right">
-            <fa-icon [icon]="faCheck"></fa-icon>
-          </span>
-        </ng-container>
-      </div>
-      <!-- Give the user a hint -->
-      <p class="help">Password must be between 6 and 64 characters in length</p>
+          <!-- error message -->
+          <mat-error class="help is-danger">{{ getPasswordError() }}</mat-error>
+        </mat-form-field>
 
-      <!-- error message -->
-      <ng-container
-        *ngIf="password.invalid && (password.dirty || password.touched)"
-      >
-        <p class="help is-danger">{{ getPasswordError() }}</p>
-      </ng-container>
-    </div>
+        <!-- ====================================================================== -->
+        <!-- Confirm password -->
+        <!-- ====================================================================== -->
+        <mat-form-field class="full-width">
+          <mat-label>Confirm password</mat-label>
+          <input
+            matInput
+            [class]="isPasswordValid() ? 'is-success' : ''"
+            [type]="isTextHidden ? 'password' : 'text'"
+            formControlName="confirmPassword"
+          />
+          <button mat-icon-button matPrefix>
+            <mat-icon>lock</mat-icon>
+          </button>
+          <button mat-icon-button matSuffix>
+            <mat-icon>
+              {{ isTextHidden ? "visibility_off" : "visibility" }}
+            </mat-icon>
+          </button>
+        </mat-form-field>
 
-    <!-- ====================================================================== -->
-    <!-- Confirm password -->
-    <!-- ====================================================================== -->
-    <div class="field">
-      <label class="label">Confirm password</label>
-      <div class="control has-icons-left has-icons-right">
-        <input
-          [class]="isPasswordValid() ? 'is-success' : ''"
-          formControlName="confirmPassword"
-          class="input"
-          type="password"
-          tabindex="4"
-        />
-        <span class="icon is-small is-left">
-          <fa-icon [icon]="faKey"></fa-icon>
-        </span>
-        <ng-container *ngIf="isPasswordValid()">
-          <span class="icon is-small is-right">
-            <fa-icon [icon]="faCheck"></fa-icon>
-          </span>
-        </ng-container>
-      </div>
-    </div>
-
-    <!-- ====================================================================== -->
-    <!-- Actions -->
-    <!-- ====================================================================== -->
-    <div class="field">
-      <div class="control">
+        <!-- ====================================================================== -->
+        <!-- Actions -->
+        <!-- ====================================================================== -->
         <button
+          mat-raised-button
+          color="primary"
           type="submit"
           [disabled]="form.invalid"
-          class="button is-primary full-width"
-          tabindex="5"
+          (click)="onSubmit()"
         >
           Submit
         </button>
-      </div>
-    </div>
-  </form>
+      </form>
+    </mat-card>
+  </div>
 </div>

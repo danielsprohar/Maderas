@@ -1,11 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {
-  faAlignJustify,
-  faClock,
-  faEdit,
-  faEllipsisH,
-} from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EditItemComponent } from '../items/edit-item/edit-item.component';
@@ -33,11 +27,6 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   @ViewChild(EditListComponent)
   private readonly editListComponent: EditListComponent;
-
-  public faEdit = faEdit;
-  public faEllipsisH = faEllipsisH;
-  public faAlignJustify = faAlignJustify;
-  public faClock = faClock;
 
   public board$: Observable<Board>;
   public lists: List[];

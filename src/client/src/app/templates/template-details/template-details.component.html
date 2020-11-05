@@ -1,24 +1,29 @@
 <ng-container *ngIf="template$ | async as template">
   <div class="row">
-    <div>
+    <div class="column">
       <h2>{{ template.name }}</h2>
       <h3>Created by ME!</h3>
     </div>
     <!--  -->
     <span class="spacer"></span>
+
+    <!--  Dropdown trigger -->
+    <button
+      mat-raised-button
+      color="primary"
+      aria-haspopup="true"
+      aria-controls="dropdownMenu"
+      (click)="toggleModal()"
+    >
+      Use template
+    </button>
+
     <!--  Dropdown -->
+    <mat-menu xPosition="before"> </mat-menu>
+
     <div id="dropdown" class="dropdown is-right">
       <!-- Trigger -->
-      <div class="dropdown-trigger">
-        <button
-          class="button is-primary"
-          aria-haspopup="true"
-          aria-controls="dropdownMenu"
-          (click)="toggleModal()"
-        >
-          Use template
-        </button>
-      </div>
+      <div class="dropdown-trigger"></div>
       <!-- Menu -->
       <div class="dropdown-menu" id="dropdownMenu" role="menu">
         <div class="dropdown-content">
@@ -29,13 +34,9 @@
               <div class="row">
                 <p>Create board from template</p>
                 <span class="spacer"></span>
-                <span
-                  title="close"
-                  class="is-clickable"
-                  (click)="toggleModal()"
-                >
-                  <fa-icon [icon]="faTimes"></fa-icon>
-                </span>
+                <button mat-icon-button (click)="toggleModal()">
+                  <mat-icon>close</mat-icon>
+                </button>
               </div>
 
               <hr class="dropdown-divider" />

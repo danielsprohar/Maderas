@@ -13,7 +13,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { List } from 'src/app/models/list';
@@ -34,7 +33,6 @@ export class CreateListComponent implements OnInit, OnDestroy {
   @Output() toggleVisibilityEvent = new EventEmitter<boolean>();
 
   public listForm: FormGroup;
-  public faTimes = faTimes;
 
   constructor(
     private readonly listService: DataService<List>,

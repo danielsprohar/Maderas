@@ -1,26 +1,23 @@
 <div class="form-container">
   <form [formGroup]="form">
-    <div class="field">
-      <label for="title" class="label">Title</label>
-      <div class="control mb-1">
-        <input class="input" type="text" formControlName="title" />
-      </div>
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input matInput type="text" formControlName="title" />
 
-      <div class="buttons">
+      <div class="button-bar">
         <button
-          [disabled]="form.invalid"
           type="submit"
-          class="button is-primary"
+          mat-raised-button
+          color="primary"
+          [disabled]="form.invalid"
           (click)="onSubmit()"
         >
           Save
         </button>
-        <button class="button button-icon" title="close">
-          <span class="icon is-centered" (click)="close()">
-            <fa-icon [icon]="faTimes"></fa-icon>
-          </span>
+        <button mat-icon-button title="close">
+          <mat-icon>close</mat-icon>
         </button>
       </div>
-    </div>
+    </mat-form-field>
   </form>
 </div>

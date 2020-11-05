@@ -12,7 +12,6 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { DataService } from 'src/app/services/data.service';
@@ -28,7 +27,6 @@ export class EditBoardComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   public form: FormGroup;
-  public faTimes = faTimes;
 
   @Input() board: Board;
   @Output() closeModalEvent = new EventEmitter<boolean>();

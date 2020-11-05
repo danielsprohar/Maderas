@@ -6,12 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  faCheck,
-  faEnvelope,
-  faKey,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
@@ -28,11 +22,8 @@ import { UniqueEmailAsyncValidator } from '../validators/unique-email-async-vali
 export class RegisterComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
-  public faUser = faUser;
-  public faCheck = faCheck;
-  public faEnvelope = faEnvelope;
-  public faKey = faKey;
   public form: FormGroup;
+  public isTextHidden = true;
 
   constructor(
     private readonly router: Router,

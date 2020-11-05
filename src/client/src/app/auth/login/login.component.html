@@ -1,57 +1,56 @@
-<div class="container">
-  <h1 class="title">Please log in</h1>
-  <hr />
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <!-- ====================================================================== -->
-    <!-- Email control -->
-    <!-- ====================================================================== -->
-    <div class="field">
-      <label class="label">Email</label>
-      <div class="control has-icons-left has-icons-right">
-        <input
-          [class]="email.touched && email.valid ? 'is-success' : ''"
-          formControlName="email"
-          class="input"
-          type="email"
-        />
-        <span class="icon is-small is-left">
-          <fa-icon [icon]="faEnvelope"></fa-icon>
-        </span>
-      </div>
-    </div>
+<div class="flex-container full-height">
+  <div class="flex-centered full-width">
+    <mat-card>
+      <h2>Please log in</h2>
+      <form [formGroup]="form">
+        <!-- ====================================================================== -->
+        <!-- Email control -->
+        <!-- ====================================================================== -->
+        <mat-form-field class="full-width">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            [class]="email.touched && email.valid ? 'is-success' : ''"
+            formControlName="email"
+            type="email"
+            autofocus
+          />
+          <button mat-icon-button matPrefix>
+            <mat-icon>email</mat-icon>
+          </button>
+        </mat-form-field>
 
-    <!-- ====================================================================== -->
-    <!-- Password -->
-    <!-- ====================================================================== -->
-    <div class="field">
-      <label class="label">Password</label>
-      <div class="control has-icons-left has-icons-right">
-        <input
-          [class]="password.touched && password.valid ? 'is-success' : ''"
-          formControlName="password"
-          class="input"
-          type="password"
-          appUniqueEmailValidator
-        />
-        <span class="icon is-small is-left">
-          <fa-icon [icon]="faKey"></fa-icon>
-        </span>
-      </div>
-    </div>
+        <!-- ====================================================================== -->
+        <!-- Password -->
+        <!-- ====================================================================== -->
+        <mat-form-field class="full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="isTextHidden ? 'password' : 'text'"
+            [class]="password.touched && password.valid ? 'is-success' : ''"
+            formControlName="password"
+          />
+          <button mat-icon-button matPrefix>
+            <mat-icon>
+              {{ isTextHidden ? "visibility_off" : "visibility" }}
+            </mat-icon>
+          </button>
+        </mat-form-field>
 
-    <!-- ====================================================================== -->
-    <!-- Actions -->
-    <!-- ====================================================================== -->
-    <div class="field">
-      <div class="control">
+        <!-- ====================================================================== -->
+        <!-- Actions -->
+        <!-- ====================================================================== -->
         <button
+          mat-raised-button
+          color="primary"
           type="submit"
           [disabled]="form.invalid"
-          class="button is-primary full-width"
+          (click)="onSubmit()"
         >
           Submit
         </button>
-      </div>
-    </div>
-  </form>
+      </form>
+    </mat-card>
+  </div>
 </div>

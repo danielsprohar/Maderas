@@ -5,11 +5,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { faEnvelope, faKey } from '@fortawesome/free-solid-svg-icons';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
+import { AuthResponse } from '../models/auth-response';
 import { LoginModel } from '../models/login-model';
 import { AuthService } from '../services/auth.service';
 
@@ -19,11 +19,10 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
+  private subscription: Subscription;
 
-  public faEnvelope = faEnvelope;
-  public faKey = faKey;
   public form: FormGroup;
+  public isTextHidden = true;
 
   constructor(
     private readonly router: Router,
@@ -39,6 +38,15 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: ['', [Validators.required]],
     });
   }
+
+  // =========================================================================
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
   // =========================================================================
   // Form getters
   // =========================================================================
@@ -51,12 +59,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   get password(): AbstractControl {
     return this.form.get('password');
-  }
-
-  // =========================================================================
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
   // =========================================================================
@@ -73,8 +75,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.password.value
     );
 
-    const sub = this.auth.login(loginModel).subscribe(
-      (res) => {
+    this.subscription = this.auth.login(loginModel).subscribe(
+      (res: AuthResponse) => {
         const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
         if (returnUrl) {
           this.router.navigate([returnUrl]);
@@ -87,7 +89,5 @@ export class LoginComponent implements OnInit, OnDestroy {
         console.error(err);
       }
     );
-
-    this.subscriptions.push(sub);
   }
 }
