@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -19,7 +18,6 @@ import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 export class TemplateDetailsComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
-  public faTimes = faTimes;
   public template$: Observable<Template>;
 
   public title = new FormControl('Kanban Template', [

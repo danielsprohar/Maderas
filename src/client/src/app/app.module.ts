@@ -11,6 +11,7 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MaterialModule } from './material/material.module';
 
 @NgModule({
   declarations: [
@@ -26,8 +27,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     AuthModule,
     SharedModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
-    MatButtonModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent],

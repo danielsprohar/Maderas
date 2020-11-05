@@ -12,7 +12,6 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { List } from 'src/app/models/list';
@@ -27,7 +26,6 @@ import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 })
 export class CreateItemComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
-  public faTimes = faTimes;
 
   @Input() list: List;
   @Output() newItemEvent = new EventEmitter<Item>();
