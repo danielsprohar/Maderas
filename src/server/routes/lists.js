@@ -2,10 +2,11 @@ const express = require('express')
 const router = express.Router()
 const winston = require('../config/winston')
 const httpStatusCodes = require('../constants/http-status-codes')
+const isValidObjectId = require('../middleware/http-param-validation')
 const { Board } = require('../models/board')
+const mongoose = require('mongoose')
 const { List, validate } = require('../models/list')
 const { PaginatedResponse } = require('../application/paginated-response')
-const isValidObjectId = require('../middleware/http-param-validation')
 
 // ===========================================================================
 // Add
@@ -47,7 +48,12 @@ router.get('/', async (req, res, next) => {
   const pageIndex = req.query.pageIndex || 0
   const pageSize = req.query.pageSize || 50
 
-  // TODO: Validate ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.query.board)) {
+    return res
+      .status(httpStatusCodes.unprocessableEntity)
+      .send("Invalid object id for 'board'")
+  }
+
   const query = {
     board: req.query.board
   }
