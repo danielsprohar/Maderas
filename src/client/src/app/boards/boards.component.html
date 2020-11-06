@@ -16,8 +16,14 @@
       </div>
 
       <div class="row full-height full-width">
-        <div *ngIf="lists" class="list-container">
-          <div *ngFor="let list of lists; index as listIndex" class="list">
+        <div *ngIf="lists" class="list-container" cdkDropListGroup>
+          <div
+            *ngFor="let list of lists; index as listIndex"
+            class="list"
+            cdkDropList
+            [cdkDropListData]="list.items"
+            (cdkDropListDropped)="drop($event)"
+          >
             <!-- ==================================================================== -->
             <!-- List title -->
             <!-- ==================================================================== -->
@@ -42,6 +48,7 @@
             <mat-card
               *ngFor="let item of list.items; index as itemIndex"
               class="item"
+              cdkDrag
             >
               <!-- Card header -->
               <div class="item-header">

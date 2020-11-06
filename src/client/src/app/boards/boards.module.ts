@@ -8,6 +8,7 @@ import { BoardsRoutingModule } from './boards-routing.module';
 import { BoardsComponent } from './boards.component';
 import { CreateBoardComponent } from './create-board/create-board.component';
 import { EditBoardComponent } from './edit-board/edit-board.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [BoardsComponent, CreateBoardComponent, EditBoardComponent],
@@ -18,6 +19,7 @@ import { EditBoardComponent } from './edit-board/edit-board.component';
     ListsModule,
     ItemsModule,
     MaterialModule,
+    DragDropModule
   ],
 })
 export class BoardsModule {}

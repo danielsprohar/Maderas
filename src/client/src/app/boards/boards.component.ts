@@ -1,3 +1,4 @@
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -189,5 +190,20 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
     const button = document.getElementById(`button${index}`);
     button.classList.toggle('hidden');
+  }
+
+  // =========================================================================
+
+  drop(event: CdkDragDrop<Item[]>): void {
+    if (event.previousContainer === event.container) {
+      return;
+    }
+
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
   }
 }
