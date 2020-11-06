@@ -1,146 +1,145 @@
-<div *ngIf="board$ | async as board" class="pool">
-  <div class="level">
-    <!-- Board information -->
-    <div class="level-left">
-      <div class="level-item mr-3">
-        <div class="container">
-          <p class="heading">Board Name</p>
-          <p class="mr-1">{{ board.title }}</p>
+<ng-container *ngIf="board$ | async as board">
+  <div class="board-root">
+    <div class="boards-container">
+      <!-- ===================================================================== -->
+      <!-- Board information -->
+      <!-- ===================================================================== -->
+      <div class="board-info-header">
+        <div class="board-header-item">
+          <h5>Board Name</h5>
+          <p>{{ board.title }}</p>
+        </div>
+        <div class="board-header-item">
+          <h5>No. of Lists</h5>
+          <p>{{ lists?.length }}</p>
         </div>
       </div>
-      <div class="level-item">
-        <div class="container">
-          <p class="heading">No. of Lists</p>
-          <p class="is-centered">{{ lists?.length }}</p>
-        </div>
-      </div>
-      <!-- Edit button -->
-      <!-- <div class="level-item">
-        <div class="container">
-          <button mat-icon-button (click)="openEditBoardModal(board)">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </div>
-      </div> -->
-    </div>
-  </div>
 
-  <hr />
+      <div class="row full-height full-width">
+        <div *ngIf="lists" class="list-container">
+          <div *ngFor="let list of lists; index as listIndex" class="list">
+            <!-- ==================================================================== -->
+            <!-- List title -->
+            <!-- ==================================================================== -->
+            <div class="list-header">
+              <h3 class="list-title">{{ list.title }}</h3>
+              <button
+                mat-icon-button
+                class="list-edit-icon"
+                (click)="openEditListModal(list)"
+                matTooltip="Edit list"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
 
-  <div *ngIf="lists" class="columns px-2">
-    <div
-      *ngFor="let list of lists; index as listIndex"
-      class="column swimlane mb-4"
-    >
-      <!-- ==================================================================== -->
-      <!-- List title -->
-      <!-- ==================================================================== -->
-      <div class="list-header">
-        <h3 class="is-size-4">{{ list.title }}</h3>
-        <span
-          class="list-edit-icon"
-          (click)="openEditListModal(list)"
-          matTooltip="Edit list"
-        >
-          <mat-icon>edit</mat-icon>
-        </span>
-      </div>
+            <mat-divider></mat-divider>
+            <br />
 
-      <mat-divider></mat-divider>
-      <br />
-
-      <!-- ==================================================================== -->
-      <!-- Items -->
-      <!-- ==================================================================== -->
-      <mat-card
-        *ngFor="let item of list.items; index as itemIndex"
-        class="item"
-      >
-        <!-- Card header -->
-        <div class="item-header">
-          <p class="item-title">{{ item.title }}</p>
-          <!-- ================================================================ -->
-          <!-- Item Action Menu -->
-          <!-- ================================================================ -->
-          <app-item-actions-menu
-            [item]="item"
-            (editItemEvent)="handleEditItem($event)"
-            (deletedItemEvent)="handleDeletedItemEvent($event)"
-          ></app-item-actions-menu>
-        </div>
-
-        <!--  Badges -->
-        <ng-container *ngIf="item.description || item.dueDate">
-          <div class="badges">
-            <ng-container *ngIf="item.description">
-              <div class="badge">
-                <button
-                  mat-icon-button
-                  matTooltip="This item has a description"
-                >
-                  <mat-icon>article</mat-icon>
-                </button>
+            <!-- ==================================================================== -->
+            <!-- Items -->
+            <!-- ==================================================================== -->
+            <mat-card
+              *ngFor="let item of list.items; index as itemIndex"
+              class="item"
+            >
+              <!-- Card header -->
+              <div class="item-header">
+                <p class="item-title">{{ item.title }}</p>
+                <!-- ================================================================ -->
+                <!-- Item Action Menu -->
+                <!-- ================================================================ -->
+                <app-item-actions-menu
+                  [item]="item"
+                  (editItemEvent)="handleEditItem($event)"
+                  (deletedItemEvent)="handleDeletedItemEvent($event)"
+                ></app-item-actions-menu>
               </div>
-            </ng-container>
 
-            <ng-container *ngIf="item.dueDate">
-              <div class="badge">
-                <button mat-icon-button matTooltip="This item has a due date">
-                  <mat-icon>access_time</mat-icon>
-                  <span class="ml-1">{{ item.dueDate | date: "MMM d" }}</span>
-                </button>
-              </div>
-            </ng-container>
+              <!--  Badges -->
+              <ng-container *ngIf="item.description || item.dueDate">
+                <div class="badges">
+                  <ng-container *ngIf="item.description">
+                    <div class="badge">
+                      <button
+                        mat-icon-button
+                        matTooltip="This item has a description"
+                      >
+                        <mat-icon>article</mat-icon>
+                      </button>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="item.dueDate">
+                    <div class="badge">
+                      <button
+                        mat-icon-button
+                        matTooltip="This item has a due date"
+                      >
+                        <mat-icon>access_time</mat-icon>
+                        <span>{{ item.dueDate | date: "MMM d" }}</span>
+                      </button>
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </mat-card>
+
+            <!--  ==================================================================== -->
+            <!-- Add an Item to a List -->
+            <!--  ==================================================================== -->
+            <div id="button{{ listIndex }}">
+              <button
+                mat-stroked-button
+                (click)="toggleCreateItemComponent(listIndex)"
+              >
+                Add item
+              </button>
+            </div>
+
+            <div id="{{ listIndex }}" class="hidden">
+              <!-- Component -->
+              <app-create-item
+                [list]="list"
+                (newItemEvent)="handleNewItemEvent($event)"
+                (toggleVisibilityEvent)="toggleCreateItemComponent(listIndex)"
+              ></app-create-item>
+            </div>
           </div>
-        </ng-container>
-      </mat-card>
 
-      <!--  ==================================================================== -->
-      <!-- Add an Item to a List -->
-      <!--  ==================================================================== -->
-      <div id="button{{ listIndex }}" class="mt-2">
-        <button
-          mat-stroked-button
-          (click)="toggleCreateItemComponent(listIndex)"
-        >
-          Add item
-        </button>
-      </div>
-
-      <div id="{{ listIndex }}" class="is-hidden">
-        <!-- Component -->
-        <app-create-item
-          [list]="list"
-          (newItemEvent)="handleNewItemEvent($event)"
-          (toggleVisibilityEvent)="toggleCreateItemComponent(listIndex)"
-        ></app-create-item>
-      </div>
-    </div>
-
-    <!--  ==================================================================== -->
-    <!-- Add a List -->
-    <!--  ==================================================================== -->
-    <div class="column create-list-column">
-      <button
-        id="createListBtn"
-        mat-raised-button
-        color="primary"
-        (click)="toggleCreateListComponent()"
-      >
-        Create list
-      </button>
-      <div class="box mt-0" id="newListFormBox" class="is-hidden">
-        <!-- Component -->
-        <app-create-list
-          [board]="board"
-          (newListEvent)="handleNewListEvent($event)"
-          (toggleVisibilityEvent)="toggleCreateListComponent()"
-        >
-        </app-create-list>
+          <!--  ==================================================================== -->
+          <!-- Add a List -->
+          <!--  ==================================================================== -->
+          <div class="list no-border">
+            <button
+              id="createListBtn"
+              mat-raised-button
+              color="primary"
+              (click)="toggleCreateListComponent()"
+            >
+              Create list
+            </button>
+            <div id="newListFormBox" class="hidden">
+              <!-- =========================================================== -->
+              <!-- Component -->
+              <!-- =========================================================== -->
+              <app-create-list
+                [board]="board"
+                (newListEvent)="handleNewListEvent($event)"
+                (toggleVisibilityEvent)="toggleCreateListComponent()"
+              >
+              </app-create-list>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</ng-container>
+
+<!-- ======================================================================= -->
+<!-- Modals -->
+<!-- ======================================================================= -->
 
 <!-- ======================================================================= -->
 <!-- EditItem Modal -->

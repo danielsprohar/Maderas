@@ -89,10 +89,10 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   toggleCreateListComponent(): void {
     const div = document.getElementById('newListFormBox');
-    div.classList.toggle('is-hidden');
+    div.classList.toggle('hidden');
 
-    const button = document.getElementById(`createListBtn`);
-    button.classList.toggle('is-hidden');
+    const button = document.getElementById('createListBtn');
+    button.classList.toggle('hidden');
   }
 
   // =========================================================================
@@ -185,9 +185,9 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   toggleCreateItemComponent(index: number): void {
     const div = document.getElementById(index.toString());
-    div.classList.toggle('is-hidden');
+    div.classList.toggle('hidden');
 
     const button = document.getElementById(`button${index}`);
-    button.classList.toggle('is-hidden');
+    button.classList.toggle('hidden');
   }
 }

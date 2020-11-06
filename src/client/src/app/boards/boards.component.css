@@ -1,6 +1,88 @@
-.pool {
-  width: max-content;
+/* =========================================================================== */
+/* Layout */
+/* =========================================================================== */
+.board-root {
+  position: absolute;
+  top: inherit;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
+
+.boards-container {
+  position: inherit;
+  padding: 0.5rem;
+}
+
+.board-info-header {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 0.5rem;
+}
+
+.board-header-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.board-info-header > .board-header-item {
+  flex-grow: 0;
+}
+
+.board-info-header > .board-header-item:not(:last-child) {
+  margin-right: 1rem;
+}
+
+/* =========================================================================== */
+/* Lists */
+/* =========================================================================== */
+.list-container {
+  display: flex;
+  flex-wrap: row nowrap;
+  width: max-content;
+  overflow: auto;
+}
+
+.list {
+  max-width: 300px;
+  min-width: 300px;
+  width: 300px;
+  min-height: 20px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+.list-container > .list:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.list-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.list-title {
+  margin: 0 0 0 0.25rem;
+}
+
+.list-edit-icon {
+  visibility: hidden;
+}
+
+.list-header:hover .list-edit-icon {
+  visibility: visible;
+}
+
+/* =========================================================================== */
+/* Items */
+/* =========================================================================== */
 
 .item {
   cursor: pointer !important;
@@ -19,68 +101,13 @@
   justify-content: space-between;
 }
 
-.list-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.list-edit-icon {
-  cursor: pointer;
-  visibility: hidden;
-}
-
-.list-header:hover .list-edit-icon {
-  visibility: visible;
-}
-
-.column {
-  align-items: flex-start;
-}
-
-.swimlane {
-  max-width: 300px;
-  min-width: 300px;
-  width: 300px;
-  min-height: 20px;
-  margin: 0 4px;
-  /* background-color: #f0f0f0; */
-  border: 1px solid #d9d9d9;
-  border-radius: 3px;
-}
-
-.swimlane > .box {
-  padding: 4px 8px;
-}
-
-.list-title {
-  text-align: center;
-}
-
-.create-list-column {
-  display: block;
-  flex-basis: 0;
-  flex-grow: 1;
-  flex-shrink: 1;
-  margin: 0;
-  padding: 0;
-}
-
-.card-footer-item:hover,
-.card-footer-item:focus {
-  background-color: #fafafa;
-}
-
 .badges {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   align-items: center;
   justify-content: flex-start;
 }
 
 .badge {
-  /* margin: auto 8px; */
-  margin-right: 16px;
+  margin-right: 0.25rem;
 }
