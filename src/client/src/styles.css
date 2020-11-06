@@ -46,6 +46,17 @@ body {
   height: 100%;
 }
 
+.board-card {
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+}
+
+/* On mouse-over, add a deeper shadow */
+.board-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
 /* =========================================================================== */
 /* Flex layout */
 /* =========================================================================== */
@@ -78,10 +89,12 @@ body {
 }
 
 .flex-centered-y {
+  /* Cross axis -- assuming the flex-direction is set to row */
   align-items: center;
 }
 
 .flex-centered-x {
+  /* Main axis -- assuming the flex-direction is set to row*/
   justify-content: center;
 }
 

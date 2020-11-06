@@ -1,5 +1,28 @@
-.create-new-board-box {
-  cursor: pointer;
-  box-shadow: none;
-  border: 1px solid #dbdbdb;
+.boards-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.header-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.header-row > .mat-icon {
+  margin-right: 0.25rem;
+}
+
+.board-card-container {
+  display: flex;
+  flex-flow: wrap;
+  width: 100%;
+}
+
+.board-card-container > .mat-card {
+  margin-right: 1rem;
 }

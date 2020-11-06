@@ -1,69 +1,59 @@
 <ng-container *ngIf="boards$ | async as boards">
-  <div class="column">
-    <!-- ===================================================================== -->
-    <!-- Recently viewed boards -->
-    <!-- ===================================================================== -->
-    <div class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <mat-icon>access_time</mat-icon>
-          <span class="ml-2">
-            <strong>Recently viewed</strong>
-          </span>
-        </div>
+  <div class="flex-container full-height">
+    <div class="flex-container full-width">
+      <div class="boards-container">
+        <!-- ===================================================================== -->
+        <!-- Recently viewed boards -->
+        <!-- ===================================================================== -->
+        <section>
+          <div class="header-row">
+            <mat-icon>access_time</mat-icon>
+            <span>Recently viewed</span>
+          </div>
+
+          <!-- ===================================================================== -->
+          <div class="board-card-container">
+            <ng-container *ngFor="let board of getRecentlyViewed(boards)">
+              <mat-card class="board-card" (click)="view(board)">
+                <p>{{ board.title }}</p>
+              </mat-card>
+            </ng-container>
+          </div>
+        </section>
+
+        <section>
+          <!-- ===================================================================== -->
+          <!-- Personal Boards -->
+          <!-- ===================================================================== -->
+          <div class="header-row">
+            <mat-icon>person</mat-icon>
+            <span> Personal Boards </span>
+          </div>
+
+          <div class="board-card-container">
+            <ng-container *ngFor="let board of boards">
+              <mat-card class="board-card" (click)="view(board)">
+                <p>{{ board.title }}</p>
+              </mat-card>
+            </ng-container>
+          </div>
+
+          <!-- ===================================================================== -->
+          <!-- Actions -->
+          <!-- ===================================================================== -->
+          <br />
+          <div>
+            <a
+              mat-stroked-button
+              color="primary"
+              routerLink="/boards/create"
+              class="tile is-child"
+            >
+              Create board
+            </a>
+          </div>
+        </section>
       </div>
-    </div>
-
-    <!-- ===================================================================== -->
-    <div class="tile is-ancestor">
-      <ng-container *ngFor="let board of getRecentlyViewed(boards)">
-        <div class="tile is-3 is-parent" (click)="view(board)">
-          <mat-card class="tile is-child is-clickable">
-            <p>{{ board.title }}</p>
-          </mat-card>
-        </div>
-      </ng-container>
-
-      <!-- A hack to deal with Bulma's .box:not(:last-child) { margin: 0 }  -->
-      <div class="box is-shadowless is-invisible"></div>
-    </div>
-
-    <!-- ===================================================================== -->
-    <!-- Personal Boards -->
-    <!-- ===================================================================== -->
-    <div class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <mat-icon>person</mat-icon>
-          <span class="ml-2">
-            <strong>Personal Boards</strong>
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===================================================================== -->
-
-    <div class="tile is-ancestor">
-      <ng-container *ngFor="let board of boards">
-        <div class="tile is-3 is-parent" (click)="view(board)">
-          <mat-card class="tile is-child is-clickable">
-            <p>{{ board.title }}</p>
-          </mat-card>
-        </div>
-      </ng-container>
-
-      <div class="tile is-3 is-parent">
-        <a
-          mat-stroked-button
-          color="primary"
-          routerLink="/boards/create"
-          class="tile is-child"
-          >Create board</a
-        >
-      </div>
-      <!-- A hack to deal with Bulma's .box:not(:last-child) { margin: 0 }  -->
-      <div class="box is-shadowless is-invisible"></div>
     </div>
   </div>
 </ng-container>
