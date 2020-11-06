@@ -199,6 +199,9 @@ export class BoardsComponent implements OnInit, OnDestroy {
       return;
     }
 
+    console.log(event.previousContainer.data);
+    console.log(event.container.data);
+
     transferArrayItem(
       event.previousContainer.data,
       event.container.data,

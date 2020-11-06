@@ -131,6 +131,9 @@ router.post(
     }
 
     try {
+      item.list = req.query.to
+      await item.save()
+
       await List.updateOne(
         {
           _id: req.query.from
