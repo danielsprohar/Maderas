@@ -1,20 +1,18 @@
-<div class="dropdown is-hoverable">
-  <div class="dropdown-trigger">
-    <button
-      mat-icon-button
-      aria-haspopup="true"
-      aria-controls="dropdown-menu"
-    >
-    <mat-icon>more_horiz</mat-icon>
-    </button>
-  </div>
-  <div class="dropdown-menu" id="dropdown-menu" role="menu">
-    <div class="dropdown-content">
-      <a class="dropdown-item" (click)="delete()"> Delete item </a>
-      <a class="dropdown-item" (click)="edit()"> Edit item </a>
-      <a class="dropdown-item"> View details </a>
-      <hr class="dropdown-divider" />
-      <a class="dropdown-item"> Move to ... </a>
-    </div>
-  </div>
-</div>
+<button
+  mat-icon-button
+  aria-haspopup="true"
+  aria-controls="dropdown-menu"
+  [matMenuTriggerFor]="itemMenu"
+>
+  <mat-icon>more_horiz</mat-icon>
+</button>
+
+<mat-menu #itemMenu="matMenu" role="menu" xPosition="before">
+  <!-- <ng-template #matMenuContent> -->
+  <button mat-menu-item (click)="delete()">Delete item</button>
+  <button mat-menu-item (click)="edit()">Edit item</button>
+  <button mat-menu-item>View details</button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item>Move to ...</button>
+  <!-- </ng-template> -->
+</mat-menu>

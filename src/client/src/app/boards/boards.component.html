@@ -98,7 +98,9 @@
             </div>
 
             <div id="{{ listIndex }}" class="hidden">
+              <!-- =========================================================== -->
               <!-- Component -->
+              <!-- =========================================================== -->
               <app-create-item
                 [list]="list"
                 (newItemEvent)="handleNewItemEvent($event)"
@@ -110,7 +112,7 @@
           <!--  ==================================================================== -->
           <!-- Add a List -->
           <!--  ==================================================================== -->
-          <div class="list no-border">
+          <div class="list no-border no-padding">
             <button
               id="createListBtn"
               mat-raised-button

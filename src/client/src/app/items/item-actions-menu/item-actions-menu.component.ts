@@ -25,7 +25,6 @@ export class ItemActionsMenuComponent implements OnInit, OnDestroy {
   @Output() deletedItemEvent = new EventEmitter<Item>();
   @Output() editItemEvent = new EventEmitter<Item>();
 
-
   constructor(
     private readonly itemsService: DataService<Item>,
     private readonly snackbar: SnackbarService
@@ -49,6 +48,8 @@ export class ItemActionsMenuComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // TODO: Open a confirmation dialog.
+
     const path = `/items/${this.item._id}`;
     this.subscription = this.itemsService.remove(path).subscribe(
       (res) => {
@@ -58,6 +59,10 @@ export class ItemActionsMenuComponent implements OnInit, OnDestroy {
       (err) => this.snackbar.show(err, SnackbarMessageType.Danger)
     );
   }
+
+  // =========================================================================
+
+  view(): void {}
 
   // =========================================================================
 
