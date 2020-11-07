@@ -13,7 +13,7 @@
     <!-- ====================================================================== -->
     <!-- Title -->
     <!-- ====================================================================== -->
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field class="full-width">
       <mat-label> Title </mat-label>
       <input
         matInput
@@ -29,7 +29,7 @@
     <!-- Templates -->
     <!-- ====================================================================== -->
     <ng-container *ngIf="templates$ | async as templates">
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field class="full-width">
         <mat-label>Create from a template</mat-label>
         <mat-select>
           <mat-option *ngFor="let template of templates" [value]="template._id">

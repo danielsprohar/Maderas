@@ -2,7 +2,7 @@
   <div class="flex-centered full-width">
     <mat-card>
       <h2>Please log in</h2>
-      <form [formGroup]="form">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <!-- ====================================================================== -->
         <!-- Email control -->
         <!-- ====================================================================== -->
@@ -15,7 +15,7 @@
             type="email"
             autofocus
           />
-          <button mat-icon-button matPrefix>
+          <button mat-icon-button matPrefix tabindex="-1">
             <mat-icon>email</mat-icon>
           </button>
         </mat-form-field>
@@ -31,7 +31,10 @@
             [class]="password.touched && password.valid ? 'is-success' : ''"
             formControlName="password"
           />
-          <button mat-icon-button matPrefix>
+          <button mat-icon-button matPrefix tabindex="-1">
+            <mat-icon>lock</mat-icon>
+          </button>
+          <button mat-icon-button matSuffix (click)="isTextHidden = !isTextHidden">
             <mat-icon>
               {{ isTextHidden ? "visibility_off" : "visibility" }}
             </mat-icon>
