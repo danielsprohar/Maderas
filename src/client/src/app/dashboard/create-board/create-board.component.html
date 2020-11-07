@@ -9,11 +9,11 @@
   <mat-divider></mat-divider>
   <br />
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form">
     <!-- ====================================================================== -->
-    <!-- Title control -->
+    <!-- Title -->
     <!-- ====================================================================== -->
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label> Title </mat-label>
       <input
         matInput
@@ -23,10 +23,21 @@
         autofocus
       />
       <mat-error>{{ getTitleError() }}</mat-error>
-      <!-- error message -->
-      <!-- <ng-container *ngIf="title.invalid && (title.dirty || title.touched)">
-      </ng-container> -->
     </mat-form-field>
+
+    <!-- ====================================================================== -->
+    <!-- Templates -->
+    <!-- ====================================================================== -->
+    <ng-container *ngIf="templates$ | async as templates">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Create from a template</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let template of templates" [value]="template._id">
+            {{ template.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
 
     <!-- ====================================================================== -->
     <!-- Actions -->
@@ -37,6 +48,7 @@
         color="primary"
         type="submit"
         [disabled]="form.invalid"
+        (click)="onSubmit()"
       >
         Create
       </button>

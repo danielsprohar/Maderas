@@ -12,6 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
 import {
   MatSnackBarModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
@@ -34,6 +35,7 @@ import {
     MatMenuModule,
     MatListModule,
     MatSnackBarModule,
+    MatSelectModule
   ],
   exports: [
     MatButtonModule,
@@ -49,6 +51,7 @@ import {
     MatMenuModule,
     MatListModule,
     MatSnackBarModule,
+    MatSelectModule
   ],
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },

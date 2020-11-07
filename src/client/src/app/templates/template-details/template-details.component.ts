@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -8,7 +9,6 @@ import { Board } from 'src/app/models/board';
 import { Template } from 'src/app/models/template';
 import { DataService } from 'src/app/services/data.service';
 import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-template-details',
@@ -28,7 +28,7 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly snackbar: SnackbarService,
+    private readonly snackbar: MatSnackBar,
     private readonly boardsService: DataService<Board>,
     private readonly auth: AuthService
   ) {}
@@ -70,15 +70,14 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
 
     this.subscription = this.boardsService.create(path, board).subscribe(
       (res: Board) => {
-        this.snackbar.show(
-          'Your board was created.',
-          SnackbarMessageType.Danger
-        );
+        this.snackbar.open('Your board was created.', null, {
+          panelClass: 'success',
+        });
 
         this.router.navigate(['/boards', res._id]);
       },
       (err) => {
-        this.snackbar.show(err, SnackbarMessageType.Danger);
+        this.snackbar.open(err, null, { panelClass: 'danger' });
       }
     );
   }
