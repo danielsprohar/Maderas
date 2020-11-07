@@ -1,4 +1,5 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
+import { HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -18,7 +19,9 @@ import { EditBoardComponent } from './edit-board/edit-board.component';
   styleUrls: ['./boards.component.css'],
 })
 export class BoardsComponent implements OnInit, OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
+  private fetchListsSubscription: Subscription;
+  private moveItemSubscription: Subscription;
+  private boardId: string;
 
   @ViewChild(EditItemComponent)
   private readonly editItemComponent: EditItemComponent;
@@ -34,13 +37,15 @@ export class BoardsComponent implements OnInit, OnDestroy {
   public item: Item;
 
   constructor(
-    private readonly listService: DataService<List>,
+    private readonly listsService: DataService<List>,
+    private readonly itemsService: DataService<Item>,
     private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.board$ = this.route.data.pipe(
       map((data: { board: Board }) => {
+        this.boardId = data.board._id;
         this.fetchLists(data.board._id);
         return data.board;
       })
@@ -50,20 +55,23 @@ export class BoardsComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   fetchLists(boardId: string): void {
-    const sub = this.listService
+    this.fetchListsSubscription = this.listsService
       .getAll(`/lists?board=${boardId}`)
       .pipe(map((res: PaginatedResponse<List>) => res.data))
       .subscribe((data: List[]) => {
         this.lists = data;
       });
-
-    this.subscriptions.push(sub);
   }
 
   // =========================================================================
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((s) => s.unsubscribe());
+    if (this.fetchListsSubscription) {
+      this.fetchListsSubscription.unsubscribe();
+    }
+    if (this.moveItemSubscription) {
+      this.moveItemSubscription.unsubscribe();
+    }
   }
 
   // =========================================================================
@@ -194,22 +202,31 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  drop(event: CdkDragDrop<Item[]>): void {
+  drop(event: CdkDragDrop<Item[]>, to: string): void {
     if (event.previousContainer === event.container) {
       return;
     }
 
-    console.log(`previousIndex = ${event.previousIndex}`);
-    console.log(`currentIndex = ${event.currentIndex}`);
+    const item = event.previousContainer.data[event.previousIndex];
+    const from = item.list;
+    const path = `/items/${item._id}/move`;
 
-    console.log(event.previousContainer.data[event.previousIndex]);
-    console.log(event.container.data[event.currentIndex]);
+    const params = new HttpParams().set('from', from).set('to', to);
 
-    transferArrayItem(
-      event.previousContainer.data,
-      event.container.data,
-      event.previousIndex,
-      event.currentIndex
-    );
+    this.moveItemSubscription = this.itemsService
+      .update(path, null, params)
+      .subscribe(
+        () => {
+          transferArrayItem(
+            event.previousContainer.data,
+            event.container.data,
+            event.previousIndex,
+            event.currentIndex
+          );
+        },
+        (err) => {
+          // TODO: Show the snackbar service.
+        }
+      );
   }
 }

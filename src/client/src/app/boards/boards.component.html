@@ -24,7 +24,7 @@
             class="list"
             cdkDropList
             [cdkDropListData]="list.items"
-            (cdkDropListDropped)="drop($event)"
+            (cdkDropListDropped)="drop($event, list._id)"
           >
             <!-- ==================================================================== -->
             <!-- List title -->

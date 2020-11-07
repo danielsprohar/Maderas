@@ -7,6 +7,7 @@ const { Item, validate } = require('../models/item')
 const { PaginatedResponse } = require('../application/paginated-response')
 const isValidObjectId = require('../middleware/http-param-validation')
 const isValidMoveItemRequest = require('../middleware/move-item')
+const mongoose = require('mongoose')
 
 // ===========================================================================
 // Add an Item
@@ -104,12 +105,17 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
 // ===========================================================================
 
 router.delete('/:id', isValidObjectId, async (req, res, next) => {
+  if (!mongoose.Types.ObjectId.isValid(req.query.list)) {
+    return res
+      .status(httpStatusCodes.badRequest)
+      .send("The item's' list id was not provided.")
+  }
+
   const item = await Item.findById(req.params.id)
   if (!item) {
     return res.status(httpStatusCodes.notFound).send('Item does not exist')
   }
 
-  // TODO: Ensure that the list id was provided by the client
   try {
     await item.remove()
     res.status(httpStatusCodes.noContent).send()
@@ -121,7 +127,7 @@ router.delete('/:id', isValidObjectId, async (req, res, next) => {
 // ===========================================================================
 // Move item to another list
 // ===========================================================================
-router.post(
+router.put(
   '/:id/move',
   [isValidObjectId, isValidMoveItemRequest],
   async (req, res, next) => {

@@ -47,11 +47,11 @@ export class DataService<T> {
 
   // ==========================================================================
 
-  update(path: string, data: T): Observable<T> {
+  update(path: string, data: T, params?: HttpParams): Observable<T> {
     const url = environment.apiUrl + path;
 
     return this.http
-      .put<T>(url, data, { headers: httpHeaders })
+      .put<T>(url, data, { headers: httpHeaders, params })
       .pipe(catchError(this.handleError));
   }
 
