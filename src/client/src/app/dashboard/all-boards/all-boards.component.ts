@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { Board } from 'src/app/models/board';
 import { DataService } from 'src/app/services/data.service';
 import { PaginatedResponse } from 'src/app/wrappers/paginated-response';
+import { CreateBoardComponent } from '../create-board/create-board.component';
 
 @Component({
   selector: 'app-all-boards',
@@ -18,10 +19,13 @@ export class AllBoardsComponent implements OnInit {
     new Date().valueOf() - 1000 * 60 * 60 * 24 * 7
   );
 
+  @ViewChild(CreateBoardComponent)
+  private readonly createBoardComponent: CreateBoardComponent;
+
   constructor(
     private readonly router: Router,
-    private readonly route: ActivatedRoute,
     private readonly dataService: DataService<Board>,
+    private readonly renderer: Renderer2,
     public readonly auth: AuthService
   ) {}
 
@@ -29,6 +33,20 @@ export class AllBoardsComponent implements OnInit {
     this.boards$ = this.dataService
       .getAll('/boards')
       .pipe(map((res: PaginatedResponse<Board>) => res.data));
+  }
+
+  // =========================================================================
+
+  openModal(): void {
+    const modal = document.getElementById('createBoardModal');
+    this.renderer.setStyle(modal, 'display', 'block');
+  }
+
+  // =========================================================================
+
+  closeModal(): void {
+    const modal = document.getElementById('createBoardModal');
+    this.renderer.setStyle(modal, 'display', 'none');
   }
 
   // =========================================================================

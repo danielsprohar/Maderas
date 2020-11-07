@@ -1,5 +1,11 @@
-import { Location } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -12,7 +18,6 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Board } from 'src/app/models/board';
 import { DataService } from 'src/app/services/data.service';
-import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 
 @Component({
   selector: 'app-create-board',
@@ -22,6 +27,7 @@ import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-ty
 export class CreateBoardComponent implements OnInit, OnDestroy {
   private serviceSubscription: Subscription;
 
+  @Output() closeModalEvent = new EventEmitter<boolean>();
   public form: FormGroup;
 
   constructor(
@@ -29,8 +35,7 @@ export class CreateBoardComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly fb: FormBuilder,
     private readonly auth: AuthService,
-    private readonly boardService: DataService<Board>,
-    private readonly location: Location
+    private readonly boardService: DataService<Board>
   ) {}
 
   ngOnInit(): void {
@@ -67,8 +72,8 @@ export class CreateBoardComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  back(): void {
-    this.location.back();
+  close(): void {
+    this.closeModalEvent.emit(true);
   }
 
   // =========================================================================
@@ -91,7 +96,7 @@ export class CreateBoardComponent implements OnInit, OnDestroy {
             panelClass: 'success',
           });
 
-          this.router.navigate(['/dashboard/boards']);
+          this.router.navigate(['/boards', data._id]);
         },
         (err) => {
           this.snackbar.open(err.message, null, {

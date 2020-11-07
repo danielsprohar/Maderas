@@ -42,18 +42,17 @@
           <!-- Actions -->
           <!-- ===================================================================== -->
           <br />
-          <div>
-            <a
-              mat-raised-button
-              color="primary"
-              routerLink="/boards/create"
-              class="tile is-child"
-            >
-              Create board
-            </a>
-          </div>
+          <button mat-raised-button color="primary" (click)="openModal()">
+            Create board
+          </button>
         </section>
       </div>
+    </div>
+  </div>
+
+  <div id="createBoardModal" class="modal">
+    <div class="modal-content">
+      <app-create-board (closeModalEvent)="closeModal()"></app-create-board>
     </div>
   </div>
 </ng-container>

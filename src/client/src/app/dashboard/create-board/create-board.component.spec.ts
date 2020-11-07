@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { CreateBoardComponent } from './create-board.component';
 
@@ -9,9 +8,9 @@ describe('CreateBoardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CreateBoardComponent],
-      imports: [RouterTestingModule],
-    }).compileComponents();
+      declarations: [ CreateBoardComponent ]
+    })
+    .compileComponents();
   });
 
   beforeEach(() => {

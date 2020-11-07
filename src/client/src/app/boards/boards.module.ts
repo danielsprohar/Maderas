@@ -6,12 +6,11 @@ import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { BoardsRoutingModule } from './boards-routing.module';
 import { BoardsComponent } from './boards.component';
-import { CreateBoardComponent } from './create-board/create-board.component';
 import { EditBoardComponent } from './edit-board/edit-board.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
-  declarations: [BoardsComponent, CreateBoardComponent, EditBoardComponent],
+  declarations: [BoardsComponent, EditBoardComponent],
   imports: [
     CommonModule,
     BoardsRoutingModule,

@@ -1,0 +1,45 @@
+<div>
+  <div class="modal-header">
+    <h3>Create a new board</h3>
+    <button mat-icon-button (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+  <br />
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- ====================================================================== -->
+    <!-- Title control -->
+    <!-- ====================================================================== -->
+    <mat-form-field appearance="outline">
+      <mat-label> Title </mat-label>
+      <input
+        matInput
+        formControlName="title"
+        placeholder="e.g., Backlog"
+        type="text"
+        autofocus
+      />
+      <mat-error>{{ getTitleError() }}</mat-error>
+      <!-- error message -->
+      <!-- <ng-container *ngIf="title.invalid && (title.dirty || title.touched)">
+      </ng-container> -->
+    </mat-form-field>
+
+    <!-- ====================================================================== -->
+    <!-- Actions -->
+    <!-- ====================================================================== -->
+    <div class="button-bar">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        Create
+      </button>
+    </div>
+  </form>
+</div>
