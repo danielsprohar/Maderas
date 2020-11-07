@@ -54,7 +54,7 @@
                 class="item"
                 cdkDrag
               >
-                <!-- Card header -->
+                <!-- Item header -->
                 <div class="item-header">
                   <p class="item-title">{{ item.title }}</p>
                   <!-- ================================================================ -->
@@ -67,12 +67,12 @@
                   ></app-item-actions-menu>
                 </div>
 
-                <!--  Badges -->
+                <!--  Item badges -->
                 <ng-container *ngIf="item.description || item.dueDate">
                   <div class="badges" (click)="viewItemDetails(list, item)">
                     <ng-container *ngIf="item.description">
                       <div class="badge">
-                        <button mat-icon-button matTooltip="Description">
+                        <button mat-icon-button matTooltip="This item has a description.">
                           <mat-icon>article</mat-icon>
                         </button>
                       </div>
@@ -80,7 +80,7 @@
 
                     <ng-container *ngIf="item.dueDate">
                       <div class="badge">
-                        <button mat-icon-button matTooltip="Due date">
+                        <button mat-icon-button matTooltip="This item has a due date.">
                           <mat-icon>event</mat-icon>
                           <span>{{ item.dueDate | date: "MMM d" }}</span>
                         </button>

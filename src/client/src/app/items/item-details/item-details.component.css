@@ -3,6 +3,14 @@
   flex-direction: column;
 }
 
-.item-details-container > div {
+/* .item-details-container > .modal-header {
+  margin-bottom: 0.25rem;
+} */
+
+.item-details-container > .column {
   margin-bottom: 1.5rem;
+}
+
+.description-line {
+  margin-bottom: 0.5rem;
 }

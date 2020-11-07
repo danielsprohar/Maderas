@@ -5,14 +5,24 @@
     <!-- ======================================================================= -->
     <div class="modal-header">
       <div class="column">
-        <h3>{{ item.title }}</h3>
-        <a>In list {{ list.title }}</a>
+        <div class="row flex-centered-y">
+          <mat-icon>title</mat-icon>
+          <h3 class="no-margin">{{ item.title }}</h3>
+          <!--  -->
+          <!-- <span class="spacer"></span>
+          <span>
+            In list <a href="#">{{ list.title }}</a>
+          </span> -->
+          <span class="spacer"></span>
+          <!--  -->
+          <button mat-icon-button (click)="close()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
       </div>
-      <button mat-icon-button (click)="close()">
-        <mat-icon>close</mat-icon>
-      </button>
     </div>
-
+    <!--  -->
+    <mat-divider></mat-divider>
     <!-- ======================================================================= -->
     <!-- Due Date -->
     <!-- ======================================================================= -->
@@ -21,6 +31,17 @@
     <!-- ======================================================================= -->
     <!-- Description -->
     <!-- ======================================================================= -->
-    <div class="column"></div>
+    <ng-container *ngIf="item.description">
+      <div class="column">
+        <div class="row flex-centered-y">
+          <mat-icon>article</mat-icon>
+          <h3 class="no-margin">Description</h3>
+        </div>
+
+        <ng-container *ngFor="let line of getItemDescriptionLines()">
+          <p class="description-line">{{ line }}</p>
+        </ng-container>
+      </div>
+    </ng-container>
   </div>
 </ng-container>
