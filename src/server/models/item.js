@@ -4,6 +4,7 @@ const Joi = require('../extensions/joi-mongodb-object-id')
 
 // ===========================================================================
 
+// TODO: Get rid of this constraint.
 const yesterday = new Date(new Date().valueOf() - 1000 * 60 * 60 * 24)
 
 // ===========================================================================

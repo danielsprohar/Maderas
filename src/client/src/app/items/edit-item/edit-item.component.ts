@@ -15,7 +15,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { DataService } from 'src/app/services/data.service';
-import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 
 @Component({
   selector: 'app-edit-item',
@@ -27,6 +26,7 @@ export class EditItemComponent implements OnInit, OnDestroy {
   private item: Item;
 
   public form: FormGroup;
+  public today = new Date();
 
   @Output() itemUpdatedEvent = new EventEmitter<Item>();
   @Output() closeModalEvent = new EventEmitter<boolean>();

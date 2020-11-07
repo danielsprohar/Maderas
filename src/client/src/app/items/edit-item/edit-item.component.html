@@ -1,7 +1,7 @@
-<div class="container is-fluid">
+<div class="column">
   <div class="modal-header">
     <h3>Edit your item</h3>
-    <button mat-icon-button (click)="close()" matTooltip="close">
+    <button mat-icon-button (click)="close()">
       <mat-icon>close</mat-icon>
     </button>
   </div>
@@ -36,12 +36,15 @@
     <div class="row">
       <mat-form-field appearance="fill">
         <mat-label>Due Date</mat-label>
-        <input matInput [matDatepicker]="date" formControlName="dueDate" />
+        <input
+          matInput
+          [min]="today"
+          [matDatepicker]="date"
+          formControlName="dueDate"
+        />
         <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
         <mat-datepicker #date></mat-datepicker>
       </mat-form-field>
-
-      <span class="spacer"></span>
 
       <mat-form-field appearance="fill">
         <mat-label>Time</mat-label>
