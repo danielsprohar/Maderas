@@ -116,6 +116,10 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
+  /**
+   * Handles the event that is emitted by the `EditListComponent`.
+   * @param list The `List` that was just updated.
+   */
   handleListUpdatedEvent(list: List): void {
     const i = this.lists.findIndex((l) => l._id === list._id);
     this.lists[i] = list;

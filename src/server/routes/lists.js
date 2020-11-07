@@ -93,7 +93,7 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
       .send(error.details[0].message)
   }
 
-  const list = await List.findById(req.params.id)
+  const list = await List.findById(req.params.id).populate('items')
   if (!list) {
     return res.status(httpStatusCodes.notFound).send('List does not exist')
   }
