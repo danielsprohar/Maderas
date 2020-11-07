@@ -1,3 +1,7 @@
+.mat-divider {
+  margin-bottom: 1rem !important;
+}
+
 /* =========================================================================== */
 /* Layout */
 /* =========================================================================== */
@@ -34,7 +38,13 @@
 }
 
 .board-info-header > .board-header-item:not(:last-child) {
-  margin-right: 1rem;
+  padding-right: 1rem;
+  border-right: 1px solid #d9d9d9;
+}
+
+.board-info-header > .board-header-item:last-child {
+  padding-left: 1rem;
+  /* border-right: 1px solid #d9d9d9; */
 }
 
 /* =========================================================================== */
@@ -88,6 +98,11 @@
   cursor: pointer !important;
   margin-bottom: 0.5rem;
   padding: 0.25rem;
+  margin: 1rem 0.5rem;
+}
+
+.item:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 .item-title {

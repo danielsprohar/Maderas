@@ -6,14 +6,16 @@
       <!-- ===================================================================== -->
       <div class="board-info-header">
         <div class="board-header-item">
-          <h5>Board Name</h5>
+          <h2>Board Name</h2>
           <p>{{ board.title }}</p>
         </div>
         <div class="board-header-item">
-          <h5>No. of Lists</h5>
+          <h2>No. of Lists</h2>
           <p>{{ lists?.length }}</p>
         </div>
       </div>
+
+      <mat-divider></mat-divider>
 
       <div class="row full-height full-width">
         <div *ngIf="lists" class="list-container" cdkDropListGroup>
