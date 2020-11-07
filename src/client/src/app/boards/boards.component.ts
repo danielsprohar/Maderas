@@ -1,11 +1,18 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { HttpParams } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EditItemComponent } from '../items/edit-item/edit-item.component';
+import { ItemDetailsComponent } from '../items/item-details/item-details.component';
 import { EditListComponent } from '../lists/edit-list/edit-list.component';
 import { Board } from '../models/board';
 import { Item } from '../models/item';
@@ -22,6 +29,9 @@ import { EditBoardComponent } from './edit-board/edit-board.component';
 export class BoardsComponent implements OnInit, OnDestroy {
   private fetchListsSubscription: Subscription;
   private moveItemSubscription: Subscription;
+
+  @ViewChild(ItemDetailsComponent)
+  private readonly itemDetailsComponent: ItemDetailsComponent;
 
   @ViewChild(EditItemComponent)
   private readonly editItemComponent: EditItemComponent;
@@ -40,7 +50,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
     private readonly listsService: DataService<List>,
     private readonly itemsService: DataService<Item>,
     private readonly route: ActivatedRoute,
-    private readonly snackbar: MatSnackBar
+    private readonly snackbar: MatSnackBar,
+    private readonly renderer: Renderer2
   ) {}
 
   ngOnInit(): void {
@@ -82,14 +93,14 @@ export class BoardsComponent implements OnInit, OnDestroy {
     this.editBoardComponent.setBoard(board);
 
     const modal = document.getElementById('editBoardModal');
-    modal.style.display = 'block';
+    this.renderer.setStyle(modal, 'display', 'block');
   }
 
   // =========================================================================
 
   closeEditBoardModal(): void {
     const modal = document.getElementById('editBoardModal');
-    modal.style.display = 'none';
+    this.renderer.setStyle(modal, 'display', 'none');
   }
 
   // =========================================================================
@@ -130,18 +141,39 @@ export class BoardsComponent implements OnInit, OnDestroy {
   openEditListModal(list: List): void {
     this.editListComponent.setList(list);
     const modal = document.getElementById('editListModal');
-    modal.style.display = 'block';
+    this.renderer.setStyle(modal, 'display', 'block');
   }
 
   // =========================================================================
 
   closeEditListModal(): void {
     const modal = document.getElementById('editListModal');
-    modal.style.display = 'none';
+    this.renderer.setStyle(modal, 'display', 'none');
   }
 
   // =========================================================================
   // Item methods
+  // =========================================================================
+
+  viewItemDetails(list: List, item: Item): void {
+    if (!list || !item) {
+      return;
+    }
+
+    this.itemDetailsComponent.list = list;
+    this.itemDetailsComponent.item = item;
+
+    const modal = document.getElementById('viewItemModal');
+    this.renderer.setStyle(modal, 'display', 'block');
+  }
+
+  // =========================================================================
+
+  closeItemDetailsModal(): void {
+    const modal = document.getElementById('viewItemModal');
+    this.renderer.setStyle(modal, 'display', 'none');
+  }
+
   // =========================================================================
 
   handleDeletedItemEvent(item: Item): void {

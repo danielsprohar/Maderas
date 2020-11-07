@@ -10,7 +10,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { DataService } from 'src/app/services/data.service';
-import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 
 @Component({
   selector: 'app-item-actions-menu',
@@ -45,7 +44,7 @@ export class ItemActionsMenuComponent implements OnInit, OnDestroy {
   delete(): void {
     if (!this.item) {
       this.snackbar.open('No item selected', null, {
-        panelClass: 'warn'
+        panelClass: 'warn',
       });
       return;
     }
@@ -56,20 +55,15 @@ export class ItemActionsMenuComponent implements OnInit, OnDestroy {
     this.subscription = this.itemsService.remove(path).subscribe(
       (res) => {
         this.snackbar.open('Item was deleted', null, {
-          panelClass: 'success'
+          panelClass: 'success',
         });
         this.deletedItemEvent.emit(this.item);
       },
-      (err) => this.snackbar.open(err, null, {
-        panelClass: 'danger'
-      })
+      (err) =>
+        this.snackbar.open(err, null, {
+          panelClass: 'danger',
+        })
     );
-  }
-
-  // =========================================================================
-
-  view(): void {
-    // TODO: Navigate to the item's details component
   }
 
   // =========================================================================

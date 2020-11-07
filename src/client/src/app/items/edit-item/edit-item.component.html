@@ -1,6 +1,6 @@
 <div class="column">
   <div class="modal-header">
-    <h3>Edit your item</h3>
+    <h2>Edit your item</h2>
     <button mat-icon-button (click)="close()">
       <mat-icon>close</mat-icon>
     </button>
@@ -15,7 +15,7 @@
     <!-- ===================================================================== -->
     <mat-form-field class="full-width" appearance="fill">
       <mat-label>Title</mat-label>
-      <input matInput type="text" formControlName="title" />
+      <input matInput type="text" formControlName="title" required />
     </mat-form-field>
 
     <!-- ===================================================================== -->
@@ -39,16 +39,16 @@
         <input
           matInput
           [min]="today"
-          [matDatepicker]="date"
+          [matDatepicker]="picker"
           formControlName="dueDate"
         />
-        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
-        <mat-datepicker #date></mat-datepicker>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Time</mat-label>
-        <input matInput type="time" formControlName="time" />
+        <input matInput type="time" formControlName="datetime" />
       </mat-form-field>
     </div>
 

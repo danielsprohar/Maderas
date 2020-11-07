@@ -19,80 +19,77 @@
 
       <div class="row full-height full-width">
         <div *ngIf="lists" class="lists-container" cdkDropListGroup>
-          <div *ngFor="let list of lists; index as listIndex" class="list-column">
+          <div
+            *ngFor="let list of lists; index as listIndex"
+            class="list-column"
+          >
             <div
               class="list"
               cdkDropList
               [cdkDropListData]="list.items"
               (cdkDropListDropped)="drop($event, list._id)"
             >
-            <!-- ==================================================================== -->
-            <!-- List title -->
-            <!-- ==================================================================== -->
-            <div class="list-header">
-              <h3 class="list-title">{{ list.title }}</h3>
-              <button
-                mat-icon-button
-                class="list-edit-icon"
-                (click)="openEditListModal(list)"
-                matTooltip="Edit list"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
-            </div>
-
-            <mat-divider></mat-divider>
-
-            <!-- ==================================================================== -->
-            <!-- Items -->
-            <!-- ==================================================================== -->
-            <mat-card
-              *ngFor="let item of list.items; index as itemIndex"
-              class="item"
-              cdkDrag
-            >
-              <!-- Card header -->
-              <div class="item-header">
-                <p class="item-title">{{ item.title }}</p>
-                <!-- ================================================================ -->
-                <!-- Item Action Menu -->
-                <!-- ================================================================ -->
-                <app-item-actions-menu
-                  [item]="item"
-                  (editItemEvent)="handleEditItem($event)"
-                  (deletedItemEvent)="handleDeletedItemEvent($event)"
-                ></app-item-actions-menu>
+              <!-- ==================================================================== -->
+              <!-- List title -->
+              <!-- ==================================================================== -->
+              <div class="list-header">
+                <h3 class="list-title">{{ list.title }}</h3>
+                <button
+                  mat-icon-button
+                  class="list-edit-icon"
+                  (click)="openEditListModal(list)"
+                  matTooltip="Edit list"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
               </div>
 
-              <!--  Badges -->
-              <ng-container *ngIf="item.description || item.dueDate">
-                <div class="badges">
-                  <ng-container *ngIf="item.description">
-                    <div class="badge">
-                      <button
-                        mat-icon-button
-                        matTooltip="Description"
-                      >
-                        <mat-icon>article</mat-icon>
-                      </button>
-                    </div>
-                  </ng-container>
+              <mat-divider></mat-divider>
 
-                  <ng-container *ngIf="item.dueDate">
-                    <div class="badge">
-                      <button
-                        mat-icon-button
-                        matTooltip="Due date"
-                      >
-                        <mat-icon>event</mat-icon>
-                        <span>{{ item.dueDate | date: "MMM d" }}</span>
-                      </button>
-                    </div>
-                  </ng-container>
+              <!-- ==================================================================== -->
+              <!-- Items -->
+              <!-- ==================================================================== -->
+              <mat-card
+                *ngFor="let item of list.items; index as itemIndex"
+                class="item"
+                cdkDrag
+              >
+                <!-- Card header -->
+                <div class="item-header">
+                  <p class="item-title">{{ item.title }}</p>
+                  <!-- ================================================================ -->
+                  <!-- Item Action Menu -->
+                  <!-- ================================================================ -->
+                  <app-item-actions-menu
+                    [item]="item"
+                    (editItemEvent)="handleEditItem($event)"
+                    (deletedItemEvent)="handleDeletedItemEvent($event)"
+                  ></app-item-actions-menu>
                 </div>
-              </ng-container>
-            </mat-card>
-          </div>
+
+                <!--  Badges -->
+                <ng-container *ngIf="item.description || item.dueDate">
+                  <div class="badges" (click)="viewItemDetails(list, item)">
+                    <ng-container *ngIf="item.description">
+                      <div class="badge">
+                        <button mat-icon-button matTooltip="Description">
+                          <mat-icon>article</mat-icon>
+                        </button>
+                      </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="item.dueDate">
+                      <div class="badge">
+                        <button mat-icon-button matTooltip="Due date">
+                          <mat-icon>event</mat-icon>
+                          <span>{{ item.dueDate | date: "MMM d" }}</span>
+                        </button>
+                      </div>
+                    </ng-container>
+                  </div>
+                </ng-container>
+              </mat-card>
+            </div>
 
             <!--  ==================================================================== -->
             <!-- Add an Item to a List -->
@@ -153,7 +150,18 @@
 <!-- ======================================================================= -->
 
 <!-- ======================================================================= -->
-<!-- EditItem Modal -->
+<!-- View Item Modal -->
+<!-- ======================================================================= -->
+<div id="viewItemModal" class="modal">
+  <div class="modal-content">
+    <app-item-details
+      (closeModalEvent)="closeItemDetailsModal()"
+    ></app-item-details>
+  </div>
+</div>
+
+<!-- ======================================================================= -->
+<!-- Edit Item Modal -->
 <!-- ======================================================================= -->
 <div id="editItemModal" class="modal">
   <div class="modal-content">
@@ -166,7 +174,7 @@
 </div>
 
 <!-- ======================================================================= -->
-<!-- EditList Modal -->
+<!-- Edit List Modal -->
 <!-- ======================================================================= -->
 <div id="editListModal" class="modal">
   <div class="modal-content">
@@ -179,7 +187,7 @@
 </div>
 
 <!-- ===================================================================== -->
-<!-- EditBoard Modal -->
+<!-- Edit Board Modal -->
 <!-- ===================================================================== -->
 <div id="editBoardModal" class="modal">
   <div class="modal-content">

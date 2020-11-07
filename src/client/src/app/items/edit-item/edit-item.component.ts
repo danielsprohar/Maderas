@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { DataService } from 'src/app/services/data.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-edit-item',
@@ -26,7 +27,7 @@ export class EditItemComponent implements OnInit, OnDestroy {
   private item: Item;
 
   public form: FormGroup;
-  public today = new Date();
+  public readonly today = new Date();
 
   @Output() itemUpdatedEvent = new EventEmitter<Item>();
   @Output() closeModalEvent = new EventEmitter<boolean>();
@@ -60,7 +61,7 @@ export class EditItemComponent implements OnInit, OnDestroy {
       title: ['', [Validators.required, Validators.maxLength(512)]],
       description: ['', [Validators.maxLength(2048)]],
       dueDate: [null],
-      time: [null],
+      datetime: [null],
     });
   }
 
@@ -80,10 +81,15 @@ export class EditItemComponent implements OnInit, OnDestroy {
 
     this.title.setValue(item.title);
     this.description.setValue(item.description);
+
     if (item.dueDate) {
       const date = new Date(item.dueDate);
-      this.dueDate.setValue(date.toLocaleDateString());
-      this.time.setValue(date.toLocaleTimeString());
+      this.dueDate.setValue(new Date(date.toLocaleDateString()));
+
+      const time = date.toLocaleTimeString();
+      if (time !== '12:00:00 AM') {
+        this.datetime.setValue(date.toTimeString().split(' ')[0]);
+      }
     }
   }
 
@@ -101,8 +107,24 @@ export class EditItemComponent implements OnInit, OnDestroy {
     return this.form.get('dueDate');
   }
 
-  get time(): AbstractControl {
-    return this.form.get('time');
+  get datetime(): AbstractControl {
+    return this.form.get('datetime');
+  }
+
+  // =========================================================================
+
+  private getDateString(date: Date): string {
+    const year = date.getFullYear();
+    const dom = date.getDate();
+    const month = date.getMonth() + 1; // Starts @ 0
+
+    if (Math.floor(dom / 10)) {
+      return `${year}-${month}-${dom}`;
+    }
+
+    // The day-of-the-month must be a single digit.
+    // So, prefix it with a 0 to avoid an 'invalid date' error
+    return `${year}-${month}-0${dom}`;
   }
 
   // =========================================================================
@@ -114,15 +136,19 @@ export class EditItemComponent implements OnInit, OnDestroy {
       list: this.item.list,
     });
 
-    if (this.dueDate.value && this.time.value) {
-      item.dueDate = new Date(
-        this.dueDate.value + ' ' + this.time.value
-      ).toISOString();
-    } else if (this.dueDate.value && !this.time.value) {
-      item.dueDate = new Date(
-        (this.dueDate.value as Date).valueOf()
-      ).toISOString();
+    const dueDateStr = this.getDateString(this.dueDate.value as Date);
+
+    if (this.datetime.value) {
+      const timeStr = this.datetime.value;
+
+      const dueDatetimeStr = dueDateStr + 'T' + timeStr;
+      item.dueDate = new Date(dueDatetimeStr).toISOString();
+      return item;
     }
+
+    item.dueDate = new Date(
+      (this.dueDate.value as Date).valueOf()
+    ).toISOString();
 
     return item;
   }
@@ -153,13 +179,14 @@ export class EditItemComponent implements OnInit, OnDestroy {
           this.snackbar.open('Your item was updated.', null, {
             panelClass: 'success',
           });
+
+          this.close();
         },
         (err) => {
           this.snackbar.open(err.message, null, {
             panelClass: 'danger',
           });
-        },
-        () => this.close()
+        }
       );
   }
 }
