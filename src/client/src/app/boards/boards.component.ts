@@ -1,6 +1,7 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -21,7 +22,6 @@ import { EditBoardComponent } from './edit-board/edit-board.component';
 export class BoardsComponent implements OnInit, OnDestroy {
   private fetchListsSubscription: Subscription;
   private moveItemSubscription: Subscription;
-  private boardId: string;
 
   @ViewChild(EditItemComponent)
   private readonly editItemComponent: EditItemComponent;
@@ -39,13 +39,13 @@ export class BoardsComponent implements OnInit, OnDestroy {
   constructor(
     private readonly listsService: DataService<List>,
     private readonly itemsService: DataService<Item>,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly snackbar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     this.board$ = this.route.data.pipe(
       map((data: { board: Board }) => {
-        this.boardId = data.board._id;
         this.fetchLists(data.board._id);
         return data.board;
       })
@@ -225,7 +225,9 @@ export class BoardsComponent implements OnInit, OnDestroy {
           );
         },
         (err) => {
-          // TODO: Show the snackbar service.
+          this.snackbar.open(err, null, {
+            panelClass: 'danger',
+          });
         }
       );
   }

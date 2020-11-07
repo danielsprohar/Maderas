@@ -12,13 +12,13 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
 import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-create-list',
@@ -36,7 +36,7 @@ export class CreateListComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly listService: DataService<List>,
-    private readonly snackbar: SnackbarService,
+    private readonly snackbar: MatSnackBar,
     private readonly route: ActivatedRoute
   ) {}
 
@@ -92,10 +92,14 @@ export class CreateListComponent implements OnInit, OnDestroy {
         this.resetForm();
         this.newListEvent.emit(res);
         this.title.setValue('');
-        this.snackbar.show('New list created', SnackbarMessageType.Success);
+        this.snackbar.open('New list created', null, {
+          panelClass: 'success',
+        });
       },
       (err) => {
-        this.snackbar.show(err.message, SnackbarMessageType.Danger);
+        this.snackbar.open(err.message, null, {
+          panelClass: 'danger',
+        });
       }
     );
   }

@@ -11,11 +11,11 @@ import {
   Validators,
   AbstractControl,
 } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
 import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-edit-list',
@@ -33,7 +33,7 @@ export class EditListComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly listsService: DataService<List>,
-    private readonly snackbar: SnackbarService,
+    private readonly snackbar: MatSnackBar,
     private readonly fb: FormBuilder
   ) {}
 
@@ -101,14 +101,15 @@ export class EditListComponent implements OnInit, OnDestroy {
       .subscribe(
         (res: List) => {
           this.listUpdatedEvent.emit(res);
-          this.snackbar.show(
-            'Your list was updated.',
-            SnackbarMessageType.Success
-          );
+          this.snackbar.open('Your list was updated.', null, {
+            panelClass: 'success',
+          });
           this.close();
         },
         (err) => {
-          this.snackbar.show(err, SnackbarMessageType.Danger);
+          this.snackbar.open(err, null, {
+            panelClass: 'danger',
+          });
         },
         () => this.close()
       );

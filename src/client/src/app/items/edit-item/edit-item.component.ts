@@ -11,11 +11,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { DataService } from 'src/app/services/data.service';
 import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-edit-item',
@@ -33,7 +33,7 @@ export class EditItemComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly itemsService: DataService<Item>,
-    private readonly snackbar: SnackbarService,
+    private readonly snackbar: MatSnackBar,
     private readonly fb: FormBuilder
   ) {}
 
@@ -150,13 +150,14 @@ export class EditItemComponent implements OnInit, OnDestroy {
         (res: Item) => {
           this.itemUpdatedEvent.emit(res);
 
-          this.snackbar.show(
-            'Your item was updated.',
-            SnackbarMessageType.Success
-          );
+          this.snackbar.open('Your item was updated.', null, {
+            panelClass: 'success',
+          });
         },
         (err) => {
-          this.snackbar.show(err.message, SnackbarMessageType.Danger);
+          this.snackbar.open(err.message, null, {
+            panelClass: 'danger',
+          });
         },
         () => this.close()
       );

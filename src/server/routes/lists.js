@@ -102,7 +102,9 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
     list.title = req.body.title
     await list.save()
 
-    winston.info(`[UpdateList] A list was updated. List(_id:${list._id})`)
+    winston.info(
+      `[UpdateList] A list was updated. List(_id:${list._id}, title: ${list.title})`
+    )
 
     res.status(httpStatusCodes.ok).send(list)
   } catch (e) {

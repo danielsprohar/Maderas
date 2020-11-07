@@ -79,6 +79,29 @@ body {
 }
 
 /* =========================================================================== */
+/* Panel classes for the SnackbarComponent */
+/* =========================================================================== */
+.success {
+  color: #000;
+  background-color: #00c853;
+}
+
+.warn {
+  color: #000;
+  background-color: #ffd600;
+}
+
+.danger {
+  color: #fff;
+  background-color: #d50000;
+}
+
+.info {
+  color: #000;
+  background-color: #0091ea;
+}
+
+/* =========================================================================== */
 /* Flex layout */
 /* =========================================================================== */
 .flex-container {
@@ -179,7 +202,8 @@ a:not(:last-child) {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  border-radius: 3px;
+  width: fit-content;
 }
 
 /* The Close Button */

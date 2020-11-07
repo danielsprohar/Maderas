@@ -12,12 +12,12 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
 import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-create-item',
@@ -35,7 +35,7 @@ export class CreateItemComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly itemsService: DataService<Item>,
-    private readonly snackbar: SnackbarService
+    private readonly snackbar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -83,10 +83,14 @@ export class CreateItemComponent implements OnInit, OnDestroy {
       (res: Item) => {
         this.newItemEvent.emit(res);
         this.title.setValue('');
-        this.snackbar.show('New item created', SnackbarMessageType.Success);
+        this.snackbar.open('New item created', null, {
+          panelClass: 'success',
+        });
       },
       (err) => {
-        this.snackbar.show(err.message, SnackbarMessageType.Danger);
+        this.snackbar.open(err.message, null, {
+          panelClass: 'danger',
+        });
       }
     );
   }

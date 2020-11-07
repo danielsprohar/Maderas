@@ -12,11 +12,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { DataService } from 'src/app/services/data.service';
 import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-edit-board',
@@ -32,7 +32,7 @@ export class EditBoardComponent implements OnInit, OnDestroy {
   @Output() closeModalEvent = new EventEmitter<boolean>();
 
   constructor(
-    private readonly snackbar: SnackbarService,
+    private readonly snackbar: MatSnackBar,
     private readonly boardsService: DataService<Board>,
     private readonly fb: FormBuilder
   ) {}
@@ -91,14 +91,13 @@ export class EditBoardComponent implements OnInit, OnDestroy {
       .update(`/boards/${this.board._id}`, board)
       .subscribe(
         (res: Board) => {
-          this.snackbar.show(
-            'Your board was updated.',
-            SnackbarMessageType.Success
-          );
+          this.snackbar.open('Your board was updated.', null, {
+            panelClass: 'success',
+          });
           Object.assign(this.board, res);
         },
         (err) => {
-          this.snackbar.show(err, SnackbarMessageType.Danger);
+          this.snackbar.open(err, null, { panelClass: 'danger' });
         },
         () => {
           // Close component
