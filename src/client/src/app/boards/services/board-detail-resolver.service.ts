@@ -31,7 +31,7 @@ export class BoardDetailResolverService implements Resolve<Board> {
         if (board) {
           return of(board);
         } else {
-          this.router.navigate(['/boards']);
+          this.router.navigate(['/dashboard/boards']);
           return EMPTY;
         }
       })

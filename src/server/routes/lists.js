@@ -3,8 +3,9 @@ const router = express.Router()
 const winston = require('../config/winston')
 const httpStatusCodes = require('../constants/http-status-codes')
 const isValidObjectId = require('../middleware/http-param-validation')
-const { Board } = require('../models/board')
 const mongoose = require('mongoose')
+const { Board } = require('../models/board')
+const { Item } = require('../models/item')
 const { List, validate } = require('../models/list')
 const { PaginatedResponse } = require('../application/paginated-response')
 
@@ -107,6 +108,88 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
     )
 
     res.status(httpStatusCodes.ok).send(list)
+  } catch (e) {
+    next(e)
+  }
+})
+
+// ===========================================================================
+// Delete a List
+// ===========================================================================
+
+router.put('/:id/clear', isValidObjectId, async (req, res, next) => {
+  const list = await List.findById(req.params.id)
+  if (!list) {
+    return res.status(httpStatusCodes.notFound).send('List does not exist.')
+  }
+
+  if (list.items.length === 0) {
+    res.status(httpStatusCodes.noContent).send()
+  }
+
+  try {
+    // Delete all the items
+    await Item.deleteMany({
+      list: list._id
+    })
+
+    // And remove all the references to those items
+    await List.updateOne(
+      {
+        _id: list._id
+      },
+      {
+        $set: {
+          items: []
+        }
+      }
+    )
+
+    res.status(httpStatusCodes.noContent).send()
+  } catch (e) {
+    next(e)
+  }
+})
+
+// ===========================================================================
+// Delete a List
+// ===========================================================================
+
+router.delete('/:id', isValidObjectId, async (req, res, next) => {
+  const list = await List.findById(req.params.id)
+  if (!list) {
+    return res.status(httpStatusCodes.notFound).send('List does not exist.')
+  }
+
+  const board = await Board.findById(list.board)
+  if (!board) {
+    return res.status(httpStatusCodes.unprocessableEntity).send()
+  }
+
+  try {
+    // Delete all the items
+    await Item.deleteMany({
+      list: list._id
+    })
+
+    // Delete the list
+    await list.remove()
+
+    // Delete the list reference from the Board
+    await Board.updateOne(
+      {
+        _id: board._id
+      },
+      {
+        $pull: {
+          lists: {
+            $in: [list._id]
+          }
+        }
+      }
+    )
+
+    res.status(httpStatusCodes.noContent).send()
   } catch (e) {
     next(e)
   }

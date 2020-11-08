@@ -30,10 +30,7 @@ import { EditBoardComponent } from './edit-board/edit-board.component';
   styleUrls: ['./boards.component.css'],
 })
 export class BoardsComponent implements OnInit, OnDestroy {
-  private fetchListsSubscription: Subscription;
-  private moveItemSubscription: Subscription;
-  private deleteItemDialogSubscription: Subscription;
-  private deleteItemSubscription: Subscription;
+  private readonly subscriptions: Subscription[] = [];
 
   @ViewChild(ItemDetailsComponent)
   private readonly itemDetailsComponent: ItemDetailsComponent;
@@ -72,29 +69,20 @@ export class BoardsComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   private fetchLists(boardId: string): void {
-    this.fetchListsSubscription = this.listsService
+    const sub = this.listsService
       .getAll(`/lists?board=${boardId}`)
       .pipe(map((res: PaginatedResponse<List>) => res.data))
       .subscribe((data: List[]) => {
         this.lists = data;
       });
+
+    this.subscriptions.push(sub);
   }
 
   // =========================================================================
 
   ngOnDestroy(): void {
-    if (this.fetchListsSubscription) {
-      this.fetchListsSubscription.unsubscribe();
-    }
-    if (this.moveItemSubscription) {
-      this.moveItemSubscription.unsubscribe();
-    }
-    if (this.deleteItemDialogSubscription) {
-      this.deleteItemDialogSubscription.unsubscribe();
-    }
-    if (this.deleteItemSubscription) {
-      this.deleteItemSubscription.unsubscribe();
-    }
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   // =========================================================================
@@ -117,6 +105,84 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   // =========================================================================
   // List methods
+  // =========================================================================
+
+  private deleteList(id: string): void {
+    const path = `/lists/${id}`;
+    const sub = this.listsService.remove(path).subscribe(
+      () => {
+        const i = this.lists.findIndex((list) => list._id === id);
+        this.lists.splice(i, 1);
+
+        this.snackbar.open('Your list was removed.', null, {
+          panelClass: 'success',
+        });
+      },
+      (err) => {
+        this.snackbar.open(err, null, {
+          panelClass: 'danger',
+        });
+      }
+    );
+
+    this.subscriptions.push(sub);
+  }
+
+  // =========================================================================
+
+  openDeleteListConfirmationDialog(listId: string): void {
+    const dialogRef = this.dialog.open(UserConfirmationDialogComponent, {
+      data: new DialogData(),
+    });
+
+    const sub = dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.deleteList(listId);
+      }
+    });
+
+    this.subscriptions.push(sub);
+  }
+
+  // =========================================================================
+
+  private clearList(id: string): void {
+    const path = `/lists/${id}/clear`;
+    const sub = this.listsService.update(path, null).subscribe(
+      () => {
+        const list = this.lists.find((l) => l._id === id);
+        list.items.splice(0, list.items.length);
+
+        this.snackbar.open('Your list was cleared.', null, {
+          panelClass: 'success',
+        });
+      },
+      (err) => {
+        this.snackbar.open(err, null, {
+          panelClass: 'danger',
+        });
+      }
+    );
+
+    this.subscriptions.push(sub);
+  }
+
+  // =========================================================================
+
+  openClearListConfirmationDialog(listId: string): void {
+    const dialogRef = this.dialog.open(UserConfirmationDialogComponent, {
+      data: new DialogData(),
+    });
+
+    const sub = dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.clearList(listId);
+      }
+    });
+
+    this.subscriptions.push(sub);
+  }
+
   // =========================================================================
 
   toggleCreateListComponent(): void {
@@ -191,7 +257,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   private deleteItem(listId: string, itemId: string): void {
     const path = `/items/${itemId}`;
-    this.deleteItemSubscription = this.itemsService.remove(path).subscribe(
+    const sub = this.itemsService.remove(path).subscribe(
       () => {
         this.removeItem(listId, itemId);
       },
@@ -201,6 +267,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
         });
       }
     );
+
+    this.subscriptions.push(sub);
   }
 
   // =========================================================================
@@ -210,13 +278,13 @@ export class BoardsComponent implements OnInit, OnDestroy {
       data: new DialogData(),
     });
 
-    this.deleteItemDialogSubscription = dialogRef
-      .afterClosed()
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.deleteItem(listId, itemId);
-        }
-      });
+    const sub = dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.deleteItem(listId, itemId);
+      }
+    });
+
+    this.subscriptions.push(sub);
   }
 
   // =========================================================================
@@ -301,22 +369,22 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
     const params = new HttpParams().set('from', from).set('to', to);
 
-    this.moveItemSubscription = this.itemsService
-      .update(path, null, params)
-      .subscribe(
-        () => {
-          transferArrayItem(
-            event.previousContainer.data,
-            event.container.data,
-            event.previousIndex,
-            event.currentIndex
-          );
-        },
-        (err) => {
-          this.snackbar.open(err, null, {
-            panelClass: 'danger',
-          });
-        }
-      );
+    const sub = this.itemsService.update(path, null, params).subscribe(
+      () => {
+        transferArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex
+        );
+      },
+      (err) => {
+        this.snackbar.open(err, null, {
+          panelClass: 'danger',
+        });
+      }
+    );
+
+    this.subscriptions.push(sub);
   }
 }

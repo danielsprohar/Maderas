@@ -2,7 +2,7 @@
   <div class="board-root">
     <div class="boards-container">
       <!-- =============================================================== -->
-      <!-- Board information -->
+      <!-- Header: Board information -->
       <!-- =============================================================== -->
       <div class="board-info-header">
         <div class="board-header-item">
@@ -42,7 +42,17 @@
                   <mat-icon>more_vertical</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu" xPosition="before" role="menu">
-                  <button mat-menu-item>Delete list ...</button>
+                  <button
+                    mat-menu-item
+                    (click)="openClearListConfirmationDialog(list._id)">
+                    Clear list ...
+                  </button>
+                  <button
+                    mat-menu-item
+                    (click)="openDeleteListConfirmationDialog(list._id)"
+                  >
+                    Delete list ...
+                  </button>
                   <button mat-menu-item (click)="openEditListModal(list)">
                     Edit list ...
                   </button>
@@ -51,9 +61,9 @@
 
               <mat-divider></mat-divider>
 
-              <!-- ==================================================================== -->
+              <!-- ========================================================= -->
               <!-- Items -->
-              <!-- ==================================================================== -->
+              <!-- ========================================================= -->
               <mat-card
                 *ngFor="let item of list.items; index as itemIndex"
                 class="item"
@@ -63,9 +73,9 @@
                 <div class="item-header">
                   <p class="item-title">{{ item.title }}</p>
                   <span class="spacer"></span>
-                  <!-- ================================================================ -->
+                  <!-- ===================================================== -->
                   <!-- Item Actions Menu -->
-                  <!-- ================================================================ -->
+                  <!-- ===================================================== -->
                   <button
                     mat-icon-button
                     aria-haspopup="true"
@@ -75,7 +85,12 @@
                     <mat-icon>more_horiz</mat-icon>
                   </button>
                   <mat-menu #itemMenu="matMenu" role="menu" xPosition="before">
-                    <button mat-menu-item (click)="openDeleteItemConfirmationDialog(list._id ,item._id)">
+                    <button
+                      mat-menu-item
+                      (click)="
+                        openDeleteItemConfirmationDialog(list._id, item._id)
+                      "
+                    >
                       Delete item
                     </button>
                     <button mat-menu-item (click)="openEditItemModal()">
@@ -114,9 +129,9 @@
               </mat-card>
             </div>
 
-            <!--  ==================================================================== -->
+            <!-- =========================================================== -->
             <!-- Add an Item to a List -->
-            <!--  ==================================================================== -->
+            <!-- =========================================================== -->
             <div id="button{{ listIndex }}">
               <button
                 mat-stroked-button
@@ -127,9 +142,9 @@
             </div>
 
             <div id="{{ listIndex }}" class="hidden">
-              <!-- =========================================================== -->
+              <!-- ========================================================= -->
               <!-- Component -->
-              <!-- =========================================================== -->
+              <!-- ========================================================= -->
               <app-create-item
                 [list]="list"
                 (newItemEvent)="handleNewItemEvent($event)"
@@ -138,9 +153,9 @@
             </div>
           </div>
 
-          <!--  ==================================================================== -->
+          <!-- ============================================================= -->
           <!-- Add a List -->
-          <!--  ==================================================================== -->
+          <!-- ============================================================= -->
           <div class="column">
             <button
               id="createListBtn"
@@ -151,9 +166,9 @@
               Create list
             </button>
             <div id="newListFormBox" class="hidden">
-              <!-- =========================================================== -->
+              <!-- ========================================================= -->
               <!-- Component -->
-              <!-- =========================================================== -->
+              <!-- ========================================================= -->
               <app-create-list
                 [board]="board"
                 (newListEvent)="handleNewListEvent($event)"
