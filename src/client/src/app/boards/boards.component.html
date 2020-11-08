@@ -1,9 +1,9 @@
 <ng-container *ngIf="board$ | async as board">
   <div class="board-root">
     <div class="boards-container">
-      <!-- ===================================================================== -->
+      <!-- =============================================================== -->
       <!-- Board information -->
-      <!-- ===================================================================== -->
+      <!-- =============================================================== -->
       <div class="board-info-header">
         <div class="board-header-item">
           <h2>Board Name</h2>
@@ -29,19 +29,24 @@
               [cdkDropListData]="list.items"
               (cdkDropListDropped)="drop($event, list._id)"
             >
-              <!-- ==================================================================== -->
+              <!-- ======================================================== -->
               <!-- List title -->
-              <!-- ==================================================================== -->
+              <!-- ======================================================== -->
               <div class="list-header">
                 <h3 class="list-title">{{ list.title }}</h3>
-                <button
-                  mat-icon-button
-                  class="list-edit-icon"
-                  (click)="openEditListModal(list)"
-                  matTooltip="Edit list"
-                >
-                  <mat-icon>edit</mat-icon>
+                <span class="spacer"></span>
+                <!-- ====================================================== -->
+                <!-- List menu -->
+                <!-- ====================================================== -->
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vertical</mat-icon>
                 </button>
+                <mat-menu #menu="matMenu" xPosition="before">
+                  <button mat-menu-item>Delete list ...</button>
+                  <button mat-menu-item (click)="openEditListModal(list)">
+                    Edit list ...
+                  </button>
+                </mat-menu>
               </div>
 
               <mat-divider></mat-divider>
@@ -61,6 +66,7 @@
                   <!-- Item Action Menu -->
                   <!-- ================================================================ -->
                   <app-item-actions-menu
+                    class="item-actions-menu"
                     [item]="item"
                     (editItemEvent)="handleEditItem($event)"
                     (deletedItemEvent)="handleDeletedItemEvent($event)"
@@ -72,7 +78,10 @@
                   <div class="badges" (click)="viewItemDetails(list, item)">
                     <ng-container *ngIf="item.description">
                       <div class="badge">
-                        <button mat-icon-button matTooltip="This item has a description.">
+                        <button
+                          mat-icon-button
+                          matTooltip="This item has a description."
+                        >
                           <mat-icon>article</mat-icon>
                         </button>
                       </div>
@@ -80,7 +89,10 @@
 
                     <ng-container *ngIf="item.dueDate">
                       <div class="badge">
-                        <button mat-icon-button matTooltip="This item has a due date.">
+                        <button
+                          mat-icon-button
+                          matTooltip="This item has a due date."
+                        >
                           <mat-icon>event</mat-icon>
                           <span>{{ item.dueDate | date: "MMM d" }}</span>
                         </button>
