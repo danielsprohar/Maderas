@@ -9,29 +9,34 @@ const yesterday = new Date(new Date().valueOf() - 1000 * 60 * 60 * 24)
 
 // ===========================================================================
 
-const itemSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 512,
-    trim: true
+const itemSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      minlength: 1,
+      maxlength: 512,
+      trim: true
+    },
+    description: {
+      type: String,
+      maxlength: 2048,
+      trim: true
+    },
+    dueDate: {
+      type: Date,
+      // yesterday
+      min: yesterday
+    },
+    list: {
+      type: mongoose.Types.ObjectId,
+      ref: 'List'
+    }
   },
-  description: {
-    type: String,
-    maxlength: 2048,
-    trim: true
-  },
-  dueDate: {
-    type: Date,
-    // yesterday
-    min: yesterday
-  },
-  list: {
-    type: mongoose.Types.ObjectId,
-    ref: 'List'
+  {
+    timestamps: true
   }
-})
+)
 
 // ===========================================================================
 
