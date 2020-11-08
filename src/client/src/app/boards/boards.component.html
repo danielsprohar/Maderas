@@ -41,7 +41,7 @@
                 <button mat-icon-button [matMenuTriggerFor]="menu">
                   <mat-icon>more_vertical</mat-icon>
                 </button>
-                <mat-menu #menu="matMenu" xPosition="before">
+                <mat-menu #menu="matMenu" xPosition="before" role="menu">
                   <button mat-menu-item>Delete list ...</button>
                   <button mat-menu-item (click)="openEditListModal(list)">
                     Edit list ...
@@ -62,15 +62,24 @@
                 <!-- Item header -->
                 <div class="item-header">
                   <p class="item-title">{{ item.title }}</p>
+                  <span class="spacer"></span>
                   <!-- ================================================================ -->
                   <!-- Item Action Menu -->
                   <!-- ================================================================ -->
-                  <app-item-actions-menu
+                  <button
+                    mat-icon-button
+                    aria-haspopup="true"
+                    [matMenuTriggerFor]="itemMenu"
                     class="item-actions-menu"
-                    [item]="item"
-                    (editItemEvent)="handleEditItem($event)"
-                    (deletedItemEvent)="handleDeletedItemEvent($event)"
-                  ></app-item-actions-menu>
+                  >
+                    <mat-icon>more_horiz</mat-icon>
+                  </button>
+                  <mat-menu #itemMenu="matMenu" role="menu" xPosition="before">
+                    <button mat-menu-item>Delete item</button>
+                    <button mat-menu-item (click)="openEditItemModal()">
+                      Edit item
+                    </button>
+                  </mat-menu>
                 </div>
 
                 <!--  Item badges -->

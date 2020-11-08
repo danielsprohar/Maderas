@@ -199,7 +199,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
    * Handles the event that is emitted by the `ItemActionsMenuComponent`.
    * @param item The `Item` to edit.
    */
-  handleEditItem(item: Item): void {
+  openEditItemModal(item: Item): void {
     this.editItemComponent.setItem(item);
 
     const modal = document.getElementById('editItemModal');
