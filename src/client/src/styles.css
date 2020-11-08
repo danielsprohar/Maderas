@@ -31,6 +31,11 @@ body {
   overflow: auto;
 }
 
+.active-link {
+  background: rgba(103, 58, 183, 0.15);
+  color: #673ab7;
+}
+
 .spacer {
   flex: 1 1 auto;
 }

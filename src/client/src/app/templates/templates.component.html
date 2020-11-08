@@ -1,21 +1,17 @@
 <div class="templates-container">
-  <div class="col-2 col-s-2 sidenav">
-    <aside class="menu">
-      <p class="menu-label">Templates</p>
-
-      <!-- =================================================================== -->
-      <!-- Templates -->
-      <!-- =================================================================== -->
+  <div class="col-2 col-s-2 sidenav" mat-elevation-z6>
+    <aside>
       <ng-container *ngIf="templates$ | async as templates">
-        <ul>
-          <li *ngFor="let template of templates">
-            <a
-              [routerLink]="[template._id]"
-              routerLinkActive="has-background-link-light"
-              >{{ template.name }}</a
-            >
-          </li>
-        </ul>
+        <mat-nav-list class="no-padding">
+          <a
+            *ngFor="let template of templates"
+            [routerLink]="[template._id]"
+            routerLinkActive="active-link"
+            mat-list-item
+          >
+            {{ template.name }}
+          </a>
+        </mat-nav-list>
       </ng-container>
     </aside>
   </div>
