@@ -2,10 +2,10 @@
   <div class="flex-centered full-width">
     <mat-card>
       <h2>Create an account</h2>
-      <form [formGroup]="form">
-        <!-- ====================================================================== -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- ============================================================== -->
         <!-- Username control -->
-        <!-- ====================================================================== -->
+        <!-- ============================================================== -->
         <mat-form-field class="full-width">
           <mat-label>Username</mat-label>
           <input
@@ -15,16 +15,16 @@
             type="text"
             autofocus
           />
-          <button mat-icon-button matPrefix>
+          <button mat-icon-button matPrefix tabindex="-1">
             <mat-icon>person</mat-icon>
           </button>
           <!-- error message -->
           <mat-error>{{ getUsernameError() }}</mat-error>
         </mat-form-field>
 
-        <!-- ====================================================================== -->
+        <!-- =============================================================== -->
         <!-- Email control -->
-        <!-- ====================================================================== -->
+        <!-- =============================================================== -->
         <mat-form-field class="full-width">
           <mat-label>Email</mat-label>
           <input
@@ -34,7 +34,7 @@
             type="email"
             appUniqueEmailValidator
           />
-          <button mat-icon-button matPrefix>
+          <button mat-icon-button matPrefix tabindex="-1">
             <mat-icon>email</mat-icon>
           </button>
 
@@ -42,9 +42,9 @@
           <mat-error>{{ getEmailError() }}</mat-error>
         </mat-form-field>
 
-        <!-- ====================================================================== -->
+        <!-- =============================================================== -->
         <!-- Password -->
-        <!-- ====================================================================== -->
+        <!-- =============================================================== -->
         <mat-form-field class="full-width">
           <mat-label>Password</mat-label>
           <input
@@ -54,7 +54,7 @@
             formControlName="password"
             appUniqueEmailValidator
           />
-          <button mat-icon-button matPrefix>
+          <button mat-icon-button matPrefix tabindex="-1">
             <mat-icon>lock</mat-icon>
           </button>
           <button mat-icon-button matSuffix>
@@ -68,12 +68,12 @@
           </mat-hint>
 
           <!-- error message -->
-          <mat-error class="help is-danger">{{ getPasswordError() }}</mat-error>
+          <mat-error>{{ getPasswordError() }}</mat-error>
         </mat-form-field>
 
-        <!-- ====================================================================== -->
+        <!-- =============================================================== -->
         <!-- Confirm password -->
-        <!-- ====================================================================== -->
+        <!-- =============================================================== -->
         <mat-form-field class="full-width">
           <mat-label>Confirm password</mat-label>
           <input
@@ -82,7 +82,7 @@
             [type]="isTextHidden ? 'password' : 'text'"
             formControlName="confirmPassword"
           />
-          <button mat-icon-button matPrefix>
+          <button mat-icon-button matPrefix tabindex="-1">
             <mat-icon>lock</mat-icon>
           </button>
           <button mat-icon-button matSuffix>
@@ -92,9 +92,9 @@
           </button>
         </mat-form-field>
 
-        <!-- ====================================================================== -->
+        <!-- =============================================================== -->
         <!-- Actions -->
-        <!-- ====================================================================== -->
+        <!-- =============================================================== -->
         <button
           mat-raised-button
           color="primary"
