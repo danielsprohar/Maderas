@@ -14,13 +14,13 @@ db.templates.insertMany([
   {
     name: 'Kanban',
     lists: [
-      'Backlog',
-      'Design',
-      'To-Do',
-      'In progress',
-      'Code Review',
-      'Testing',
-      'Done'
+      { title: 'Backlog' },
+      { title: 'Design' },
+      { title: 'To-Do' },
+      { title: 'In progress' },
+      { title: 'Code Review' },
+      { title: 'Testing' },
+      { title: 'Done' }
     ]
   }
 ])

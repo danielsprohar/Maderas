@@ -117,10 +117,10 @@ router.post(
       const board = new Board(req.body)
       await board.save()
 
-      const temp = []
+      const boardLists = []
 
       template.lists.forEach((list) => {
-        temp.push(
+        boardLists.push(
           new List({
             title: list.title,
             board: board._id
@@ -128,7 +128,13 @@ router.post(
         )
       })
 
-      await List.insertMany(temp)
+      const lists = await List.insertMany(boardLists)
+
+      lists.forEach((list) => {
+        board.lists.push(list._id)
+      })
+
+      await board.save()
 
       winston.info(
         `[Board::CreateFromTemplate] Board(_id: ${board._id}, user: ${board.user}), Template(_id: ${template._id})`

@@ -134,12 +134,6 @@ export class CreateBoardComponent implements OnInit, OnDestroy {
       user: this.auth.getUser().id,
     });
 
-
-    if (this.template.value) {
-      console.log('template id: ' + this.template.value);
-    }
-    return;
-
     if (this.template.value) {
       this.createFromTemplate(board, this.template.value);
     } else {
