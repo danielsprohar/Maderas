@@ -1,41 +1,26 @@
-<div class="columns">
-  <div class="column is-one-fifth">
+<div class="templates-container">
+  <div class="col-2 col-s-2 sidenav">
     <aside class="menu">
-      <p class="menu-label">General</p>
-      <!-- =================================================================== -->
-      <!-- Boards -->
-      <!-- =================================================================== -->
-      <ul class="menu-list">
-        <li>
-          <a routerLink="/dashboard/boards" routerLinkActive="is-active"
-            >Boards</a
-          >
-        </li>
+      <p class="menu-label">Templates</p>
 
-        <!-- =================================================================== -->
-        <!-- Templates -->
-        <!-- =================================================================== -->
-        <li>
-          <a routerLink="/templates" routerLinkActive="is-active">
-            Templates
-          </a>
-          <ng-container *ngIf="templates$ | async as templates">
-            <ul>
-              <li *ngFor="let template of templates">
-                <a
-                  [routerLink]="[template._id]"
-                  routerLinkActive="has-background-link-light"
-                  >{{ template.name }}</a
-                >
-              </li>
-            </ul>
-          </ng-container>
-        </li>
-      </ul>
+      <!-- =================================================================== -->
+      <!-- Templates -->
+      <!-- =================================================================== -->
+      <ng-container *ngIf="templates$ | async as templates">
+        <ul>
+          <li *ngFor="let template of templates">
+            <a
+              [routerLink]="[template._id]"
+              routerLinkActive="has-background-link-light"
+              >{{ template.name }}</a
+            >
+          </li>
+        </ul>
+      </ng-container>
     </aside>
   </div>
 
-  <div class="column">
+  <div class="col-10 col-s-10 template-router-outlet">
     <router-outlet></router-outlet>
   </div>
 </div>

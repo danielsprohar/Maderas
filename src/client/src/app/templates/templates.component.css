@@ -1,0 +1,23 @@
+.templates-container {
+  display: flex;
+  flex-flow: row wrap;
+  height: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  .templates-container {
+    flex-direction: column;
+    flex-flow: column;
+  }
+}
+
+.sidenav {
+  padding: 1rem 0.5rem;
+  height: 100%;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.template-router-outlet {
+  padding: 1rem 0.5rem;
+  height: 100%;
+}
