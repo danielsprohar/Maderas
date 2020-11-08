@@ -20,45 +20,40 @@
 }
 
 .board-root {
-  position: absolute;
-  top: inherit;
-  right: 0;
-  bottom: 0;
-  left: 0;
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
 }
 
-.boards-container {
+.scrollable-container {
   position: inherit;
   padding: 0.5rem;
+  overflow-y: hidden;
+  overflow-x: auto;
+  height: 100%;
 }
 
 .board-info-header {
   display: flex;
   flex-direction: row;
-  margin: 1rem 0.5rem;
+  padding: 0.5rem;
+  background: rgba(103, 58, 183, 0.15);
+  color: #673ab7;
 }
 
-.board-header-item {
+.board-header-column {
   display: flex;
   flex-direction: column;
 }
 
-.board-info-header > .board-header-item {
+.board-header-title {
+  font-weight: 500;
+  margin: 0;
+}
+
+.board-info-header > .board-header-column {
   flex-grow: 0;
-}
-
-.board-info-header > .board-header-item:not(:last-child) {
-  padding-right: 1rem;
-  border-right: 1px solid #d9d9d9;
-}
-
-.board-info-header > .board-header-item:last-child {
-  padding-left: 1rem;
-  /* border-right: 1px solid #d9d9d9; */
 }
 
 /* ========================================================================== */
@@ -66,9 +61,14 @@
 /* ========================================================================== */
 .lists-container {
   display: flex;
+  height: 100%;
+  width: inherit;
+}
+
+.list-container {
+  display: flex;
   flex-wrap: row nowrap;
   width: max-content;
-  overflow: auto;
 }
 
 .list-column {
@@ -78,12 +78,17 @@
   min-width: 300px;
   width: 300px;
   min-height: 20px;
+  height: fit-content;
   border: 1px solid #d9d9d9;
   border-radius: 6px;
   padding: 0.5rem;
 }
 
-.lists-container > .list-column:not(:last-child) {
+.list-container > .list-column {
+  margin-right: 1rem !important;
+}
+
+.list-container > .column {
   margin-right: 1rem !important;
 }
 

@@ -1,24 +1,27 @@
 <ng-container *ngIf="board$ | async as board">
   <div class="board-root">
-    <div class="boards-container">
-      <!-- =============================================================== -->
-      <!-- Header: Board information -->
-      <!-- =============================================================== -->
-      <div class="board-info-header">
-        <div class="board-header-item">
-          <h2>Board Name</h2>
-          <p>{{ board.title }}</p>
-        </div>
-        <div class="board-header-item">
-          <h2>No. of Lists</h2>
-          <p>{{ lists?.length }}</p>
-        </div>
+    <!-- =============================================================== -->
+    <!-- Header: Board information -->
+    <!-- =============================================================== -->
+    <div class="board-info-header">
+      <div class="board-header-column">
+        <p class="board-header-title">Board Name</p>
+        <p>{{ board.title }}</p>
       </div>
+      <div class="vl"></div>
+      <div class="board-header-column">
+        <p class="board-header-title">No. of Lists</p>
+        <p>{{ lists?.length }}</p>
+      </div>
+      <span class="spacer"></span>
+      <button mat-icon-button>
+        <mat-icon>more_vertical</mat-icon>
+      </button>
+    </div>
 
-      <mat-divider></mat-divider>
-
-      <div class="row full-height full-width">
-        <div *ngIf="lists" class="lists-container" cdkDropListGroup>
+    <div class="scrollable-container">
+      <div class="lists-container">
+        <div *ngIf="lists" class="list-container" cdkDropListGroup>
           <div
             *ngFor="let list of lists; index as listIndex"
             class="list-column"
@@ -44,7 +47,8 @@
                 <mat-menu #menu="matMenu" xPosition="before" role="menu">
                   <button
                     mat-menu-item
-                    (click)="openClearListConfirmationDialog(list._id)">
+                    (click)="openClearListConfirmationDialog(list._id)"
+                  >
                     Clear list ...
                   </button>
                   <button
