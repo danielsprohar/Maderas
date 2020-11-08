@@ -64,7 +64,7 @@
                   <p class="item-title">{{ item.title }}</p>
                   <span class="spacer"></span>
                   <!-- ================================================================ -->
-                  <!-- Item Action Menu -->
+                  <!-- Item Actions Menu -->
                   <!-- ================================================================ -->
                   <button
                     mat-icon-button
@@ -75,7 +75,9 @@
                     <mat-icon>more_horiz</mat-icon>
                   </button>
                   <mat-menu #itemMenu="matMenu" role="menu" xPosition="before">
-                    <button mat-menu-item>Delete item</button>
+                    <button mat-menu-item (click)="openDeleteItemConfirmationDialog(list._id ,item._id)">
+                      Delete item
+                    </button>
                     <button mat-menu-item (click)="openEditItemModal()">
                       Edit item
                     </button>

@@ -7,6 +7,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -18,6 +19,8 @@ import { Board } from '../models/board';
 import { Item } from '../models/item';
 import { List } from '../models/list';
 import { DataService } from '../services/data.service';
+import { DialogData } from '../shared/dialog-data';
+import { UserConfirmationDialogComponent } from '../shared/user-confirmation-dialog/user-confirmation-dialog.component';
 import { PaginatedResponse } from '../wrappers/paginated-response';
 import { EditBoardComponent } from './edit-board/edit-board.component';
 
@@ -29,6 +32,8 @@ import { EditBoardComponent } from './edit-board/edit-board.component';
 export class BoardsComponent implements OnInit, OnDestroy {
   private fetchListsSubscription: Subscription;
   private moveItemSubscription: Subscription;
+  private deleteItemDialogSubscription: Subscription;
+  private deleteItemSubscription: Subscription;
 
   @ViewChild(ItemDetailsComponent)
   private readonly itemDetailsComponent: ItemDetailsComponent;
@@ -51,7 +56,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
     private readonly itemsService: DataService<Item>,
     private readonly route: ActivatedRoute,
     private readonly snackbar: MatSnackBar,
-    private readonly renderer: Renderer2
+    private readonly renderer: Renderer2,
+    private readonly dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -65,7 +71,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  fetchLists(boardId: string): void {
+  private fetchLists(boardId: string): void {
     this.fetchListsSubscription = this.listsService
       .getAll(`/lists?board=${boardId}`)
       .pipe(map((res: PaginatedResponse<List>) => res.data))
@@ -82,6 +88,12 @@ export class BoardsComponent implements OnInit, OnDestroy {
     }
     if (this.moveItemSubscription) {
       this.moveItemSubscription.unsubscribe();
+    }
+    if (this.deleteItemDialogSubscription) {
+      this.deleteItemDialogSubscription.unsubscribe();
+    }
+    if (this.deleteItemSubscription) {
+      this.deleteItemSubscription.unsubscribe();
     }
   }
 
@@ -165,6 +177,46 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
     const modal = document.getElementById('viewItemModal');
     this.renderer.setStyle(modal, 'display', 'block');
+  }
+
+  // =========================================================================
+
+  private removeItem(listId: string, itemId: string): void {
+    const list = this.lists.find((l) => l._id === listId);
+    const i = list.items.findIndex((item) => item._id === itemId);
+    list.items.splice(i, 1);
+  }
+
+  // =========================================================================
+
+  private deleteItem(listId: string, itemId: string): void {
+    const path = `/items/${itemId}`;
+    this.deleteItemSubscription = this.itemsService.remove(path).subscribe(
+      () => {
+        this.removeItem(listId, itemId);
+      },
+      (err) => {
+        this.snackbar.open(err, null, {
+          panelClass: 'danger',
+        });
+      }
+    );
+  }
+
+  // =========================================================================
+
+  openDeleteItemConfirmationDialog(listId: string, itemId: string): void {
+    const dialogRef = this.dialog.open(UserConfirmationDialogComponent, {
+      data: new DialogData(),
+    });
+
+    this.deleteItemDialogSubscription = dialogRef
+      .afterClosed()
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.deleteItem(listId, itemId);
+        }
+      });
   }
 
   // =========================================================================
