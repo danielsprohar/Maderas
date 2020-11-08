@@ -14,9 +14,20 @@
         <p>{{ lists?.length }}</p>
       </div>
       <span class="spacer"></span>
-      <button mat-icon-button>
+      <button mat-icon-button [matMenuTriggerFor]="boardsMenu">
         <mat-icon>more_vertical</mat-icon>
       </button>
+      <mat-menu #boardsMenu="matMenu" xPosition="before" role="menu">
+        <button mat-menu-item (click)="openEditBoardModal(board)">
+          Edit board ...
+        </button>
+        <button
+          mat-menu-item
+          (click)="openDeleteBoardConfirmationDialog(board._id)"
+        >
+          Delete board ...
+        </button>
+      </mat-menu>
     </div>
 
     <div class="scrollable-container">

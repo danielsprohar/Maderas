@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EditItemComponent } from '../items/edit-item/edit-item.component';
@@ -49,9 +49,11 @@ export class BoardsComponent implements OnInit, OnDestroy {
   public item: Item;
 
   constructor(
+    private readonly boardsService: DataService<Board>,
     private readonly listsService: DataService<List>,
     private readonly itemsService: DataService<Item>,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly snackbar: MatSnackBar,
     private readonly renderer: Renderer2,
     private readonly dialog: MatDialog
@@ -87,6 +89,44 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   // =========================================================================
   // Board methods
+  // =========================================================================
+
+  private deleteBoard(id: string): void {
+    const path = `/boards/${id}`;
+    const sub = this.boardsService.remove(path).subscribe(
+      () => {
+        this.snackbar.open('Your board is no more', null, {
+          panelClass: 'success',
+        });
+
+        this.router.navigate(['/dashboard/boards']);
+      },
+      (err) => {
+        this.snackbar.open(err, null, {
+          panelClass: 'danger',
+        });
+      }
+    );
+
+    this.subscriptions.push(sub);
+  }
+
+  // =========================================================================
+
+  openDeleteBoardConfirmationDialog(boardId: string): void {
+    const dialogRef = this.dialog.open(UserConfirmationDialogComponent, {
+      data: new DialogData(),
+    });
+
+    const sub = dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.deleteBoard(boardId);
+      }
+    });
+
+    this.subscriptions.push(sub);
+  }
+
   // =========================================================================
 
   openEditBoardModal(board: Board): void {

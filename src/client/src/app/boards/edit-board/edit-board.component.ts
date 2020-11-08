@@ -16,7 +16,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { DataService } from 'src/app/services/data.service';
-import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 
 @Component({
   selector: 'app-edit-board',
@@ -95,13 +94,10 @@ export class EditBoardComponent implements OnInit, OnDestroy {
             panelClass: 'success',
           });
           Object.assign(this.board, res);
+          this.close();
         },
         (err) => {
           this.snackbar.open(err, null, { panelClass: 'danger' });
-        },
-        () => {
-          // Close component
-          this.close();
         }
       );
   }
