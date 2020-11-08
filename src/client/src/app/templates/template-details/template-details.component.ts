@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -30,7 +30,8 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly snackbar: MatSnackBar,
     private readonly boardsService: DataService<Board>,
-    private readonly auth: AuthService
+    private readonly auth: AuthService,
+    private readonly renderer: Renderer2
   ) {}
 
   ngOnInit(): void {
@@ -49,9 +50,16 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  toggleModal(): void {
-    const menu = document.getElementById('dropdown');
-    menu.classList.toggle('is-active');
+  openModal(): void {
+    const modal = document.getElementById('modal');
+    this.renderer.setStyle(modal, 'display', 'block');
+  }
+
+  // =========================================================================
+
+  closeModal(): void {
+    const modal = document.getElementById('modal');
+    this.renderer.setStyle(modal, 'display', 'none');
   }
 
   // =========================================================================
