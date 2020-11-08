@@ -1,12 +1,11 @@
-import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Board } from 'src/app/models/board';
 import { DataService } from 'src/app/services/data.service';
 import { PaginatedResponse } from 'src/app/wrappers/paginated-response';
-import { CreateBoardComponent } from '../create-board/create-board.component';
 
 @Component({
   selector: 'app-all-boards',
@@ -19,9 +18,6 @@ export class AllBoardsComponent implements OnInit {
     new Date().valueOf() - 1000 * 60 * 60 * 24 * 7
   );
 
-  @ViewChild(CreateBoardComponent)
-  private readonly createBoardComponent: CreateBoardComponent;
-
   constructor(
     private readonly router: Router,
     private readonly dataService: DataService<Board>,
@@ -30,8 +26,10 @@ export class AllBoardsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const path = `/boards?user=${this.auth.getUser().id}`;
+
     this.boards$ = this.dataService
-      .getAll('/boards')
+      .getAll(path)
       .pipe(map((res: PaginatedResponse<Board>) => res.data));
   }
 

@@ -7,6 +7,7 @@ const { Item, validate } = require('../models/item')
 const { PaginatedResponse } = require('../application/paginated-response')
 const isValidObjectId = require('../middleware/http-param-validation')
 const isValidMoveItemRequest = require('../middleware/move-item')
+const mongoose = require('mongoose')
 
 // ===========================================================================
 // Add an Item
@@ -45,12 +46,21 @@ router.post('/', async (req, res, next) => {
 // ===========================================================================
 
 router.get('/', async (req, res, next) => {
+  if (!mongoose.Types.ObjectId.isValid(req.query.list)) {
+    return res
+      .status(httpStatusCodes.badRequest)
+      .send('A valid List ID was not specified.')
+  }
+
   const pageIndex = req.query.pageIndex || 0
   const pageSize = req.query.pageSize || 50
+  const query = {
+    list: req.query.list
+  }
 
   try {
-    const count = await Item.countDocuments()
-    const items = await Item.find()
+    const count = await Item.countDocuments(query)
+    const items = await Item.find(query)
       .sort('_id')
       .skip(pageIndex * pageSize)
       .limit(pageSize)

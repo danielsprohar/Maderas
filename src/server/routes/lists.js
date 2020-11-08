@@ -46,15 +46,14 @@ router.post('/', async (req, res, next) => {
 // ===========================================================================
 
 router.get('/', async (req, res, next) => {
-  const pageIndex = req.query.pageIndex || 0
-  const pageSize = req.query.pageSize || 50
-
   if (!mongoose.Types.ObjectId.isValid(req.query.board)) {
     return res
       .status(httpStatusCodes.unprocessableEntity)
-      .send("Invalid object id for 'board'")
+      .send('A valid Board ID was not specified.')
   }
 
+  const pageIndex = req.query.pageIndex || 0
+  const pageSize = req.query.pageSize || 50
   const query = {
     board: req.query.board
   }

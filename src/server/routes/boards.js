@@ -8,6 +8,7 @@ const { Item } = require('../models/item')
 const { Template } = require('../models/template')
 const { PaginatedResponse } = require('../application/paginated-response')
 const isValidObjectId = require('../middleware/http-param-validation')
+const mongoose = require('mongoose')
 
 // ===========================================================================
 // Create
@@ -38,12 +39,21 @@ router.post('/', async (req, res, next) => {
 // ===========================================================================
 
 router.get('/', async (req, res, next) => {
+  if (!mongoose.Types.ObjectId.isValid(req.query.user)) {
+    return res
+      .status(httpStatusCodes.badRequest)
+      .send('A valid User ID was not specified.')
+  }
+
   const pageIndex = req.query.pageIndex || 0
   const pageSize = req.query.pageSize || 50
+  const query = {
+    user: req.query.user
+  }
 
   try {
-    const count = await Board.countDocuments()
-    const boards = await Board.find()
+    const count = await Board.countDocuments(query)
+    const boards = await Board.find(query)
       .sort('-_id')
       .skip(pageIndex * pageSize)
       .limit(pageSize)
@@ -104,12 +114,12 @@ router.delete('/:id', isValidObjectId, async (req, res, next) => {
 
   try {
     // Remove every item from every list
-    board.lists.forEach((list) => {
+    for (const list of board.lists) {
       await Item.deleteMany({
         list: list._id
       })
-    })
-    
+    }
+
     // Remove every list
     await List.deleteMany({
       board: board._id
