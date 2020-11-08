@@ -3,8 +3,9 @@ const router = express.Router()
 const winston = require('../config/winston')
 const httpStatusCodes = require('../constants/http-status-codes')
 const { Board, validate } = require('../models/board')
-const { Template } = require('../models/template')
 const { List } = require('../models/list')
+const { Item } = require('../models/item')
+const { Template } = require('../models/template')
 const { PaginatedResponse } = require('../application/paginated-response')
 const isValidObjectId = require('../middleware/http-param-validation')
 
@@ -92,8 +93,41 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
 })
 
 // ===========================================================================
+// Delete a Board
+// ===========================================================================
+
+router.delete('/:id', isValidObjectId, async (req, res, next) => {
+  const board = await Board.findById(req.params.id)
+  if (!board) {
+    return res.status(httpStatusCodes.notFound).send('Board does not exist.')
+  }
+
+  try {
+    // Remove every item from every list
+    board.lists.forEach((list) => {
+      await Item.deleteMany({
+        list: list._id
+      })
+    })
+    
+    // Remove every list
+    await List.deleteMany({
+      board: board._id
+    })
+
+    // Delete the board
+    await board.remove()
+
+    res.status(httpStatusCodes.noContent).send()
+  } catch (e) {
+    next(e)
+  }
+})
+
+// ===========================================================================
 // Create from a template
 // ===========================================================================
+
 router.post(
   '/create-from/template/:id',
   isValidObjectId,
