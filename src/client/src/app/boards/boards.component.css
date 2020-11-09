@@ -140,9 +140,14 @@
   flex-flow: row wrap;
   align-items: center;
   justify-content: flex-start;
-  cursor: pointer !important;
 }
 
 .badge {
+  display: flex;
+  align-items: center;
   margin-right: 0.25rem;
+}
+
+.badge > .mat-icon {
+  cursor: default;
 }

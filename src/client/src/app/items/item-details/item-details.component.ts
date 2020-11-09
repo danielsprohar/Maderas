@@ -246,9 +246,6 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
     const item = this.getItem();
     const path = `/items/${this.item._id}`;
 
-    console.log(item);
-    console.log(path);
-
     this.saveItemSubscription = this.itemsService.update(path, item).subscribe(
       (res: Item) => {
         this.itemUpdatedEvent.emit(res);

@@ -1,6 +1,6 @@
 <ng-container *ngIf="list && item">
   <div class="item-details-container">
-    <form [formGroup]="form" (ngSubmit)="save()">
+    <form [formGroup]="form">
       <div class="modal-header">
         <span class="spacer"></span>
         <button mat-icon-button (click)="close()">
@@ -50,7 +50,7 @@
 
         <div
           #descriptionFakeTextarea
-          class="details-container fake-textarea"
+          class="fake-textarea details-container"
           (click)="editDescription()"
         >
           <ng-container
@@ -65,9 +65,7 @@
           </ng-container>
 
           <ng-template #descriptionEditorTemplate>
-            <div class="fake-textarea">
-              <p>Add a more detailed description ...</p>
-            </div>
+            <p>Add a more detailed description ...</p>
           </ng-template>
         </div>
 
