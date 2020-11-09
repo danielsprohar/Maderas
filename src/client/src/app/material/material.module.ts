@@ -15,6 +15,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { A11yModule } from '@angular/cdk/a11y';
 import {
   MatSnackBarModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
@@ -39,7 +40,8 @@ import {
     MatSnackBarModule,
     MatSelectModule,
     MatDialogModule,
-    MatSidenavModule
+    MatSidenavModule,
+    A11yModule
   ],
   exports: [
     MatButtonModule,
@@ -57,7 +59,8 @@ import {
     MatSnackBarModule,
     MatSelectModule,
     MatDialogModule,
-    MatSidenavModule
+    MatSidenavModule,
+    A11yModule
   ],
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },

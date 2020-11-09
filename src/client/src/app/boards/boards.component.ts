@@ -279,7 +279,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
     }
 
     this.itemDetailsComponent.list = list;
-    this.itemDetailsComponent.item = item;
+    this.itemDetailsComponent.setItem(item);
 
     const modal = document.getElementById('viewItemModal');
     this.renderer.setStyle(modal, 'display', 'block');

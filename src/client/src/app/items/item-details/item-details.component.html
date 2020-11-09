@@ -1,65 +1,98 @@
 <ng-container *ngIf="list && item">
   <div class="item-details-container">
-    <!-- =================================================================== -->
-    <!-- Title -->
-    <!-- =================================================================== -->
-    <div class="modal-header full-width">
-      <div class="column">
-        <div class="row flex-centered-y">
-          <mat-icon>title</mat-icon>
+    <form [formGroup]="form">
+      <div class="modal-header">
+        <span class="spacer"></span>
+        <button mat-icon-button (click)="close()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <!-- ================================================================= -->
+      <!-- Title -->
+      <!-- ================================================================= -->
+      <div class="details-section">
+        <div class="details-header">
+          <mat-icon class="header-icon">title</mat-icon>
           <h3 class="no-margin">Title</h3>
-          <span class="spacer"></span>
-          <button mat-icon-button (click)="close()">
-            <mat-icon>close</mat-icon>
-          </button>
         </div>
-        <mat-divider></mat-divider>
+
         <div class="details-container">
-          <p>{{ item.title | titlecase }}</p>
+          <p>{{ title.value | titlecase }}</p>
+        </div>
+        <div #titleEditorContainer class="title-editor-container">
+          <textarea
+            matInput
+            #titleEditor
+            class="editor title-editor"
+            formControlName="title"
+          ></textarea>
         </div>
       </div>
-    </div>
 
-    <!-- =================================================================== -->
-    <!-- Description -->
-    <!-- =================================================================== -->
-    <mat-divider></mat-divider>
+      <!-- ================================================================= -->
+      <!-- Description -->
+      <!-- ================================================================= -->
+      <div class="details-section">
+        <div class="details-header">
+          <mat-icon class="header-icon">article</mat-icon>
+          <h3 class="no-margin">Description</h3>
+        </div>
 
-    <div class="column full-width">
-      <div class="row flex-centered-y">
-        <mat-icon>article</mat-icon>
-        <h3 class="no-margin">Description</h3>
-      </div>
-      <mat-divider></mat-divider>
-      <ng-container *ngIf="item.description">
-        <div class="details-container">
-          <p
-            class="description-line"
-            *ngFor="let line of getItemDescriptionLines()"
+        <div
+          #descriptionFakeTextarea
+          class="details-container fake-textarea"
+          (click)="editDescription()"
+        >
+          <ng-container
+            *ngIf="item.description; else descriptionEditorTemplate"
           >
-            {{ line }}
-          </p>
+            <p
+              class="description-line"
+              *ngFor="let line of getItemDescriptionLines()"
+            >
+              {{ line }}
+            </p>
+          </ng-container>
+
+          <ng-template #descriptionEditorTemplate>
+            <div class="fake-textarea">
+              <p>Add a more detailed description ...</p>
+            </div>
+          </ng-template>
         </div>
-      </ng-container>
-    </div>
 
-    <!-- =================================================================== -->
-    <!-- Due Date -->
-    <!-- =================================================================== -->
-    <mat-divider></mat-divider>
-
-    <div class="column full-width">
-      <div class="row flex-centered-y">
-        <mat-icon>today</mat-icon>
-        <h3 class="no-margin">Due Date</h3>
+        <div #descriptionEditorContainer class="description-editor-container">
+          <textarea
+            matInput
+            #descriptionEditor
+            class="editor description-editor"
+            placeholder="Add a more detailed description ..."
+            formControlName="description"
+          ></textarea>
+          <div class="button-bar">
+            <button mat-raised-button color="primary">Save</button>
+            <button mat-icon-button (click)="closeDescriptionEditor()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
       </div>
-      <mat-divider></mat-divider>
 
-      <ng-container *ngIf="item.dueDate">
-        <div class="details-container">
-          <p>{{ item.dueDate | date: "medium" }}</p>
+      <!-- ================================================================= -->
+      <!-- Due Date -->
+      <!-- ================================================================= -->
+      <div class="details-section">
+        <div class="details-header">
+          <mat-icon class="header-icon">today</mat-icon>
+          <h3 class="no-margin">Due Date</h3>
         </div>
-      </ng-container>
-    </div>
+
+        <ng-container *ngIf="item.dueDate">
+          <div class="details-container">
+            <p>{{ item.dueDate | date: "medium" }}</p>
+          </div>
+        </ng-container>
+      </div>
+    </form>
   </div>
 </ng-container>
