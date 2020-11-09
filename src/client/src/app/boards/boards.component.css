@@ -28,7 +28,7 @@
 
 .scrollable-container {
   position: inherit;
-  padding: 0.5rem;
+  padding: 1.5rem 0.5rem;
   overflow-y: hidden;
   overflow-x: auto;
   height: 100%;
@@ -37,7 +37,7 @@
 .board-info-header {
   display: flex;
   flex-direction: row;
-  padding: 0.5rem;
+  padding: 0.25rem 0.5rem;
   background: rgba(103, 58, 183, 0.15);
   color: #673ab7;
 }
