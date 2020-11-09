@@ -1,16 +1,17 @@
 .item-details-container {
   display: flex;
   flex-direction: column;
+  width: 400px;
 }
 
-/* .item-details-container > .modal-header {
-  margin-bottom: 0.25rem;
-} */
-
 .item-details-container > .column {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .description-line {
   margin-bottom: 0.5rem;
+}
+
+.details-container {
+  padding-left: 0.5rem;
 }

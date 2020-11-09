@@ -1,47 +1,65 @@
 <ng-container *ngIf="list && item">
   <div class="item-details-container">
-    <!-- ======================================================================= -->
+    <!-- =================================================================== -->
     <!-- Title -->
-    <!-- ======================================================================= -->
-    <div class="modal-header">
+    <!-- =================================================================== -->
+    <div class="modal-header full-width">
       <div class="column">
         <div class="row flex-centered-y">
           <mat-icon>title</mat-icon>
-          <h3 class="no-margin">{{ item.title }}</h3>
-          <!--  -->
-          <!-- <span class="spacer"></span>
-          <span>
-            In list <a href="#">{{ list.title }}</a>
-          </span> -->
+          <h3 class="no-margin">Title</h3>
           <span class="spacer"></span>
-          <!--  -->
           <button mat-icon-button (click)="close()">
             <mat-icon>close</mat-icon>
           </button>
         </div>
+        <mat-divider></mat-divider>
+        <div class="details-container">
+          <p>{{ item.title | titlecase }}</p>
+        </div>
       </div>
     </div>
-    <!--  -->
-    <mat-divider></mat-divider>
-    <!-- ======================================================================= -->
-    <!-- Due Date -->
-    <!-- ======================================================================= -->
-    <div class="column"></div>
 
-    <!-- ======================================================================= -->
+    <!-- =================================================================== -->
     <!-- Description -->
-    <!-- ======================================================================= -->
-    <ng-container *ngIf="item.description">
-      <div class="column">
-        <div class="row flex-centered-y">
-          <mat-icon>article</mat-icon>
-          <h3 class="no-margin">Description</h3>
-        </div>
+    <!-- =================================================================== -->
+    <mat-divider></mat-divider>
 
-        <ng-container *ngFor="let line of getItemDescriptionLines()">
-          <p class="description-line">{{ line }}</p>
-        </ng-container>
+    <div class="column full-width">
+      <div class="row flex-centered-y">
+        <mat-icon>article</mat-icon>
+        <h3 class="no-margin">Description</h3>
       </div>
-    </ng-container>
+      <mat-divider></mat-divider>
+      <ng-container *ngIf="item.description">
+        <div class="details-container">
+          <p
+            class="description-line"
+            *ngFor="let line of getItemDescriptionLines()"
+          >
+            {{ line }}
+          </p>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- Due Date -->
+    <!-- =================================================================== -->
+    <mat-divider></mat-divider>
+
+    <div class="column full-width">
+      <div class="row flex-centered-y">
+        <mat-icon>today</mat-icon>
+        <h3 class="no-margin">Due Date</h3>
+      </div>
+      <mat-divider></mat-divider>
+
+      <ng-container *ngIf="item.dueDate">
+        <div class="details-container">
+          <p>{{ item.dueDate | date: "medium" }}</p>
+        </div>
+      </ng-container>
+    </div>
   </div>
 </ng-container>

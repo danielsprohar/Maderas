@@ -273,7 +273,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   // Item methods
   // =========================================================================
 
-  viewItemDetails(list: List, item: Item): void {
+  openItemDetailsModal(list: List, item: Item): void {
     if (!list || !item) {
       return;
     }
@@ -356,19 +356,6 @@ export class BoardsComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   /**
-   * Handles the event that is emitted by the `ItemActionsMenuComponent`.
-   * @param item The `Item` to edit.
-   */
-  openEditItemModal(item: Item): void {
-    this.editItemComponent.setItem(item);
-
-    const modal = document.getElementById('editItemModal');
-    modal.style.display = 'block';
-  }
-
-  // =========================================================================
-
-  /**
    * Handles the event that is emitted by the `EditItemComponent`.
    * @param item The `Item` that was updated.
    */
@@ -381,9 +368,18 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
+  openEditItemModal(item: Item): void {
+    this.editItemComponent.setItem(item);
+
+    const modal = document.getElementById('editItemModal');
+    this.renderer.setStyle(modal, 'display', 'block');
+  }
+
+  // =========================================================================
+
   closeEditItemModal(): void {
     const modal = document.getElementById('editItemModal');
-    modal.style.display = 'none';
+    this.renderer.setStyle(modal, 'display', 'none');
   }
 
   // =========================================================================

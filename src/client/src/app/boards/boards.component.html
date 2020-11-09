@@ -108,15 +108,21 @@
                     >
                       Delete item
                     </button>
-                    <button mat-menu-item (click)="openEditItemModal()">
+                    <button mat-menu-item (click)="openEditItemModal(item)">
                       Edit item
+                    </button>
+                    <button
+                      mat-menu-item
+                      (click)="openItemDetailsModal(list, item)"
+                    >
+                      View item
                     </button>
                   </mat-menu>
                 </div>
 
                 <!--  Item badges -->
                 <ng-container *ngIf="item.description || item.dueDate">
-                  <div class="badges" (click)="viewItemDetails(list, item)">
+                  <div class="badges">
                     <ng-container *ngIf="item.description">
                       <div class="badge">
                         <button
