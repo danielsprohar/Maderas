@@ -136,19 +136,21 @@ export class EditItemComponent implements OnInit, OnDestroy {
       list: this.item.list,
     });
 
-    const dueDateStr = this.getDateString(this.dueDate.value as Date);
+    if (this.dueDate.value) {
+      const dueDateStr = this.getDateString(this.dueDate.value as Date);
 
-    if (this.datetime.value) {
-      const timeStr = this.datetime.value;
+      if (this.datetime.value) {
+        const timeStr = this.datetime.value;
 
-      const dueDatetimeStr = dueDateStr + 'T' + timeStr;
-      item.dueDate = new Date(dueDatetimeStr).toISOString();
-      return item;
+        const dueDatetimeStr = dueDateStr + 'T' + timeStr;
+        item.dueDate = new Date(dueDatetimeStr).toISOString();
+        return item;
+      }
+
+      item.dueDate = new Date(
+        (this.dueDate.value as Date).valueOf()
+      ).toISOString();
     }
-
-    item.dueDate = new Date(
-      (this.dueDate.value as Date).valueOf()
-    ).toISOString();
 
     return item;
   }
