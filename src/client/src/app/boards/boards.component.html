@@ -215,6 +215,7 @@
   <div class="modal-content">
     <app-item-details
       (closeModalEvent)="closeItemDetailsModal()"
+      (itemUpdatedEvent)="handleItemUpdatedEvent($event)"
     ></app-item-details>
   </div>
 </div>

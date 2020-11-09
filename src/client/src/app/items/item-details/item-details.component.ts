@@ -2,6 +2,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -14,6 +15,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
@@ -23,18 +25,37 @@ import { DataService } from 'src/app/services/data.service';
   templateUrl: './item-details.component.html',
   styleUrls: ['./item-details.component.css'],
 })
-export class ItemDetailsComponent implements OnInit {
+export class ItemDetailsComponent implements OnInit, OnDestroy {
+  private saveItemSubscription: Subscription;
   public form: FormGroup;
 
   @Input() list: List;
   @Input() item: Item;
   @Output() closeModalEvent = new EventEmitter<boolean>();
+  @Output() itemUpdatedEvent = new EventEmitter<Item>();
 
-  @ViewChild('descriptionEditorContainer')
-  public descriptionEditorContainer: any;
+  // =========================================================================
+  // Title references
+  // =========================================================================
+
+  @ViewChild('titleFakeTextarea')
+  public titleFakeTextarea: any;
+
+  @ViewChild('titleEditorContainer')
+  public titleEditorContainer: any;
+
+  @ViewChild('titleEditor')
+  public titleEditor: any;
+
+  // =========================================================================
+  // Description references
+  // =========================================================================
 
   @ViewChild('descriptionFakeTextarea')
   public descriptionFakeTextarea: any;
+
+  @ViewChild('descriptionEditorContainer')
+  public descriptionEditorContainer: any;
 
   @ViewChild('descriptionEditor')
   public descriptionEditor: any;
@@ -67,6 +88,14 @@ export class ItemDetailsComponent implements OnInit {
 
   // =========================================================================
 
+  ngOnDestroy(): void {
+    if (this.saveItemSubscription) {
+      this.saveItemSubscription.unsubscribe();
+    }
+  }
+
+  // =========================================================================
+
   get title(): AbstractControl {
     return this.form.get('title');
   }
@@ -84,6 +113,48 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   // =========================================================================
+  // Title methods
+  // =========================================================================
+
+  editTitle(): void {
+    this.closeDescriptionEditor();
+
+    this.renderer.setStyle(
+      this.titleFakeTextarea.nativeElement,
+      'display',
+      'none'
+    );
+
+    this.renderer.setStyle(
+      this.titleEditorContainer.nativeElement,
+      'display',
+      'block'
+    );
+
+    this.titleEditor.nativeElement.focus();
+  }
+
+  // =========================================================================
+
+  closeTitleEditor(): void {
+    this.title.setValue(this.item.title);
+
+    this.renderer.setStyle(
+      this.titleFakeTextarea.nativeElement,
+      'display',
+      'block'
+    );
+
+    this.renderer.setStyle(
+      this.titleEditorContainer.nativeElement,
+      'display',
+      'none'
+    );
+  }
+
+  // =========================================================================
+  // Description methods
+  // =========================================================================
 
   closeDescriptionEditor(): void {
     this.description.setValue(this.item.description);
@@ -99,13 +170,13 @@ export class ItemDetailsComponent implements OnInit {
       'display',
       'none'
     );
-
-    this.renderer.removeClass(this.descriptionEditor.nativeElement, 'editing');
   }
 
   // =========================================================================
 
   editDescription(): void {
+    this.closeTitleEditor();
+
     this.renderer.setStyle(
       this.descriptionFakeTextarea.nativeElement,
       'display',
@@ -118,10 +189,11 @@ export class ItemDetailsComponent implements OnInit {
       'block'
     );
 
-    this.renderer.addClass(this.descriptionEditor.nativeElement, 'editing');
     this.descriptionEditor.nativeElement.focus();
   }
 
+  // =========================================================================
+  // Facilitators
   // =========================================================================
 
   setItem(item: Item): void {
@@ -131,9 +203,22 @@ export class ItemDetailsComponent implements OnInit {
 
   // =========================================================================
 
+  private getItem(): Item {
+    const item = new Item({
+      title: this.title.value,
+      description: this.description.value,
+      list: this.item.list,
+    });
+
+    return item;
+  }
+
+  // =========================================================================
+
   setFormFields(item: Item): void {
     this.title.setValue(item.title);
     this.description.setValue(item.description);
+    // TODO: Add the ability to edit/add the Due Date
     // this.title.setValue(item.title);
   }
 
@@ -148,10 +233,35 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   // =========================================================================
+  // Action handlers
+  // =========================================================================
 
   close(): void {
     this.closeModalEvent.emit(true);
   }
 
   // =========================================================================
+
+  save(): void {
+    const item = this.getItem();
+    const path = `/items/${this.item._id}`;
+
+    console.log(item);
+    console.log(path);
+
+    this.saveItemSubscription = this.itemsService.update(path, item).subscribe(
+      (res: Item) => {
+        this.itemUpdatedEvent.emit(res);
+        this.close();
+        this.snackbar.open('Your item was updated', null, {
+          panelClass: 'success',
+        });
+      },
+      (err) => {
+        this.snackbar.open(err, null, {
+          panelClass: 'danger',
+        });
+      }
+    );
+  }
 }

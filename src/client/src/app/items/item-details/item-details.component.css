@@ -38,6 +38,14 @@
   margin-right: 0.5rem;
 }
 
+.title-fake-textarea {
+  display: block;
+}
+
+.title-fake-textarea:hover {
+  cursor: text;
+}
+
 .fake-textarea {
   background-color: rgba(9, 30, 66, 0.04);
   box-shadow: none;
@@ -56,43 +64,8 @@
 
 .title-editor-container {
   display: none;
-  position: relative;
 }
 
 .description-editor-container {
   display: none;
-  position: relative;
 }
-
-.editor {
-  background: #fff;
-  overflow: hidden;
-  overflow-wrap: break-word;
-  height: 108px;
-  border-radius: 3px;
-  padding: 8px 12px;
-  border: 1px solid;
-}
-
-.editor:focus {
-  background-color: #fff;
-  border: none;
-  box-shadow: inset 0 0 0 2px #0079bf;
-}
-
-.editing {
-  display: block;
-  z-index: 50;
-  width: 100%;
-  margin-top: 0.5rem;
-  resize: none;
-}
-
-.description-editor {
-  height: 108px;
-}
-
-.title-editor {
-  height: 33.2px;
-}
-
