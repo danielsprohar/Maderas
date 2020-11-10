@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const Joi = require('joi')
+const jwt = require('jsonwebtoken')
 
 /**
  * Regex pattern for valid email address.
@@ -59,6 +60,23 @@ function validate(requestBody) {
   })
 
   return schema.validate(requestBody)
+}
+
+// ===========================================================================
+
+userSchema.methods.generateJwtToken = function () {
+  return jwt.sign(
+    {
+      id: this.id,
+      username: this.username
+    },
+    process.env.JWT_KEY,
+    {
+      expiresIn: '1h',
+      issuer: 'http://localhost:5000',
+      audience: 'http://localhost:4200'
+    }
+  )
 }
 
 // ===========================================================================

@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const winston = require('../config/winston')
-const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const httpStatusCodes = require('../constants/http-status-codes')
 const { User, validate } = require('../models/user')
@@ -102,30 +101,8 @@ function buildResponse(userDoc) {
       email: userDoc.email,
       username: userDoc.username
     },
-    token: buildJwtToken(userDoc)
+    token: userDoc.generateJwtToken()
   }
-}
-
-// ===========================================================================
-
-/**
- * Builds a new JWT token with the attributes of the given `User` entity.
- * @param {User} user the `User` entity
- * @returns {string} A new JWT token
- */
-function buildJwtToken(user) {
-  return jwt.sign(
-    {
-      id: user.id,
-      username: user.username
-    },
-    process.env.JWT_KEY,
-    {
-      expiresIn: '1h',
-      issuer: 'http://localhost:5000',
-      audience: 'http://localhost:4200'
-    }
-  )
 }
 
 // ===========================================================================
