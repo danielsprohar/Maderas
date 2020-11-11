@@ -39,7 +39,7 @@ router.post('/', async (req, res, next) => {
 // ===========================================================================
 
 router.get('/', async (req, res, next) => {
-  if (!mongoose.Types.ObjectId.isValid(req.query.user)) {
+  if (req.query.user && !mongoose.Types.ObjectId.isValid(req.query.user)) {
     return res
       .status(httpStatusCodes.badRequest)
       .send('A valid User ID was not specified.')
@@ -47,8 +47,9 @@ router.get('/', async (req, res, next) => {
 
   const pageIndex = req.query.pageIndex || 0
   const pageSize = req.query.pageSize || 50
-  const query = {
-    user: req.query.user
+  let query = {}
+  if (req.query.user) {
+    query.user = req.query.user
   }
 
   try {
