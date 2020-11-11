@@ -71,6 +71,9 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', isValidObjectId, async (req, res, next) => {
   const board = await Board.findById(req.params.id).populate('lists')
+  if (!board) {
+    return res.status(httpStatusCodes.notFound).send('Board does not exist.')
+  }
   res.json(board)
 })
 
