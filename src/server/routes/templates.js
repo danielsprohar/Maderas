@@ -1,5 +1,5 @@
 const express = require('express')
-const isValidObjectId = require('../middleware/http-param-validation')
+const isValidObjectId = require('../middleware/object-id')
 const { PaginatedResponse } = require('../application/paginated-response')
 const router = express.Router()
 const httpStatusCodes = require('../constants/http-status-codes')

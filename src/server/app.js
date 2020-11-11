@@ -1,4 +1,4 @@
-const winston = require('./config/winston')
+const winston = require('./logger/winston')
 const express = require('express')
 const app = express()
 require('dotenv').config()

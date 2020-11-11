@@ -1,6 +1,6 @@
 const httpStatusCodes = require('../constants')
 const jwt = require('jsonwebtoken')
-const winston = require('../config/winston')
+const winston = require('../logger/winston')
 
 module.exports = function isAuthenticated(req, res, next) {
   if (!req.headers.authorization) {

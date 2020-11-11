@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const winston = require('../config/winston')
+const winston = require('../logger/winston')
 const bcrypt = require('bcrypt')
 const httpStatusCodes = require('../constants/http-status-codes')
 const { User, validate } = require('../models/user')

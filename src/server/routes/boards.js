@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const winston = require('../config/winston')
+const winston = require('../logger/winston')
 const httpStatusCodes = require('../constants/http-status-codes')
 const { Board, validate } = require('../models/board')
 const { List } = require('../models/list')
 const { Item } = require('../models/item')
 const { Template } = require('../models/template')
 const { PaginatedResponse } = require('../application/paginated-response')
-const isValidObjectId = require('../middleware/http-param-validation')
+const isValidObjectId = require('../middleware/object-id')
 const mongoose = require('mongoose')
 
 // ===========================================================================

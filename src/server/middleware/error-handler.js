@@ -1,4 +1,4 @@
-const winston = require('../config/winston')
+const winston = require('../logger/winston')
 const httpStatusCodes = require('../constants/http-status-codes')
 
 module.exports = function handleError(err, req, res, next) {
