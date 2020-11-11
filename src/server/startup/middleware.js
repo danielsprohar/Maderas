@@ -1,6 +1,7 @@
 const cors = require('cors')
 const morgan = require('morgan')
 const helmet = require('helmet')
+const winston = require('../logger/winston')
 
 module.exports = function (app) {
   app.use(
@@ -11,5 +12,9 @@ module.exports = function (app) {
   )
 
   app.use(helmet())
-  app.use(morgan('dev'))
+
+  if (app.get('env') === 'development') {
+    app.use(morgan('dev'))
+    winston.info('Morgan is enabled.')
+  }
 }
