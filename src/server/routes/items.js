@@ -6,7 +6,7 @@ const { List } = require('../models/list')
 const { Item, validate } = require('../models/item')
 const { PaginatedResponse } = require('../application/paginated-response')
 const isValidObjectId = require('../middleware/object-id')
-const isValidMoveItemRequest = require('../middleware/move-item')
+const isValidMoveItemRequest = require('../middleware/move-item-request')
 const mongoose = require('mongoose')
 
 // ===========================================================================
@@ -46,17 +46,19 @@ router.post('/', async (req, res, next) => {
 // ===========================================================================
 
 router.get('/', async (req, res, next) => {
-  if (!mongoose.Types.ObjectId.isValid(req.query.list)) {
-    return res
-      .status(httpStatusCodes.badRequest)
-      .send('A valid List ID was not specified.')
+  let query = {}
+
+  if (req.query.list) {
+    if (!mongoose.Types.ObjectId.isValid(req.query.list)) {
+      return res
+        .status(httpStatusCodes.badRequest)
+        .send('A valid List ID was not specified.')
+    }
+    query.list = req.query.list
   }
 
   const pageIndex = req.query.pageIndex || 0
   const pageSize = req.query.pageSize || 50
-  const query = {
-    list: req.query.list
-  }
 
   try {
     const count = await Item.countDocuments(query)
@@ -77,6 +79,9 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', isValidObjectId, async (req, res, next) => {
   const item = await Item.findById(req.params.id)
+  if (!item) {
+    return res.status(httpStatusCodes.notFound).send('Item does not exist.')
+  }
   res.json(item)
 })
 
@@ -158,17 +163,17 @@ router.put(
     }
 
     try {
-      item.list = req.query.to
+      item.list = req.query.dest
       await item.save()
 
       await List.updateOne(
         {
-          _id: req.query.from
+          _id: req.query.src
         },
         {
           $pull: {
             items: {
-              $in: [item.id]
+              $in: [item._id]
             }
           }
         }
@@ -176,7 +181,7 @@ router.put(
 
       await List.updateOne(
         {
-          _id: req.query.to
+          _id: req.query.dest
         },
         {
           $push: {

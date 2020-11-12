@@ -63,6 +63,8 @@ describe('/api/lists', () => {
     await clearDb()
   })
 
+  // =========================================================================
+
   describe('GET /', () => {
     it('should return a paginated list', async () => {
       await initializeDb()

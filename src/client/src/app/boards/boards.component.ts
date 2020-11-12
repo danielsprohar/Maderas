@@ -394,16 +394,16 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  drop(event: CdkDragDrop<Item[]>, to: string): void {
+  drop(event: CdkDragDrop<Item[]>, dest: string): void {
     if (event.previousContainer === event.container) {
       return;
     }
 
     const item = event.previousContainer.data[event.previousIndex];
-    const from = item.list;
+    const src = item.list;
     const path = `/items/${item._id}/move`;
 
-    const params = new HttpParams().set('from', from).set('to', to);
+    const params = new HttpParams().set('src', src).set('dest', dest);
 
     const sub = this.itemsService.update(path, null, params).subscribe(
       () => {
