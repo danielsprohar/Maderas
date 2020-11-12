@@ -46,16 +46,16 @@ router.post('/', async (req, res, next) => {
 // ===========================================================================
 
 router.get('/', async (req, res, next) => {
-  if (!mongoose.Types.ObjectId.isValid(req.query.board)) {
-    return res
-      .status(httpStatusCodes.unprocessableEntity)
-      .send('A valid Board ID was not specified.')
-  }
-
   const pageIndex = req.query.pageIndex || 0
   const pageSize = req.query.pageSize || 50
-  const query = {
-    board: req.query.board
+  let query = {}
+  if (req.query.board) {
+    if (!mongoose.Types.ObjectId.isValid(req.query.board)) {
+      return res
+        .status(httpStatusCodes.unprocessableEntity)
+        .send('Invalid format: board.')
+    }
+    query.board = req.query.board
   }
 
   try {
@@ -78,6 +78,9 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', isValidObjectId, async (req, res, next) => {
   const list = await List.findById(req.params.id).populate('items')
+  if (!list) {
+    return res.status(httpStatusCodes.notFound).send('List does not exist')
+  }
   res.json(list)
 })
 
@@ -116,7 +119,7 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
 // Delete a List
 // ===========================================================================
 
-router.put('/:id/clear', isValidObjectId, async (req, res, next) => {
+router.put('/:id/clear-items', isValidObjectId, async (req, res, next) => {
   const list = await List.findById(req.params.id)
   if (!list) {
     return res.status(httpStatusCodes.notFound).send('List does not exist.')

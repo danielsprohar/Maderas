@@ -187,7 +187,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   private clearList(id: string): void {
-    const path = `/lists/${id}/clear`;
+    const path = `/lists/${id}/clear-items`;
     const sub = this.listsService.update(path, null).subscribe(
       () => {
         const list = this.lists.find((l) => l._id === id);

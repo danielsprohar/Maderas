@@ -11,7 +11,7 @@ let server = null
 // ===========================================================================
 
 async function initializeDb() {
-  await Board.collection.insertMany([
+  await Board.insertMany([
     {
       title: 'Board 1',
       user: userId
@@ -30,7 +30,7 @@ async function initializeDb() {
 // ===========================================================================
 
 async function clearDb() {
-  await Board.collection.deleteMany({})
+  await Board.deleteMany({})
 }
 
 // ===========================================================================

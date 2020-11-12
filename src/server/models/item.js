@@ -25,7 +25,6 @@ const itemSchema = new Schema(
     },
     dueDate: {
       type: Date,
-      // yesterday
       min: yesterday
     },
     list: {
