@@ -1,22 +1,15 @@
 const request = require('supertest')
-const { Board } = require('../../models/board')
-const { List } = require('../../models/list')
-const { Item } = require('../../models/item')
+const { List } = require('../../../models/list')
+const { Item } = require('../../../models/item')
 const mongoose = require('mongoose')
-const httpStatusCodes = require('../../constants/http-status-codes')
+const httpStatusCodes = require('../../../constants/http-status-codes')
 let server = null
 
 // ===========================================================================
 
 async function clearDb() {
+  await List.deleteMany({})
   await Item.deleteMany({})
-}
-
-// ===========================================================================
-
-async function createInvalidObjectIdRequest() {
-  const res = await request(server).get('/api/items/1')
-  expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
 }
 
 // ===========================================================================
@@ -32,15 +25,15 @@ async function createNotFoundRequest() {
 // ===========================================================================
 
 describe('/api/items', () => {
-  beforeEach(async () => {
-    server = require('../../app')
+  beforeEach(() => {
+    server = require('../../../app')
   })
 
   afterEach(async () => {
-    if (server) {
-      server.close()
-    }
     await clearDb()
+    if (server) {
+      await server.close()
+    }
   })
 
   // =========================================================================
@@ -74,11 +67,6 @@ describe('/api/items', () => {
   // =========================================================================
 
   describe('GET /:id', () => {
-    it(
-      'should return HTTP status 422 for an invalid object id',
-      createInvalidObjectIdRequest
-    )
-
     it('should return HTTP status 404', createNotFoundRequest)
 
     it('should return HTTP status 200 for an Item that exists', async () => {
@@ -125,11 +113,6 @@ describe('/api/items', () => {
   // =========================================================================
 
   describe('PUT /:id', () => {
-    it(
-      'should return HTTP status 422 for an invalid object id',
-      createInvalidObjectIdRequest
-    )
-
     it('should return HTTP status 404', createNotFoundRequest)
 
     it('should return HTTP status 422 for an invalid request body', async () => {
@@ -171,11 +154,6 @@ describe('/api/items', () => {
   // =========================================================================
 
   describe('DELETE /:id', () => {
-    it(
-      'should return HTTP status 422 for an invalid object id',
-      createInvalidObjectIdRequest
-    )
-
     it('should return HTTP status 404', createNotFoundRequest)
 
     it('should delete a Item and the reference id from the associated List', async () => {
@@ -213,63 +191,6 @@ describe('/api/items', () => {
 
   // =========================================================================
   describe('PUT /:id/move', () => {
-    it(
-      'should return HTTP status 422 for an invalid Item id',
-      createInvalidObjectIdRequest
-    )
-
-    // =======================================================================
-    // Test the middleware
-    // =======================================================================
-
-    it("should return HTTP status 422 for an invalid object id for 'src'", async () => {
-      // Setup
-      const id = new mongoose.Types.ObjectId().toHexString()
-      const src = 1
-      const dest = new mongoose.Types.ObjectId().toHexString()
-      const url = `/api/items/${id}/move?src=${src}&dest=${dest}`
-
-      // Test
-      const res = await request(server).put(url).send()
-      expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
-    })
-
-    it("should return HTTP status 422 for an invalid object id for 'dest'", async () => {
-      // Setup
-      const id = new mongoose.Types.ObjectId().toHexString()
-      const src = new mongoose.Types.ObjectId().toHexString()
-      const dest = 1
-      const url = `/api/items/${id}/move?src=${src}&dest=${dest}`
-
-      // Test
-      const res = await request(server).put(url).send()
-      expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
-    })
-
-    it("should return HTTP status 400 for not providing the 'src' query param", async () => {
-      // Setup
-      const id = new mongoose.Types.ObjectId().toHexString()
-      const dest = new mongoose.Types.ObjectId().toHexString()
-      const url = `/api/items/${id}/move?dest=${dest}`
-
-      // Test
-      const res = await request(server).put(url).send()
-      expect(res.status).toBe(httpStatusCodes.badRequest)
-    })
-
-    it("should return HTTP status 400 for not providing the 'dest' query param", async () => {
-      // Setup
-      const id = new mongoose.Types.ObjectId().toHexString()
-      const src = new mongoose.Types.ObjectId().toHexString()
-      const url = `/api/items/${id}/move?src=${src}`
-
-      // Test
-      const res = await request(server).put(url).send()
-      expect(res.status).toBe(httpStatusCodes.badRequest)
-    })
-
-    // =======================================================================
-
     it('should move an item from one list and append it to another list', async () => {
       // Setup
       const boardId = new mongoose.Types.ObjectId().toHexString()

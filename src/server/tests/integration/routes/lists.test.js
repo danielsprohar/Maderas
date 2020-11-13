@@ -1,42 +1,18 @@
 const request = require('supertest')
-const { Board } = require('../../models/board')
-const { List } = require('../../models/list')
-const { Item } = require('../../models/item')
+const { Board } = require('../../../models/board')
+const { List } = require('../../../models/list')
+const { Item } = require('../../../models/item')
 const mongoose = require('mongoose')
-const httpStatusCodes = require('../../constants/http-status-codes')
+const httpStatusCodes = require('../../../constants/http-status-codes')
 const boardId = new mongoose.Types.ObjectId().toHexString()
 let server = null
 
 // ===========================================================================
 
-async function initializeDb() {
-  await List.insertMany([
-    {
-      title: 'List 1',
-      board: boardId
-    },
-    {
-      title: 'List 2',
-      board: boardId
-    },
-    {
-      title: 'List 3',
-      board: boardId
-    }
-  ])
-}
-
-// ===========================================================================
-
 async function clearDb() {
+  await Board.deleteMany({})
   await List.deleteMany({})
-}
-
-// ===========================================================================
-
-async function createInvalidObjectIdRequest() {
-  const res = await request(server).get('/api/lists/1')
-  expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
+  await Item.deleteMany({})
 }
 
 // ===========================================================================
@@ -52,37 +28,47 @@ async function createNotFoundRequest() {
 // ===========================================================================
 
 describe('/api/lists', () => {
-  beforeEach(async () => {
-    server = require('../../app')
+  beforeEach(() => {
+    server = require('../../../app')
   })
 
   afterEach(async () => {
-    if (server) {
-      server.close()
-    }
     await clearDb()
+    if (server) {
+      await server.close()
+    }
   })
 
   // =========================================================================
 
   describe('GET /', () => {
     it('should return a paginated list', async () => {
-      await initializeDb()
-      const res = await request(server).get('/api/lists')
+      // Setup
+      const lists = await List.insertMany([
+        {
+          title: 'List 1',
+          board: boardId
+        },
+        {
+          title: 'List 2',
+          board: boardId
+        },
+        {
+          title: 'List 3',
+          board: boardId
+        }
+      ])
 
+      // Test
+      const res = await request(server).get('/api/lists')
       expect(res.status).toBe(httpStatusCodes.ok)
-      expect(res.body['data'].length).toBeGreaterThan(1)
+      expect(res.body.data.length).toBeGreaterThan(1)
     })
   })
 
   // =========================================================================
 
   describe('GET /:id', () => {
-    it(
-      'should return HTTP status 422 for an invalid object id',
-      createInvalidObjectIdRequest
-    )
-
     it('should return HTTP status 404', createNotFoundRequest)
 
     it('should return HTTP status 200 for a List that exists', async () => {
@@ -122,11 +108,6 @@ describe('/api/lists', () => {
   // =========================================================================
 
   describe('PUT /:id', () => {
-    it(
-      'should return HTTP status 422 for an invalid object id',
-      createInvalidObjectIdRequest
-    )
-
     it('should return HTTP status 404', createNotFoundRequest)
 
     it('should return HTTP status 422 for an invalid request body', async () => {
@@ -157,11 +138,6 @@ describe('/api/lists', () => {
   // =========================================================================
 
   describe('DELETE /:id', () => {
-    it(
-      'should return HTTP status 422 for an invalid object id',
-      createInvalidObjectIdRequest
-    )
-
     it('should return HTTP status 404', createNotFoundRequest)
 
     it('should delete a List and all of its related documents', async () => {
@@ -182,11 +158,6 @@ describe('/api/lists', () => {
   })
 
   describe('DELETE /:id/clear-items', () => {
-    it(
-      'should return HTTP status 422 for an invalid object id',
-      createInvalidObjectIdRequest
-    )
-
     it('should return HTTP status 404', createNotFoundRequest)
 
     it('should delete all Items within a List', async () => {
@@ -209,12 +180,12 @@ describe('/api/lists', () => {
         { title: 'test Item 2', list: list._id.toHexString() },
         { title: 'test Item 3', list: list._id.toHexString() }
       ])
-      
+
       // Create the associate between parent and child
       for (const item of items) {
         list.items.push(item._id)
       }
-      
+
       await list.save()
 
       // Now, we may test

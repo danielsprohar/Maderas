@@ -64,7 +64,7 @@ function validate(requestBody) {
 
 // ===========================================================================
 
-userSchema.methods.generateJwtToken = function () {
+userSchema.methods.generateAuthToken = function () {
   return jwt.sign(
     {
       id: this.id,

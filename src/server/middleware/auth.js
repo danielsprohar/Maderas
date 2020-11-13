@@ -1,4 +1,4 @@
-const httpStatusCodes = require('../constants')
+const httpStatusCodes = require('../constants/http-status-codes')
 const jwt = require('jsonwebtoken')
 const winston = require('../logger/winston')
 

@@ -22,11 +22,11 @@ router.post('/login', async (req, res, next) => {
 
   try {
     // Check the validity of the email.
-    const userDoc = await User.findOne({
+    const user = await User.findOne({
       normalizedEmail: req.body.email.toUpperCase()
     })
 
-    if (!userDoc) {
+    if (!user) {
       return res
         .status(httpStatusCodes.notFound)
         .send('Invalid email or password')
@@ -35,7 +35,7 @@ router.post('/login', async (req, res, next) => {
     // Check the validity of the password.
     const isAuthorized = await bcrypt.compare(
       req.body.password,
-      userDoc.password
+      user.password
     )
 
     if (!isAuthorized) {
@@ -45,11 +45,11 @@ router.post('/login', async (req, res, next) => {
     }
 
     winston.info(
-      `User login successful: User(_id: ${userDoc._id}, email: ${userDoc.email})`
+      `User login successful: User(_id: ${user._id}, email: ${user.email})`
     )
 
     // Good to go!
-    res.json(buildResponse(userDoc))
+    res.json(buildResponse(user))
   } catch (e) {
     next(e)
   }
@@ -101,7 +101,7 @@ function buildResponse(userDoc) {
       email: userDoc.email,
       username: userDoc.username
     },
-    token: userDoc.generateJwtToken()
+    token: userDoc.generateAuthToken()
   }
 }
 

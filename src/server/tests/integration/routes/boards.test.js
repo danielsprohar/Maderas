@@ -1,8 +1,10 @@
 const request = require('supertest')
-const { Board } = require('../../models/board')
-const { Template } = require('../../models/template')
+const { Board } = require('../../../models/board')
+const { Template } = require('../../../models/template')
 const mongoose = require('mongoose')
-const httpStatusCodes = require('../../constants/http-status-codes')
+const httpStatusCodes = require('../../../constants/http-status-codes')
+const { List } = require('../../../models/list')
+const { User } = require('../../../models/user')
 
 const userId = new mongoose.Types.ObjectId().toHexString()
 
@@ -10,39 +12,15 @@ let server = null
 
 // ===========================================================================
 
-async function initializeDb() {
-  await Board.insertMany([
-    {
-      title: 'Board 1',
-      user: userId
-    },
-    {
-      title: 'Board 2',
-      user: userId
-    },
-    {
-      title: 'Board 3',
-      user: userId
-    }
-  ])
-}
-
-// ===========================================================================
-
 async function clearDb() {
   await Board.deleteMany({})
+  await List.deleteMany({})
+  await Template.deleteMany({})
 }
 
 // ===========================================================================
 
-async function createInvalidObjectIdRequest() {
-  const res = await request(server).get('/api/boards/1')
-  expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
-}
-
-// ===========================================================================
-
-async function createBoardNotFoundRequest() {
+async function createNotFoundRequest() {
   const id = new mongoose.Types.ObjectId().toHexString()
   const res = await request(server).get(`/api/boards/${id}`)
   expect(res.status).toBe(httpStatusCodes.notFound)
@@ -52,15 +30,15 @@ async function createBoardNotFoundRequest() {
 // Top-level test suite
 // ===========================================================================
 describe('/api/boards', () => {
-  beforeEach(async () => {
-    server = require('../../app')
+  beforeEach(() => {
+    server = require('../../../app')
   })
 
   afterEach(async () => {
-    if (server) {
-      server.close()
-    }
     await clearDb()
+    if (server) {
+      await server.close()
+    }
   })
 
   // =========================================================================
@@ -68,9 +46,24 @@ describe('/api/boards', () => {
   // =========================================================================
   describe('GET /', () => {
     it('should return a paginated list of boards', async () => {
-      await initializeDb()
-      const res = await request(server).get('/api/boards')
+      // Setup
+      await Board.insertMany([
+        {
+          title: 'Board 1',
+          user: userId
+        },
+        {
+          title: 'Board 2',
+          user: userId
+        },
+        {
+          title: 'Board 3',
+          user: userId
+        }
+      ])
 
+      // Test
+      const res = await request(server).get('/api/boards')
       expect(res.status).toBe(httpStatusCodes.ok)
       expect(res.body['data'].length).toBeGreaterThan(1)
     })
@@ -80,13 +73,8 @@ describe('/api/boards', () => {
 
   describe('GET /:id', () => {
     it(
-      'should return HTTP status 422 for an invalid object id',
-      createInvalidObjectIdRequest
-    )
-
-    it(
       'should return HTTP status 404 for a board that does not exist',
-      createBoardNotFoundRequest
+      createNotFoundRequest
     )
 
     it('should return HTTP status 200 for a board that exists', async () => {
@@ -102,17 +90,27 @@ describe('/api/boards', () => {
 
   describe('POST /', () => {
     it('should return HTTP status 422 for an invalid request body', async () => {
-      const res = await request(server).post('/api/boards').send({})
+      const token = new User().generateAuthToken()
+      const res = await request(server)
+        .post('/api/boards')
+        .set('Authorization', `Bearer ${token}`)
+        .send({})
+
       expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
     })
 
     it('should return HTTP status 201 upon successful creation of a new', async () => {
+      const token = new User().generateAuthToken()
       const payload = {
         title: 'test',
         user: userId
       }
 
-      const res = await request(server).post('/api/boards').send(payload)
+      const res = await request(server)
+        .post('/api/boards')
+        .set('Authorization', `Bearer ${token}`)
+        .send(payload)
+
       expect(res.status).toBe(httpStatusCodes.created)
       expect(res.body).toBeTruthy()
       expect(res.body).toMatchObject(payload)
@@ -123,13 +121,8 @@ describe('/api/boards', () => {
 
   describe('PUT /:id', () => {
     it(
-      'should return HTTP status 422 for an invalid object id',
-      createInvalidObjectIdRequest
-    )
-
-    it(
       'should return HTTP status 404 for a board that does not exist',
-      createBoardNotFoundRequest
+      createNotFoundRequest
     )
 
     it('should return HTTP status 422 for an invalid request body', async () => {
@@ -161,13 +154,8 @@ describe('/api/boards', () => {
 
   describe('DELETE /:id', () => {
     it(
-      'should return HTTP status 422 for an invalid object id',
-      createInvalidObjectIdRequest
-    )
-
-    it(
       'should return HTTP status 404 for a board that does not exist',
-      createBoardNotFoundRequest
+      createNotFoundRequest
     )
 
     it('should delete a board and all of its related documents', async () => {
@@ -190,18 +178,10 @@ describe('/api/boards', () => {
       expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
     })
 
-    it('should return HTTP status 422 for an invalid object id', async () => {
-      const url = '/api/boards/create-from/template/1'
-      const payload = {
-        title: 'test',
-        user: userId
-      }
-
-      const res = await request(server).post(url).send(payload)
-      expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
-    })
-
-    it('should return HTTP status 404 for a board that does not exist', async () => {})
+    it(
+      'should return HTTP status 404 for a board that does not exist',
+      createNotFoundRequest
+    )
 
     it('should create a new board from an existing template', async () => {
       const template = new Template({

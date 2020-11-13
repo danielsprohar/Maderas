@@ -15,7 +15,7 @@ describe('user.generateJwtToken', () => {
       username: payload.username
     })
 
-    const token = user.generateJwtToken()
+    const token = user.generateAuthToken()
     const decoded = jwt.verify(token, process.env.JWT_KEY)
 
     expect(decoded).toMatchObject(payload)

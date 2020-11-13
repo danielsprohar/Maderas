@@ -8,13 +8,14 @@ const { Item } = require('../models/item')
 const { Template } = require('../models/template')
 const { PaginatedResponse } = require('../application/paginated-response')
 const isValidObjectId = require('../middleware/object-id')
+const auth = require('../middleware/auth')
 const mongoose = require('mongoose')
 
 // ===========================================================================
 // Create
 // ===========================================================================
 
-router.post('/', async (req, res, next) => {
+router.post('/', auth, async (req, res, next) => {
   const { error } = validate(req.body)
   if (error) {
     return res
