@@ -12,10 +12,38 @@ let server = null
 
 // ===========================================================================
 
+async function initializeDb() {
+  const user = await User.create({
+    email: 'jane_roe@example.com',
+    normalizedEmail: 'jane_roe@example.com',
+    password: 'password_123'
+  })
+
+  await Board.insertMany([
+    {
+      title: 'Board 1',
+      user: user._id
+    },
+    {
+      title: 'Board 2',
+      user: user._id
+    },
+    {
+      title: 'Board 3',
+      user: user._id
+    }
+  ])
+
+  return user._id.toHexString()
+}
+
+// ===========================================================================
+
 async function clearDb() {
-  await Board.deleteMany({})
-  await List.deleteMany({})
-  await Template.deleteMany({})
+  await User.deleteMany()
+  await Board.deleteMany()
+  await List.deleteMany()
+  await Template.deleteMany()
 }
 
 // ===========================================================================
@@ -45,25 +73,27 @@ describe('/api/boards', () => {
   // Test suite
   // =========================================================================
   describe('GET /', () => {
+    it("should return 400 if an invalid id is provided for the 'user' query param", async () => {
+      const res = await request(server).get('/api/boards?user=1')
+      expect(res.status).toBe(httpStatusCodes.badRequest)
+    })
+
     it('should return a paginated list of boards', async () => {
       // Setup
-      await Board.insertMany([
-        {
-          title: 'Board 1',
-          user: userId
-        },
-        {
-          title: 'Board 2',
-          user: userId
-        },
-        {
-          title: 'Board 3',
-          user: userId
-        }
-      ])
+      await initializeDb()
 
       // Test
       const res = await request(server).get('/api/boards')
+      expect(res.status).toBe(httpStatusCodes.ok)
+      expect(res.body['data'].length).toBeGreaterThan(1)
+    })
+
+    it('should return a paginated list of boards that are associated with a given user', async () => {
+      // Setup
+      const userId = await initializeDb()
+
+      // Test
+      const res = await request(server).get(`/api/boards?user=${userId}`)
       expect(res.status).toBe(httpStatusCodes.ok)
       expect(res.body['data'].length).toBeGreaterThan(1)
     })

@@ -116,7 +116,7 @@ router.put('/:id', isValidObjectId, async (req, res, next) => {
 })
 
 // ===========================================================================
-// Delete a List
+// Clear a List
 // ===========================================================================
 
 router.put('/:id/clear-items', isValidObjectId, async (req, res, next) => {

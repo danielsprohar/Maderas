@@ -50,11 +50,6 @@ router.get('/', async (req, res, next) => {
   const pageSize = req.query.pageSize || 50
   let query = {}
   if (req.query.user) {
-    if (!mongoose.Types.ObjectId.isValid(req.query.user)) {
-      return res
-        .status(httpStatusCodes.unprocessableEntity)
-        .send('Invalid format: user.')
-    }
     query.user = req.query.user
   }
 

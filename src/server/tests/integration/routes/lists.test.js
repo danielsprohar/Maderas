@@ -160,19 +160,30 @@ describe('/api/lists', () => {
   describe('DELETE /:id/clear-items', () => {
     it('should return HTTP status 404', createNotFoundRequest)
 
+    it('should return 204 when a list does not contain any items', async () => {
+      // Setup
+      const list = await List.create({
+        title: 'Test list',
+        board: new mongoose.Types.ObjectId()
+      })
+
+      // Test
+      const url = `/api/lists/${list._id}/clear-items`
+      const res = await request(server).put(url)
+      expect(res.status).toBe(httpStatusCodes.noContent)
+    })
+
     it('should delete all Items within a List', async () => {
       const userId = new mongoose.Types.ObjectId().toHexString()
 
       // Create the parent entity
-      const board = new Board({ title: 'test board', user: userId })
-      await board.save()
+      const board = await Board.create({ title: 'test board', user: userId })
 
       // Create the entity
-      const list = new List({
+      const list = await List.create({
         title: 'test list',
         board: board._id.toHexString()
       })
-      await list.save()
 
       // Create the dependent entities
       const items = await Item.insertMany([
@@ -188,9 +199,9 @@ describe('/api/lists', () => {
 
       await list.save()
 
-      // Now, we may test
-      const url = `/api/lists/${list._id}`
-      const res = await request(server).delete(url)
+      // Test
+      const url = `/api/lists/${list._id}/clear-items`
+      const res = await request(server).put(url)
       expect(res.status).toBe(httpStatusCodes.noContent)
     })
   })
