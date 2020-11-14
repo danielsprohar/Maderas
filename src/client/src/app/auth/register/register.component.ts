@@ -5,10 +5,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
-import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 import { RegisterModel } from '../models/register-model';
 import { AuthService } from '../services/auth.service';
 import { passwordsMatchValidator } from '../validators/passwords-match-validator';
@@ -30,7 +29,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly auth: AuthService,
     private readonly fb: FormBuilder,
-    private readonly snackbar: SnackbarService
+    private readonly snackbar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -176,7 +175,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
         }
       },
       (err) => {
-        this.snackbar.show(err.message, SnackbarMessageType.Danger);
+        this.snackbar.open(err, null, {
+          panelClass: 'danger',
+        });
       }
     );
 

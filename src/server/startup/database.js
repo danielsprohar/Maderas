@@ -11,8 +11,9 @@ module.exports = function () {
     .connect(uri, {
       useCreateIndex: true,
       useNewUrlParser: true,
-      useUnifiedTopology: true
-      // autoIndex: false
+      useUnifiedTopology: true,
+      // https://mongoosejs.com/docs/guide.html#indexes
+      autoIndex: false
     })
     .then(() => winston.info(`Connect to database located at ${uri}`))
 }
