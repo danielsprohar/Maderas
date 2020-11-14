@@ -42,7 +42,7 @@ export class CreateItemComponent implements OnInit, OnDestroy {
     this.itemForm = new FormGroup({
       title: new FormControl('', [
         Validators.required,
-        Validators.maxLength(32),
+        Validators.maxLength(512),
       ]),
     });
   }
