@@ -74,7 +74,7 @@ export class AuthService {
    * @param email the user's email to validate
    */
   validateEmail(email: string): Observable<{}> {
-    const url = environment.apiUrl + '/users/search';
+    const url = environment.apiUrl + '/users/email-count';
     const params = new HttpParams().set('email', email.trim());
     return this.http.get(url, { params });
   }
