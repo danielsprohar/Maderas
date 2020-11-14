@@ -24,7 +24,7 @@
         >
           <p>{{ title.value | titlecase }}</p>
         </div>
-        <div #titleEditorContainer class="title-editor-container">
+        <div #titleEditorContainer class="hide">
           <mat-form-field appearance="fill" class="full-width">
             <input #titleEditor matInput type="text" formControlName="title" />
           </mat-form-field>
@@ -50,11 +50,11 @@
 
         <div
           #descriptionFakeTextarea
-          class="fake-textarea details-container"
+          class="details-container fake-textarea"
           (click)="editDescription()"
         >
           <ng-container
-            *ngIf="item.description; else descriptionEditorTemplate"
+            *ngIf="item.description; else noDescription"
           >
             <p
               class="description-line"
@@ -64,12 +64,12 @@
             </p>
           </ng-container>
 
-          <ng-template #descriptionEditorTemplate>
+          <ng-template #noDescription>
             <p>Add a more detailed description ...</p>
           </ng-template>
         </div>
 
-        <div #descriptionEditorContainer class="description-editor-container">
+        <div #descriptionEditorContainer class="hide">
           <mat-form-field appearance="fill" class="full-width">
             <textarea
               #descriptionEditor
@@ -99,11 +99,47 @@
           <h3 class="no-margin">Due Date</h3>
         </div>
 
-        <ng-container *ngIf="item.dueDate">
-          <div class="details-container">
-            <p>{{ item.dueDate | date: "medium" }}</p>
+        <div #dueDateFakeTextarea class="fake-textarea" (click)="editDueDate()">
+          <ng-container *ngIf="item.dueDate; else noDuedate">
+            <div class="details-container">
+              <p>{{ item.dueDate | date: "medium" }}</p>
+            </div>
+          </ng-container>
+
+          <ng-template #noDuedate>
+            <p>Add a due date ...</p>
+          </ng-template>
+        </div>
+
+        <div #dueDateEditorContainer class="hide">
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Due Date</mat-label>
+              <input
+                matInput
+                [min]="today"
+                [matDatepicker]="picker"
+                formControlName="dueDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <!-- <mat-form-field appearance="fill">
+              <mat-label>Time</mat-label>
+              <input matInput type="time" formControlName="datetime" />
+            </mat-form-field> -->
           </div>
-        </ng-container>
+
+          <div class="button-bar no-margin">
+            <button mat-raised-button color="primary" (click)="save()">
+              Save
+            </button>
+            <button mat-icon-button>
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
       </div>
     </form>
   </div>

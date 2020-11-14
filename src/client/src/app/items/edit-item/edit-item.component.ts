@@ -15,7 +15,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { DataService } from 'src/app/services/data.service';
-import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-edit-item',

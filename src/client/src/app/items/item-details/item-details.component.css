@@ -62,10 +62,6 @@
   cursor: pointer;
 }
 
-.title-editor-container {
-  display: none;
-}
-
-.description-editor-container {
+.hide {
   display: none;
 }

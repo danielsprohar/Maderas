@@ -57,8 +57,12 @@ body {
   display: none !important;
 }
 
+.visible {
+  visibility: visible !important;
+}
+
 .invisible {
-  visibility: hidden !important;
+  visibility: collapse !important;
 }
 
 .no-border {

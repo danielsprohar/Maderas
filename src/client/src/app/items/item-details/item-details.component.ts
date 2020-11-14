@@ -1,5 +1,6 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
@@ -27,6 +28,8 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy {
   private saveItemSubscription: Subscription;
+
+  public readonly today = new Date();
   public form: FormGroup;
 
   @Input() list: List;
@@ -39,26 +42,36 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   @ViewChild('titleFakeTextarea')
-  public titleFakeTextarea: any;
+  public titleFakeTextarea: ElementRef;
 
   @ViewChild('titleEditorContainer')
-  public titleEditorContainer: any;
+  public titleEditorContainer: ElementRef;
 
   @ViewChild('titleEditor')
-  public titleEditor: any;
+  public titleEditor: ElementRef;
 
   // =========================================================================
   // Description references
   // =========================================================================
 
   @ViewChild('descriptionFakeTextarea')
-  public descriptionFakeTextarea: any;
+  public descriptionFakeTextarea: ElementRef;
 
   @ViewChild('descriptionEditorContainer')
-  public descriptionEditorContainer: any;
+  public descriptionEditorContainer: ElementRef;
 
   @ViewChild('descriptionEditor')
-  public descriptionEditor: any;
+  public descriptionEditor: ElementRef;
+
+  // =========================================================================
+  // Due Date references
+  // =========================================================================
+
+  @ViewChild('dueDateFakeTextarea')
+  public dueDateFakeTextarea: ElementRef;
+
+  @ViewChild('dueDateEditorContainer')
+  public dueDateEditorContainer: ElementRef;
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -118,6 +131,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
 
   editTitle(): void {
     this.closeDescriptionEditor();
+    this.closeDueDateEditor();
 
     this.renderer.setStyle(
       this.titleFakeTextarea.nativeElement,
@@ -176,6 +190,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
 
   editDescription(): void {
     this.closeTitleEditor();
+    this.closeDueDateEditor();
 
     this.renderer.setStyle(
       this.descriptionFakeTextarea.nativeElement,
@@ -190,6 +205,45 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
     );
 
     this.descriptionEditor.nativeElement.focus();
+  }
+
+  // =========================================================================
+  // Due date methods
+  // =========================================================================
+
+  editDueDate(): void {
+    this.closeTitleEditor();
+    this.closeDescriptionEditor();
+
+    this.renderer.setStyle(
+      this.dueDateFakeTextarea.nativeElement,
+      'display',
+      'none'
+    );
+
+    this.renderer.setStyle(
+      this.dueDateEditorContainer.nativeElement,
+      'display',
+      'block'
+    );
+  }
+
+  // =========================================================================
+
+  closeDueDateEditor(): void {
+    this.dueDate.setValue(this.item.dueDate);
+
+    this.renderer.setStyle(
+      this.dueDateFakeTextarea.nativeElement,
+      'display',
+      'block'
+    );
+
+    this.renderer.setStyle(
+      this.dueDateEditorContainer.nativeElement,
+      'display',
+      'none'
+    );
   }
 
   // =========================================================================
@@ -210,7 +264,19 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
       list: this.item.list,
     });
 
+    if (this.dueDate.value) {
+      item.dueDate = (this.dueDate.value as Date).toISOString();
+    }
+
     return item;
+  }
+
+  // =========================================================================
+
+  private closeAllEditors(): void {
+    this.closeTitleEditor();
+    this.closeDescriptionEditor();
+    this.closeDueDateEditor();
   }
 
   // =========================================================================
@@ -218,8 +284,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
   setFormFields(item: Item): void {
     this.title.setValue(item.title);
     this.description.setValue(item.description);
-    // TODO: Add the ability to edit/add the Due Date
-    // this.title.setValue(item.title);
+    this.dueDate.setValue(item.title);
   }
 
   // =========================================================================
@@ -249,7 +314,8 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
     this.saveItemSubscription = this.itemsService.update(path, item).subscribe(
       (res: Item) => {
         this.itemUpdatedEvent.emit(res);
-        this.close();
+        this.setItem(res);
+        this.closeAllEditors();
         this.snackbar.open('Your item was updated', null, {
           panelClass: 'success',
         });
