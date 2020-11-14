@@ -1,4 +1,3 @@
-import { JsonPipe } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jwt_decode from 'jwt-decode';
@@ -19,7 +18,7 @@ const httpHeaders = new HttpHeaders({
 // ===========================================================================
 
 // The key for getting/setting data in local storage.
-const jwt = 'maderas';
+const jwtStorageKey = 'maderas';
 
 // The key for getting/setting the current user in local storage.
 const currentUser = 'maderas_cu';
@@ -88,7 +87,7 @@ export class AuthService {
    * @see https://tools.ietf.org/html/rfc7519#section-4.1.4
    */
   isTokenValid(): boolean {
-    const token = localStorage.getItem('luca');
+    const token = localStorage.getItem(jwtStorageKey);
     if (!token) {
       return false;
     }
@@ -122,7 +121,7 @@ export class AuthService {
   // =========================================================================
 
   getAuthorizationToken(): string {
-    return localStorage.getItem(jwt);
+    return localStorage.getItem(jwtStorageKey);
   }
 
   // =========================================================================
@@ -144,7 +143,7 @@ export class AuthService {
     this.userSubject.next(res.user);
     this.isLoggedInSubject.next(true);
 
-    localStorage.setItem(jwt, res.token);
+    localStorage.setItem(jwtStorageKey, res.token);
     localStorage.setItem(currentUser, JSON.stringify(res.user));
   }
 
@@ -154,7 +153,7 @@ export class AuthService {
     this.userSubject.next(null);
     this.isLoggedInSubject.next(false);
 
-    localStorage.removeItem(jwt);
+    localStorage.removeItem(jwtStorageKey);
     localStorage.removeItem(currentUser);
   }
 }
