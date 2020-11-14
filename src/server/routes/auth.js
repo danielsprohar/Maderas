@@ -28,7 +28,7 @@ router.post('/login', async (req, res, next) => {
 
     if (!user) {
       return res
-        .status(httpStatusCodes.notFound)
+        .status(httpStatusCodes.unauthorized)
         .send('Invalid email or password')
     }
 
