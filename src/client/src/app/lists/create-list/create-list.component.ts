@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
-import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 
 @Component({
   selector: 'app-create-list',
@@ -44,7 +43,7 @@ export class CreateListComponent implements OnInit, OnDestroy {
     this.listForm = new FormGroup({
       title: new FormControl('', [
         Validators.required,
-        Validators.maxLength(32),
+        Validators.maxLength(512),
       ]),
     });
   }
