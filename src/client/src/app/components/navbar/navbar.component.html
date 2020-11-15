@@ -28,6 +28,16 @@
   <!-- ======================================================================= -->
   <ng-template #loggedIn>
     <span class="spacer"></span>
-    <a mat-button (click)="logout()">Log out</a>
+    <div class="row flex-centered-x flex-centered-y">
+      <span class="username">{{ auth.getUser().username }}</span>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>account_circle</mat-icon>
+        <mat-icon>expand_more</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="logout()">Log out</button>
+        <mat-divider></mat-divider>
+      </mat-menu>
+    </div>
   </ng-template>
 </mat-toolbar>
