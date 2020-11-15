@@ -26,10 +26,6 @@ const itemSchema = new Schema(
     list: {
       type: mongoose.Types.ObjectId,
       ref: 'List'
-    },
-    imgUrl: {
-      type: String,
-      maxlength: 2048
     }
   },
   {
