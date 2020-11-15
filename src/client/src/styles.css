@@ -226,6 +226,7 @@ a:not(:last-child) {
   border: 1px solid #888;
   border-radius: 3px;
   width: fit-content;
+  max-width: 100%;
 }
 
 /* The Close Button */

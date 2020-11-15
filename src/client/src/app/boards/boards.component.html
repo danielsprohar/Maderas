@@ -19,13 +19,13 @@
       </button>
       <mat-menu #boardsMenu="matMenu" xPosition="before" role="menu">
         <button mat-menu-item (click)="openEditBoardModal(board)">
-          Edit board ...
+          Edit ...
         </button>
         <button
           mat-menu-item
           (click)="openDeleteBoardConfirmationDialog(board._id)"
         >
-          Delete board ...
+          Delete ...
         </button>
       </mat-menu>
     </div>
@@ -58,19 +58,18 @@
                 <mat-menu #menu="matMenu" xPosition="before" role="menu">
                   <button
                     mat-menu-item
-                    (click)="openClearListConfirmationDialog(list._id)"
+                    (click)="openDeleteListConfirmationDialog(list._id)"
                   >
-                    Clear list ...
+                    Delete ...
+                  </button>
+                  <button mat-menu-item (click)="openEditListModal(list)">
+                    Edit ...
                   </button>
                   <button
                     mat-menu-item
-                    (click)="openDeleteListConfirmationDialog(list._id)"
+                    (click)="openClearListConfirmationDialog(list._id)"
                   >
-                    Delete list ...
-                  </button>
-                  <button mat-menu-item (click)="openEditListModal(list)">
-                    Edit list ...
-                  </button>
+                    Remove items                  </button>
                 </mat-menu>
               </div>
 
@@ -106,16 +105,13 @@
                         openDeleteItemConfirmationDialog(list._id, item._id)
                       "
                     >
-                      Delete item
-                    </button>
-                    <button mat-menu-item (click)="openEditItemModal(item)">
-                      Edit item
+                      Delete ...
                     </button>
                     <button
                       mat-menu-item
                       (click)="openItemDetailsModal(list, item)"
                     >
-                      View item
+                      View ...
                     </button>
                   </mat-menu>
                 </div>
@@ -211,19 +207,6 @@
       (closeModalEvent)="closeItemDetailsModal()"
       (itemUpdatedEvent)="handleItemUpdatedEvent($event)"
     ></app-item-details>
-  </div>
-</div>
-
-<!-- ======================================================================= -->
-<!-- Edit Item Modal -->
-<!-- ======================================================================= -->
-<div id="editItemModal" class="modal">
-  <div class="modal-content">
-    <app-edit-item
-      (itemUpdatedEvent)="handleItemUpdatedEvent($event)"
-      (closeModalEvent)="closeEditItemModal()"
-    >
-    </app-edit-item>
   </div>
 </div>
 

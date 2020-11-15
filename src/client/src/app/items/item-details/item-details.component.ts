@@ -91,7 +91,8 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
         ],
       ],
       description: [null, [Validators.maxLength(2048)]],
-      dueDate: [null],
+      date: [null],
+      time: [null],
     });
 
     if (this.item) {
@@ -121,8 +122,14 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  get dueDate(): AbstractControl {
-    return this.form.get('dueDate');
+  get date(): AbstractControl {
+    return this.form.get('date');
+  }
+
+  // =========================================================================
+
+  get time(): AbstractControl {
+    return this.form.get('time');
   }
 
   // =========================================================================
@@ -231,7 +238,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   closeDueDateEditor(): void {
-    this.dueDate.setValue(this.item.dueDate);
+    this.date.setValue(this.item.dueDate);
 
     this.renderer.setStyle(
       this.dueDateFakeTextarea.nativeElement,
@@ -264,9 +271,12 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
       list: this.item.list,
     });
 
-    if (this.dueDate.value) {
-      // item.dueDate = (this.dueDate.value as Date).toISOString();
-      item.dueDate = new Date(this.dueDate.value).toISOString();
+    if (this.date.value && this.time.value) {
+      const date = new Date(this.date.value).toISOString().split('T')[0];
+      const time = this.time.value;
+      item.dueDate = new Date(`${date}T${time}`).toISOString();
+    } else if (this.date.value) {
+      item.dueDate = new Date(this.date.value).toISOString();
     }
 
     return item;
@@ -285,7 +295,8 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
   setFormFields(item: Item): void {
     this.title.setValue(item.title);
     this.description.setValue(item.description);
-    this.dueDate.setValue(item.dueDate);
+    this.date.setValue(item.dueDate);
+    this.time.setValue('');
   }
 
   // =========================================================================

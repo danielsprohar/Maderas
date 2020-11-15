@@ -115,14 +115,14 @@
         </div>
 
         <div #dueDateEditorContainer class="hide">
-          <div class="row">
+          <div class="horizontal-form-fields">
             <mat-form-field appearance="fill">
               <mat-label>Due Date</mat-label>
               <input
                 matInput
                 [min]="today"
                 [matDatepicker]="picker"
-                formControlName="dueDate"
+                formControlName="date"
               />
               <mat-datepicker-toggle
                 matSuffix
@@ -131,17 +131,17 @@
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
-            <!-- <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill">
               <mat-label>Time</mat-label>
-              <input matInput type="time" formControlName="datetime" />
-            </mat-form-field> -->
+              <input matInput type="time" formControlName="time" />
+            </mat-form-field>
           </div>
 
           <div class="button-bar no-margin">
             <button mat-raised-button color="primary" (click)="save()">
               Save
             </button>
-            <button mat-icon-button>
+            <button mat-icon-button (click)="closeDueDateEditor()">
               <mat-icon>close</mat-icon>
             </button>
           </div>

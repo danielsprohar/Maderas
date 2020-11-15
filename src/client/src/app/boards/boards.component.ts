@@ -12,7 +12,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { EditItemComponent } from '../items/edit-item/edit-item.component';
 import { ItemDetailsComponent } from '../items/item-details/item-details.component';
 import { EditListComponent } from '../lists/edit-list/edit-list.component';
 import { Board } from '../models/board';
@@ -34,9 +33,6 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   @ViewChild(ItemDetailsComponent)
   private readonly itemDetailsComponent: ItemDetailsComponent;
-
-  @ViewChild(EditItemComponent)
-  private readonly editItemComponent: EditItemComponent;
 
   @ViewChild(EditBoardComponent)
   private readonly editBoardComponent: EditBoardComponent;
@@ -364,22 +360,6 @@ export class BoardsComponent implements OnInit, OnDestroy {
     const idx = list.items.findIndex((i) => i._id === item._id);
     list.items[idx] = item;
     list.items = [...list.items];
-  }
-
-  // =========================================================================
-
-  openEditItemModal(item: Item): void {
-    this.editItemComponent.setItem(item);
-
-    const modal = document.getElementById('editItemModal');
-    this.renderer.setStyle(modal, 'display', 'block');
-  }
-
-  // =========================================================================
-
-  closeEditItemModal(): void {
-    const modal = document.getElementById('editItemModal');
-    this.renderer.setStyle(modal, 'display', 'none');
   }
 
   // =========================================================================
