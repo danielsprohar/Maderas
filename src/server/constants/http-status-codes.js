@@ -56,6 +56,12 @@ const httpStatusCodes = {
   notFound: 404,
 
   /**
+   * Indicates that the request entity is larger than limits defined by server;
+   * the server might close the connection or return a `Retry-After` header field.
+   */
+  payloadTooLarge: 413,
+
+  /**
    * 422
    *
    * Indicates that the server understands the content type of the request entity,

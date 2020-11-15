@@ -65,3 +65,19 @@
 .hide {
   display: none;
 }
+
+.file-input {
+  opacity: 0;
+}
+
+.filename {
+  margin: 0;
+  text-overflow: ellipsis;
+}
+
+.filename-container {
+  margin-top: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

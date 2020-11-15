@@ -1,6 +1,6 @@
 <ng-container *ngIf="list && item">
   <div class="item-details-container">
-    <form [formGroup]="form">
+    <form [formGroup]="form" enctype="multipart/form-data">
       <div class="modal-header">
         <span class="spacer"></span>
         <button mat-icon-button (click)="close()">
@@ -53,9 +53,7 @@
           class="details-container fake-textarea"
           (click)="editDescription()"
         >
-          <ng-container
-            *ngIf="item.description; else noDescription"
-          >
+          <ng-container *ngIf="item.description; else noDescription">
             <p
               class="description-line"
               *ngFor="let line of getItemDescriptionLines()"
@@ -121,7 +119,10 @@
                 [matDatepicker]="picker"
                 formControlName="dueDate"
               />
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
@@ -138,6 +139,41 @@
             <button mat-icon-button>
               <mat-icon>close</mat-icon>
             </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- Image -->
+      <!-- ================================================================= -->
+      <div class="details-section">
+        <div class="details-header">
+          <mat-icon>photo</mat-icon>
+          <h3 class="no-margin">Image</h3>
+        </div>
+        <div class="column">
+          <input
+            type="file"
+            accept="image/*,.pdf"
+            class="file-input"
+            #imgInput
+            (change)="onFileSelected($event)"
+          />
+          <div class="button-bar">
+            <button mat-button (click)="imgInput.click()">Choose a file</button>
+          </div>
+          <div *ngIf="fileName" class="filename-container">
+            <div>
+              <h4 class="no-margin">
+                <b>Selected file</b>
+              </h4>
+              <p class="filename">{{ fileName }}</p>
+            </div>
+            <span class="spacer"></span>
+            <div class="button-bar">
+              <button mat-raised-button color="primary" (click)="upload()">Upload</button>
+              <button mat-raised-button (click)="removeFile()">Remove</button>
+            </div>
           </div>
         </div>
       </div>

@@ -153,6 +153,7 @@ router.delete('/:id', isValidObjectId, async (req, res, next) => {
 // ===========================================================================
 // Move item to another list
 // ===========================================================================
+
 router.put(
   '/:id/move',
   [isValidObjectId, isValidMoveItemRequest],

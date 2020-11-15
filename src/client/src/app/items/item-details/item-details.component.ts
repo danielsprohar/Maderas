@@ -28,7 +28,10 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy {
   private saveItemSubscription: Subscription;
+  private uploadFileSubscription: Subscription;
+  private selectedFile: File;
 
+  public fileName: string;
   public readonly today = new Date();
   public form: FormGroup;
 
@@ -92,6 +95,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
       ],
       description: [null, [Validators.maxLength(2048)]],
       dueDate: [null],
+      img: [null],
     });
 
     if (this.item) {
@@ -104,6 +108,9 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.saveItemSubscription) {
       this.saveItemSubscription.unsubscribe();
+    }
+    if (this.uploadFileSubscription) {
+      this.uploadFileSubscription.unsubscribe();
     }
   }
 
@@ -125,6 +132,13 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
     return this.form.get('dueDate');
   }
 
+  // =========================================================================
+
+  get img(): AbstractControl {
+    return this.form.get('img');
+  }
+
+  //#region Title
   // =========================================================================
   // Title methods
   // =========================================================================
@@ -166,6 +180,9 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
+  //#endregion Title
+
+  //#region Description
   // =========================================================================
   // Description methods
   // =========================================================================
@@ -207,6 +224,9 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
     this.descriptionEditor.nativeElement.focus();
   }
 
+  //#endregion Description
+
+  //#region Due Date
   // =========================================================================
   // Due date methods
   // =========================================================================
@@ -245,6 +265,8 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
       'none'
     );
   }
+
+  //#endregion Due Date
 
   // =========================================================================
   // Facilitators
@@ -303,6 +325,50 @@ export class ItemDetailsComponent implements OnInit, OnDestroy {
 
   close(): void {
     this.closeModalEvent.emit(true);
+  }
+
+  // =========================================================================
+
+  removeFile(): void {
+    this.selectedFile = null;
+    this.img.setValue(null);
+    this.fileName = null;
+  }
+
+  // =========================================================================
+
+  onFileSelected(event: any): void {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      this.fileName = this.selectedFile.name;
+      this.img.setValue(this.selectedFile.name);
+    }
+  }
+
+  // =========================================================================
+
+  upload(): void {
+    if (!this.selectedFile) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', this.selectedFile, this.selectedFile.name);
+    const path = `/items/${this.item._id}/upload-media`;
+
+    // TODO: Upload image to Firebase Storage
+    // this.uploadFileSubscription = this.fileService
+    //   .upload(path, formData)
+    //   .subscribe(
+    //     (res: Item) => {
+    //       console.log(res);
+    //     },
+    //     (err) => {
+    //       this.snackbar.open(err, null, {
+    //         panelClass: 'danger',
+    //       });
+    //     }
+    //   );
   }
 
   // =========================================================================
