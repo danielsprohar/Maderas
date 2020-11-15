@@ -175,7 +175,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         }
       },
       (err) => {
-        this.snackbar.open(err, null, {
+        this.snackbar.open(err.message, null, {
           panelClass: 'danger',
         });
       }

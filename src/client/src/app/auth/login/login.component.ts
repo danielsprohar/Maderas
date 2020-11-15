@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (returnUrl) {
           this.router.navigate([returnUrl]);
         } else {
-          this.router.navigate(['/']);
+          this.router.navigate(['/dashboard/boards']);
         }
       },
       (err) => {
