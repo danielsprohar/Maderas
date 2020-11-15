@@ -1,0 +1,47 @@
+.create-template-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  height: inherit;
+}
+
+.content-container {
+  width: 100%;
+}
+
+.lists-container {
+  margin-top: 1rem;
+}
+
+.mat-divider {
+  position: relative !important;
+}
+
+.mat-card-container {
+  margin: 1rem auto;
+}
+
+.mat-card-container > .mat-card:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.mat-card-container > .row > .mat-form-field {
+  flex-grow: 1;
+}
+
+@media only screen and (min-width: 600px) {
+  /* For tablets */
+  .content-container {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  /* For desktop: */
+  .content-container {
+    width: 50%;
+  }
+}

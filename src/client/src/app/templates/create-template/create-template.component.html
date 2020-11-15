@@ -1,0 +1,55 @@
+<div class="create-template-container">
+  <div class="content-container">
+    <div class="row flex-centered-x">
+      <h1>Create a template</h1>
+      <span class="spacer"></span>
+      <div>
+        <button
+          [disabled]="form.invalid"
+          mat-raised-button
+          color="primary"
+          (click)="onSubmit()"
+        >
+          Create
+        </button>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <form [formGroup]="form">
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Template Name</mat-label>
+        <input matInput formControlName="name" required />
+        <mat-error>{{ getTemplateNameError() }}</mat-error>
+      </mat-form-field>
+
+      <div formArrayName="lists" class="lists-container">
+        <h3>Lists</h3>
+        <mat-divider></mat-divider>
+
+        <div class="mat-card-container">
+          <mat-card *ngFor="let list of lists.controls; let i = index">
+            <div class="row flex-centered-y">
+              <mat-form-field class="flex-grow">
+                <mat-label>Title</mat-label>
+                <input matInput [formControlName]="i" required />
+              </mat-form-field>
+              <ng-container *ngIf="lists.controls.length > 1">
+                <button mat-icon-button (click)="removeList(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-container>
+            </div>
+          </mat-card>
+        </div>
+
+        <div class="button-bar">
+          <button mat-raised-button color="primary" (click)="addList()">
+            Add list
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

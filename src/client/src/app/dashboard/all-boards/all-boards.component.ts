@@ -26,11 +26,16 @@ export class AllBoardsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const path = `/boards?user=${this.auth.getUser().id}`;
-
-    this.boards$ = this.dataService
-      .getAll(path)
-      .pipe(map((res: PaginatedResponse<Board>) => res.data));
+    if (!this.auth.getUser()) {
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: '/boards' },
+      });
+    } else {
+      const path = `/boards?user=${this.auth.getUser().id}`;
+      this.boards$ = this.dataService
+        .getAll(path)
+        .pipe(map((res: PaginatedResponse<Board>) => res.data));
+    }
   }
 
   // =========================================================================

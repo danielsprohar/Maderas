@@ -5,8 +5,14 @@ export class Template {
   _id: string;
   name: string;
   lists: List[];
+  user: string;
 
-  constructor(fields: { _id?: string; name: string; lists: List[] }) {
+  constructor(fields: {
+    _id?: string;
+    name: string;
+    lists: List[];
+    user: string;
+  }) {
     Object.assign(this, fields);
   }
 }

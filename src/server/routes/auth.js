@@ -33,10 +33,7 @@ router.post('/login', async (req, res, next) => {
     }
 
     // Check the validity of the password.
-    const isAuthorized = await bcrypt.compare(
-      req.body.password,
-      user.password
-    )
+    const isAuthorized = await bcrypt.compare(req.body.password, user.password)
 
     if (!isAuthorized) {
       return res

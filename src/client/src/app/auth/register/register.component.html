@@ -2,7 +2,7 @@
   <div class="flex-centered full-width">
     <mat-card>
       <h2>Create an account</h2>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <form [formGroup]="form">
         <!-- ============================================================== -->
         <!-- Username control -->
         <!-- ============================================================== -->
@@ -14,6 +14,7 @@
             formControlName="username"
             type="text"
             autofocus
+            required
           />
           <button mat-icon-button matPrefix tabindex="-1">
             <mat-icon>person</mat-icon>
@@ -32,7 +33,7 @@
             [class]="email.touched && email.valid ? 'is-success' : ''"
             formControlName="email"
             type="email"
-            appUniqueEmailValidator
+            required
           />
           <button mat-icon-button matPrefix tabindex="-1">
             <mat-icon>email</mat-icon>
@@ -52,12 +53,16 @@
             [class]="isPasswordValid() ? 'is-success' : ''"
             [type]="isTextHidden ? 'password' : 'text'"
             formControlName="password"
-            appUniqueEmailValidator
+            required
           />
           <button mat-icon-button matPrefix tabindex="-1">
             <mat-icon>lock</mat-icon>
           </button>
-          <button mat-icon-button matSuffix>
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="isTextHidden = !isTextHidden"
+          >
             <mat-icon>
               {{ isTextHidden ? "visibility_off" : "visibility" }}
             </mat-icon>
@@ -81,11 +86,16 @@
             [class]="isPasswordValid() ? 'is-success' : ''"
             [type]="isTextHidden ? 'password' : 'text'"
             formControlName="confirmPassword"
+            required
           />
           <button mat-icon-button matPrefix tabindex="-1">
             <mat-icon>lock</mat-icon>
           </button>
-          <button mat-icon-button matSuffix>
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="isTextHidden = !isTextHidden"
+          >
             <mat-icon>
               {{ isTextHidden ? "visibility_off" : "visibility" }}
             </mat-icon>

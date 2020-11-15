@@ -37,6 +37,18 @@ export class DataService<T> {
 
   // ==========================================================================
 
+  query(path: string, params?: HttpParams): Observable<any> {
+    const url = environment.apiUrl + path;
+    return this.http
+      .get<T | number>(url, {
+        headers: httpHeaders,
+        params,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  // ==========================================================================
+
   get(path: string): Observable<T> {
     const url = environment.apiUrl + path;
 

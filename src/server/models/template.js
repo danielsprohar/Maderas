@@ -11,7 +11,11 @@ const templateSchema = new Schema(
       required: true,
       minlength: 1,
       maxlength: 512,
-      trim: true
+      trim: true,
+      lowercase: true,
+      index: {
+        unique: true
+      }
     },
     lists: [
       {

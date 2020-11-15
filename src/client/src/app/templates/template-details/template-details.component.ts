@@ -8,7 +8,6 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { Board } from 'src/app/models/board';
 import { Template } from 'src/app/models/template';
 import { DataService } from 'src/app/services/data.service';
-import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 
 @Component({
   selector: 'app-template-details',

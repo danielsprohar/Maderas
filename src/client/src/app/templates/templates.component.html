@@ -3,14 +3,19 @@
     <aside>
       <ng-container *ngIf="templates$ | async as templates">
         <mat-nav-list class="no-padding">
+          <div mat-subheader>Templates</div>
           <a
             *ngFor="let template of templates"
             [routerLink]="[template._id]"
             routerLinkActive="active-link"
             mat-list-item
           >
-            {{ template.name }}
+            {{ template.name | titlecase }}
           </a>
+        </mat-nav-list>
+        <mat-nav-list>
+          <div mat-subheader>Actions</div>
+          <a mat-list-item routerLink="create">Create template</a>
         </mat-nav-list>
       </ng-container>
     </aside>
