@@ -66,6 +66,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
           ],
           UniqueTemplateNameAsyncValidator.create(this.templatesService),
         ],
+        description: [null, [Validators.maxLength(2048)]],
         lists: this.fb.array([this.createListControl()]),
       },
       {
@@ -98,6 +99,12 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
+  get description(): AbstractControl {
+    return this.form.get('description');
+  }
+
+  // =========================================================================
+
   get lists(): FormArray {
     return this.form.get('lists') as FormArray;
   }
@@ -117,13 +124,19 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   private getTemplate(): Template {
-    return new Template({
+    const template = new Template({
       name: this.name.value,
       lists: this.lists.controls.map((ctrl) => {
         return new List({ title: ctrl.value });
       }),
-      user: this.auth.getUser().id
+      user: this.auth.getUser().id,
     });
+
+    if (this.description.value) {
+      template.description = (this.description.value as string).trim();
+    }
+
+    return template;
   }
 
   // =========================================================================

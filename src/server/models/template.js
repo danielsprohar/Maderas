@@ -17,6 +17,11 @@ const templateSchema = new Schema(
         unique: true
       }
     },
+    description: {
+      type: String,
+      maxlength: 2048,
+      trim: true
+    },
     lists: [
       {
         title: {
@@ -40,7 +45,8 @@ function validate(reqBody) {
   const schema = Joi.object({
     name: Joi.string().max(512).required(),
     lists: Joi.array().min(1).required(),
-    user: Joi.objectId().required()
+    user: Joi.objectId().required(),
+    description: Joi.string().max(2048)
   })
 
   return schema.validate(reqBody)
