@@ -3,7 +3,7 @@ const isValidObjectId = require('../middleware/object-id')
 const { PaginatedResponse } = require('../application/paginated-response')
 const router = express.Router()
 const httpStatusCodes = require('../constants/http-status-codes')
-const winston = require('../logger/winston')
+// const winston = require('../logger/winston')
 const { Template, validate } = require('../models/template')
 
 // ===========================================================================
@@ -12,7 +12,7 @@ const { Template, validate } = require('../models/template')
 
 router.get('/is-available', async (req, res, next) => {
   if (!req.query.name) {
-    return res.statusCode(httpStatusCodes.badRequest).send()
+    return res.status(httpStatusCodes.badRequest).send()
   }
 
   try {
@@ -20,7 +20,7 @@ router.get('/is-available', async (req, res, next) => {
       name: new String(req.query.name).trim().toLowerCase()
     })
 
-    res.json(count === 0 ? true : false)
+    return res.json(count === 0 ? true : false)
   } catch (e) {
     next(e)
   }

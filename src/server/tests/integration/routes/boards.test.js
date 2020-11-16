@@ -129,7 +129,7 @@ describe('/api/boards', () => {
       expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
     })
 
-    it('should return HTTP status 201 upon successful creation of a new', async () => {
+    it('should return HTTP status 201 upon successful creation of a new Board', async () => {
       const token = new User().generateAuthToken()
       const payload = {
         title: 'test',
