@@ -17,7 +17,6 @@ import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { List } from 'src/app/models/list';
 import { DataService } from 'src/app/services/data.service';
-import { SnackbarMessageType } from 'src/app/shared/snackbar/snackbar-message-type';
 
 @Component({
   selector: 'app-create-item',

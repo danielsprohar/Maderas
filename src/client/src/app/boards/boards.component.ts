@@ -58,7 +58,9 @@ export class BoardsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.board$ = this.route.data.pipe(
       map((data: { board: Board }) => {
-        this.fetchLists(data.board._id);
+        if (data.board) {
+          this.fetchLists(data.board._id);
+        }
         return data.board;
       })
     );

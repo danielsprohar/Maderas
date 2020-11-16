@@ -35,13 +35,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    if (!this.auth.getUser()) {
-      this.router.navigate(['/login'], {
-        queryParams: { returnUrl: '/templates/create' },
-      });
-    } else {
-      this.initializeForm();
-    }
+    this.initializeForm();
   }
 
   // =========================================================================
