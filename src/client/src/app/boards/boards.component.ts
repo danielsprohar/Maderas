@@ -1,4 +1,8 @@
-import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { HttpParams } from '@angular/common/http';
 import {
   Component,
@@ -22,6 +26,7 @@ import { DialogData } from '../shared/dialog-data';
 import { UserConfirmationDialogComponent } from '../shared/user-confirmation-dialog/user-confirmation-dialog.component';
 import { PaginatedResponse } from '../wrappers/paginated-response';
 import { EditBoardComponent } from './edit-board/edit-board.component';
+import { ItemRelocate } from './models/item-relocate';
 
 @Component({
   selector: 'app-boards',
@@ -376,25 +381,34 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
-  drop(event: CdkDragDrop<Item[]>, dest: string): void {
+  private relocateItem(event: CdkDragDrop<Item[]>): void {
     if (event.previousContainer === event.container) {
-      return;
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     }
+  }
 
+  // =========================================================================
+
+  drop(event: CdkDragDrop<Item[]>, dest: string): void {
     const item = event.previousContainer.data[event.previousIndex];
     const src = item.list;
-    const path = `/items/${item._id}/move`;
+    const path = `/items/${item._id}/relocate`;
+    const payload = new ItemRelocate(src, dest, event.currentIndex);
 
-    const params = new HttpParams().set('src', src).set('dest', dest);
-
-    const sub = this.itemsService.update(path, null, params).subscribe(
+    const sub = this.itemsService.update(path, payload).subscribe(
       () => {
-        transferArrayItem(
-          event.previousContainer.data,
-          event.container.data,
-          event.previousIndex,
-          event.currentIndex
-        );
+        this.relocateItem(event);
       },
       (err) => {
         this.snackbar.open(err, null, {

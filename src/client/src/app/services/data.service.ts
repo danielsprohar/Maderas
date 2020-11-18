@@ -59,7 +59,7 @@ export class DataService<T> {
 
   // ==========================================================================
 
-  update(path: string, data: T, params?: HttpParams): Observable<T> {
+  update(path: string, data: T | any, params?: HttpParams): Observable<T> {
     const url = environment.apiUrl + path;
 
     return this.http

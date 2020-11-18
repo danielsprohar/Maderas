@@ -204,8 +204,10 @@ router.put('/:id/relocate', [isValidObjectId], async (req, res, next) => {
     )
 
     // Update the reference id
-    item.list = req.body.dest
-    await item.save()
+    if (req.body.src !== req.body.dest) {
+      item.list = req.body.dest
+      await item.save()
+    }
 
     return res.status(httpStatusCodes.noContent).send()
   } catch (e) {
