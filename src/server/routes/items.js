@@ -3,10 +3,9 @@ const router = express.Router()
 const winston = require('../logger/winston')
 const httpStatusCodes = require('../constants/http-status-codes')
 const { List } = require('../models/list')
-const { Item, validate } = require('../models/item')
+const { Item, validate, validateItemRelocation } = require('../models/item')
 const { PaginatedResponse } = require('../application/paginated-response')
 const isValidObjectId = require('../middleware/object-id')
-const isValidMoveItemRequest = require('../middleware/move-item-request')
 const mongoose = require('mongoose')
 
 // ===========================================================================
@@ -154,51 +153,65 @@ router.delete('/:id', isValidObjectId, async (req, res, next) => {
 // Move item to another list
 // ===========================================================================
 
-router.put(
-  '/:id/move',
-  [isValidObjectId, isValidMoveItemRequest],
-  async (req, res, next) => {
-    const item = await Item.findById(req.params.id)
-    if (!item) {
-      return res.status(httpStatusCodes.notFound).send('Item does not exist')
-    }
-
-    try {
-      item.list = req.query.dest
-      await item.save()
-
-      await List.updateOne(
-        {
-          _id: req.query.src
-        },
-        {
-          $pull: {
-            items: {
-              $in: [item._id]
-            }
-          }
-        }
-      )
-
-      await List.updateOne(
-        {
-          _id: req.query.dest
-        },
-        {
-          $push: {
-            items: {
-              $each: [item._id]
-            }
-          }
-        }
-      )
-
-      res.status(httpStatusCodes.noContent).send()
-    } catch (e) {
-      next(e)
-    }
+router.put('/:id/relocate', [isValidObjectId], async (req, res, next) => {
+  // =======================
+  // Payload
+  // =======================
+  // index: number
+  // src: string (listId)
+  // dest: string (listId)
+  // =======================
+  const { error } = validateItemRelocation(req.body)
+  if (error) {
+    return res
+      .status(httpStatusCodes.unprocessableEntity)
+      .send(error.details[0].message)
   }
-)
+
+  const item = await Item.findById(req.params.id)
+  if (!item) {
+    return res.status(httpStatusCodes.notFound).send('Item does not exist')
+  }
+
+  try {
+    // Remove from src list
+    await List.updateOne(
+      {
+        _id: req.body.src
+      },
+      {
+        $pull: {
+          items: {
+            $in: [item._id]
+          }
+        }
+      }
+    )
+
+    // Add to dest list at the given index
+    await List.updateOne(
+      {
+        _id: req.body.dest
+      },
+      {
+        $push: {
+          items: {
+            $each: [item._id],
+            $position: req.body.index
+          }
+        }
+      }
+    )
+
+    // Update the reference id
+    item.list = req.body.dest
+    await item.save()
+
+    return res.status(httpStatusCodes.noContent).send()
+  } catch (e) {
+    next(e)
+  }
+})
 
 // ===========================================================================
 

@@ -190,8 +190,50 @@ describe('/api/items', () => {
   })
 
   // =========================================================================
-  describe('PUT /:id/move', () => {
-    it('should move an item from one list and append it to another list', async () => {
+  describe('PUT /:id/relocate', () => {
+    it('should return 422 if the destination index is not provided', async () => {
+      const payload = {
+        src: new mongoose.Types.ObjectId().toHexString(),
+        dest: new mongoose.Types.ObjectId().toHexString()
+      }
+
+      const id = new mongoose.Types.ObjectId()
+      const url = `/api/items/${id}/relocate`
+      const res = await request(server).put(url).send(payload)
+      expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
+    })
+
+    // =======================================================================
+
+    it('should return 422 if the source list index is not provided', async () => {
+      const payload = {
+        index: 1,
+        dest: new mongoose.Types.ObjectId().toHexString()
+      }
+
+      const id = new mongoose.Types.ObjectId()
+      const url = `/api/items/${id}/relocate`
+      const res = await request(server).put(url).send(payload)
+      expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
+    })
+
+    // =======================================================================
+
+    it('should return 422 if the destination list index is not provided', async () => {
+      const payload = {
+        index: 1,
+        src: new mongoose.Types.ObjectId().toHexString()
+      }
+
+      const id = new mongoose.Types.ObjectId()
+      const url = `/api/items/${id}/relocate`
+      const res = await request(server).put(url).send(payload)
+      expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
+    })
+
+    // =======================================================================
+
+    it('should relocate an item from one list and append it to another list', async () => {
       // Setup
       const boardId = new mongoose.Types.ObjectId().toHexString()
       const lists = await List.insertMany([
@@ -199,31 +241,61 @@ describe('/api/items', () => {
         { title: 'dest', board: boardId }
       ])
 
-      let src = lists[0]
-      let dest = lists[1]
+      const itemsInEachList = 3
+      let src = lists.find((list) => list.title === 'src')
+      let dest = lists.find((list) => list.title === 'dest')
 
-      let item = await Item.create({
-        title: 'Test Item',
-        list: src._id.toHexString()
-      })
+      const srcItems = await Item.insertMany([
+        { title: 'Src 1', list: src._id.toHexString() },
+        { title: 'Src 2', list: src._id.toHexString() },
+        { title: 'Src 3', list: src._id.toHexString() }
+      ])
 
-      src.items.push(item._id)
-      await src.save()
+      const destItems = await Item.insertMany([
+        { title: 'Dest 1', list: dest._id.toHexString() },
+        { title: 'Dest 2', list: dest._id.toHexString() },
+        { title: 'Dest 3', list: dest._id.toHexString() }
+      ])
 
-      const url = `/api/items/${item._id}/move?src=${src._id}&dest=${dest._id}`
+      await List.updateOne(
+        {
+          _id: src._id
+        },
+        {
+          $push: {
+            items: {
+              $each: srcItems.map((item) => item._id.toHexString())
+            }
+          }
+        }
+      )
+
+      await List.updateOne(
+        {
+          _id: dest._id
+        },
+        {
+          $push: {
+            items: {
+              $each: destItems.map((item) => item._id.toHexString())
+            }
+          }
+        }
+      )
 
       // Test
-      const res = await request(server).put(url).send()
+      let item = srcItems[0]
+      const payload = { index: 1, src: src._id, dest: dest._id }
+      const url = `/api/items/${item._id}/relocate`
+      const res = await request(server).put(url).send(payload)
       expect(res.status).toBe(httpStatusCodes.noContent)
 
-      src = await List.findOne({ title: 'src' })
-      dest = await List.findOne({ title: 'dest ' })
-
-      expect(src.items.length).toBe(0)
-      expect(dest.items.length).toBe(1)
+      src = await List.findById(src._id)
+      dest = await List.findById(dest._id)
+      expect(src.items.length).toBe(itemsInEachList - 1)
+      expect(dest.items.length).toBe(itemsInEachList + 1)
 
       item = await Item.findById(item._id)
-
       expect(item.list).toEqual(dest._id)
     })
   })
