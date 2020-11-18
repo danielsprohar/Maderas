@@ -26,6 +26,10 @@ const listSchema = new Schema({
 
 // ===========================================================================
 
+/**
+ * Validates the request body when the user requests the creation of a new `List`.
+ * @param {*} reqBody The request body of a HTTP POST request.
+ */
 function validate(reqBody) {
   const schema = Joi.object({
     title: Joi.string().max(512).required(),
@@ -35,7 +39,22 @@ function validate(reqBody) {
   return schema.validate(reqBody)
 }
 
+/**
+ * Validates the request body when the user requests to move a single `Item`
+ * within a given `List`.
+ * @param {*} reqBody The request body of a HTTP PUT request.
+ */
+function validateMoveItemRequest(reqBody) {
+  const schema = Joi.object({
+    itemId: Joi.objectId().required(),
+    destinationIndex: Joi.number().required()
+  })
+
+  return schema.validate(reqBody)
+}
+
 // ===========================================================================
 
 exports.List = mongoose.model('List', listSchema)
 exports.validate = validate
+exports.validateMoveItemRequest = validateMoveItemRequest

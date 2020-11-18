@@ -6,7 +6,7 @@ const isValidObjectId = require('../middleware/object-id')
 const mongoose = require('mongoose')
 const { Board } = require('../models/board')
 const { Item } = require('../models/item')
-const { List, validate } = require('../models/list')
+const { List, validate, validateMoveItemRequest } = require('../models/list')
 const { PaginatedResponse } = require('../application/paginated-response')
 
 // ===========================================================================
@@ -192,6 +192,64 @@ router.delete('/:id', isValidObjectId, async (req, res, next) => {
     )
 
     res.status(httpStatusCodes.noContent).send()
+  } catch (e) {
+    next(e)
+  }
+})
+
+// ===========================================================================
+// Move items within a List via Drag & Drop API
+// ===========================================================================
+
+router.put('/:id/move-item', isValidObjectId, async (req, res, next) => {
+  const { error } = validateMoveItemRequest(req.body)
+  if (error) {
+    return res
+      .status(httpStatusCodes.unprocessableEntity)
+      .send(error.details[0].message)
+  }
+
+  const listId = req.params.id
+  const list = await List.findById(listId)
+  if (!list) {
+    return res.status(httpStatusCodes.notFound).send('List does not exist.')
+  }
+
+  const itemId = req.body.itemId
+  const item = await Item.findById(itemId)
+  if (!item) {
+    return res.status(httpStatusCodes.notFound).send('Item does not exist.')
+  }
+
+  try {
+    await List.updateOne(
+      {
+        _id: listId
+      },
+      {
+        $pull: {
+          items: {
+            $in: [itemId]
+          }
+        }
+      }
+    )
+
+    await List.updateOne(
+      {
+        _id: listId
+      },
+      {
+        $push: {
+          items: {
+            $each: [itemId],
+            $position: req.body.destinationIndex
+          }
+        }
+      }
+    )
+
+    return res.status(httpStatusCodes.noContent).send()
   } catch (e) {
     next(e)
   }

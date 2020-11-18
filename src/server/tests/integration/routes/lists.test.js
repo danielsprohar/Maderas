@@ -111,17 +111,15 @@ describe('/api/lists', () => {
     it('should return HTTP status 404', createNotFoundRequest)
 
     it('should return HTTP status 422 for an invalid request body', async () => {
-      const list = new List({ title: 'test', board: boardId })
-      await list.save()
+      const list = List.create({ title: 'test', board: boardId })
+
       const url = `/api/lists/${list._id}`
       const res = await request(server).put(url).send({})
       expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
     })
 
-    it('should update a List and return said List', async () => {
-      const list = new List({ title: 'test', board: boardId })
-      await list.save()
-
+    it('should return 200 and the updated List', async () => {
+      const list = await List.create({ title: 'test', board: boardId })
       const url = `/api/lists/${list._id}`
       const payload = {
         title: 'test (edit)',
@@ -156,6 +154,8 @@ describe('/api/lists', () => {
       expect(res.status).toBe(httpStatusCodes.noContent)
     })
   })
+
+  // =========================================================================
 
   describe('DELETE /:id/clear-items', () => {
     it('should return HTTP status 404', createNotFoundRequest)
@@ -202,6 +202,86 @@ describe('/api/lists', () => {
       // Test
       const url = `/api/lists/${list._id}/clear-items`
       const res = await request(server).put(url)
+      expect(res.status).toBe(httpStatusCodes.noContent)
+    })
+  })
+
+  // =========================================================================
+
+  describe('PUT /:id/move-item', () => {
+    let listId = null
+    let itemId = null
+
+    beforeEach(async () => {
+      const list = await List.create({
+        title: 'Test',
+        board: new mongoose.Types.ObjectId().toHexString()
+      })
+
+      listId = list._id
+
+      const items = await Item.insertMany([
+        { title: 'Item 1', list: list._id },
+        { title: 'Item 2', list: list._id },
+        { title: 'Item 3', list: list._id },
+        { title: 'Item 4', list: list._id },
+        { title: 'Item 5', list: list._id }
+      ])
+
+      itemId = items[0]._id
+    })
+
+    afterEach(async () => {
+      await List.remove()
+      await Item.remove()
+    })
+
+    // =======================================================================
+
+    it('should return 422 for an invalid request body', async () => {
+      const url = `/api/lists/${listId}/move-item`
+      const res = await request(server).put(url).send({})
+      expect(res.status).toBe(httpStatusCodes.unprocessableEntity)
+    })
+
+    // =======================================================================
+
+    it('should return 404 for List not found', async () => {
+      const id = new mongoose.Types.ObjectId().toHexString()
+      const payload = {
+        itemId,
+        destinationIndex: 2
+      }
+
+      const url = `/api/lists/${id}/move-item`
+      const res = await request(server).put(url).send(payload)
+      expect(res.status).toBe(httpStatusCodes.notFound)
+    })
+
+    // =======================================================================
+
+    it('should return 404 for Item not found', async () => {
+      const payload = {
+        itemId: new mongoose.Types.ObjectId().toHexString(),
+        destinationIndex: 2
+      }
+
+      const url = `/api/lists/${listId}/move-item`
+      const res = await request(server).put(url).send(payload)
+      expect(res.status).toBe(httpStatusCodes.notFound)
+    })
+
+    // =======================================================================
+
+    it('should return 204 to indicate the item was moved', async () => {
+      // The "itemId" points to the first element in the array
+      const payload = {
+        itemId,
+        destinationIndex: 1
+      }
+
+      const url = `/api/lists/${listId}/move-item`
+      const res = await request(server).put(url).send(payload)
       expect(res.status).toBe(httpStatusCodes.noContent)
     })
   })
