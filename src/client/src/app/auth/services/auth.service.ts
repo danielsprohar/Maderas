@@ -14,21 +14,19 @@ import { AuthResponse } from '../models/auth-response';
 import { LoginModel } from '../models/login-model';
 import { RegisterModel } from '../models/register-model';
 
-// ===========================================================================
-
 const httpHeaders = new HttpHeaders({
   'Content-Type': 'application/json',
 });
 
-// ===========================================================================
+/**
+ * The key for getting/setting data in local storage.
+ */
+export const jwtStorageKey = 'maderas_jwt';
 
-// The key for getting/setting data in local storage.
-const jwtStorageKey = 'maderas';
-
-// The key for getting/setting the current user in local storage.
-const currentUser = 'maderas_cu';
-
-// ===========================================================================
+/**
+ * The key for getting/setting the current user in local storage.
+ */
+export const currentUserKey = 'maderas_user';
 
 @Injectable({
   providedIn: 'root',
@@ -114,27 +112,8 @@ export class AuthService {
 
   // =========================================================================
 
-  isLoggedIn(): boolean {
-    // Check if the token is localStorage.
-    // A hack for when the user refreshes the page.
-    if (this.getAuthorizationToken()) {
-      this.isLoggedInSubject.next(true);
-      return true;
-    }
-
-    return false;
-  }
-
-  // =========================================================================
-
-  getAuthorizationToken(): string {
-    return localStorage.getItem(jwtStorageKey);
-  }
-
-  // =========================================================================
-
   getUser(): User {
-    const stringifiedUser = localStorage.getItem(currentUser);
+    const stringifiedUser = localStorage.getItem(currentUserKey);
     if (!stringifiedUser) {
       return null;
     }
@@ -151,7 +130,7 @@ export class AuthService {
     this.isLoggedInSubject.next(true);
 
     localStorage.setItem(jwtStorageKey, res.token);
-    localStorage.setItem(currentUser, JSON.stringify(res.user));
+    localStorage.setItem(currentUserKey, JSON.stringify(res.user));
   }
 
   // =========================================================================
@@ -161,7 +140,13 @@ export class AuthService {
     this.isLoggedInSubject.next(false);
 
     localStorage.removeItem(jwtStorageKey);
-    localStorage.removeItem(currentUser);
+    localStorage.removeItem(currentUserKey);
+  }
+
+  // =========================================================================
+
+  getAuthorizationToken(): string {
+    return localStorage.getItem(jwtStorageKey);
   }
 
   // =========================================================================

@@ -13,7 +13,7 @@
   <!-- ======================================================================= -->
   <!-- Register/Login buttons -->
   <!-- ======================================================================= -->
-  <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn" class="navbar-end">
+  <ng-container *ngIf="!auth.getUser(); else loggedIn" class="navbar-end">
     <span class="spacer"></span>
     <div class="button-bar">
       <a mat-raised-button color="accent" routerLink="/register">
