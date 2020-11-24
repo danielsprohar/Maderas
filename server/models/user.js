@@ -73,8 +73,9 @@ userSchema.methods.generateAuthToken = function () {
     process.env.JWT_KEY,
     {
       expiresIn: '1h',
-      issuer: 'http://localhost:5000',
-      audience: 'http://localhost:4200'
+      issuer: process.env.ISSUER,
+      audience: process.env.AUDIENCE,
+      subject: this.id
     }
   )
 }
