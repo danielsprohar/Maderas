@@ -16,6 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { List } from 'src/app/models/list';
+import { AppLoadingService } from 'src/app/services/app-loading.service';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -34,7 +35,8 @@ export class CreateItemComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly itemsService: DataService<Item>,
-    private readonly snackbar: MatSnackBar
+    private readonly snackbar: MatSnackBar,
+    private readonly loading: AppLoadingService
   ) {}
 
   ngOnInit(): void {
@@ -73,6 +75,8 @@ export class CreateItemComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.loading.isLoading(true);
+
     const item = new Item({
       title: (this.title.value as string).trim(),
       list: this.list._id,
@@ -90,7 +94,8 @@ export class CreateItemComponent implements OnInit, OnDestroy {
         this.snackbar.open(err.message, null, {
           panelClass: 'danger',
         });
-      }
+      },
+      () => this.loading.isLoading(false)
     );
   }
 }

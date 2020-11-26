@@ -24,7 +24,6 @@ export class BoardDetailResolverService implements Resolve<Board> {
     state: RouterStateSnapshot
   ): Observable<Board> | Observable<never> {
     const id = route.paramMap.get('id');
-
     return this.boardsService.get(`/boards/${id}`).pipe(
       take(1),
       mergeMap((board) => {

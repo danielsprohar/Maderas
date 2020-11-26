@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { List } from 'src/app/models/list';
 import { Template } from 'src/app/models/template';
+import { AppLoadingService } from 'src/app/services/app-loading.service';
 import { DataService } from 'src/app/services/data.service';
 import { UniqueTemplateNameAsyncValidator } from '../validators/unique-name-async-validator';
 
@@ -31,7 +32,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     private readonly snackbar: MatSnackBar,
     private readonly templatesService: DataService<Template>,
     private readonly auth: AuthService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly loading: AppLoadingService
   ) {}
 
   ngOnInit(): void {
@@ -134,11 +136,11 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   }
 
   // =========================================================================
-  // Action handlers
-  // =========================================================================
 
   onSubmit(): void {
+    this.loading.isLoading(true);
     const template = this.getTemplate();
+
     this.subscription = this.templatesService
       .create('/templates', template)
       .subscribe(
@@ -152,7 +154,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
           this.snackbar.open(err, null, {
             panelClass: 'danger',
           });
-        }
+        },
+        () => this.loading.isLoading(false)
       );
   }
 }

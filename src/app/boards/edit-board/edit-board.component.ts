@@ -15,6 +15,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Board } from 'src/app/models/board';
+import { AppLoadingService } from 'src/app/services/app-loading.service';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -33,7 +34,8 @@ export class EditBoardComponent implements OnInit, OnDestroy {
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly boardsService: DataService<Board>,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private readonly loading: AppLoadingService
   ) {}
 
   ngOnInit(): void {
@@ -84,6 +86,7 @@ export class EditBoardComponent implements OnInit, OnDestroy {
   // ==========================================================================
 
   onSubmit(): void {
+    this.loading.isLoading(true);
     const board = this.getBoard();
 
     this.subscription = this.boardsService
@@ -98,7 +101,8 @@ export class EditBoardComponent implements OnInit, OnDestroy {
         },
         (err) => {
           this.snackbar.open(err, null, { panelClass: 'danger' });
-        }
+        },
+        () => this.loading.isLoading(false)
       );
   }
 }

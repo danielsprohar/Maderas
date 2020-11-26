@@ -30,19 +30,19 @@ export class AppComponent implements OnInit, OnDestroy {
     // Reference:
     // https://angular.io/guide/router#router-events
     this.navStartSubscription = this.router.events
-      .pipe(filter((e) => e instanceof NavigationStart))
+      .pipe(filter((routerEvent) => routerEvent instanceof NavigationStart))
       .subscribe(() => this.loadingService.isLoading(true));
 
     this.navCanceledSubscription = this.router.events
-      .pipe(filter((e) => e instanceof NavigationCancel))
+      .pipe(filter((routerEvent) => routerEvent instanceof NavigationCancel))
       .subscribe(() => this.loadingService.isLoading(false));
 
     this.navErrorSubscription = this.router.events
-      .pipe(filter((e) => e instanceof NavigationError))
+      .pipe(filter((routerEvent) => routerEvent instanceof NavigationError))
       .subscribe(() => this.loadingService.isLoading(false));
 
     this.navEndSubscription = this.router.events
-      .pipe(filter((e) => e instanceof NavigationEnd))
+      .pipe(filter((routerEvent) => routerEvent instanceof NavigationEnd))
       .subscribe(() => this.loadingService.isLoading(false));
   }
 

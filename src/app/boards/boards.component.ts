@@ -3,7 +3,6 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { HttpParams } from '@angular/common/http';
 import {
   Component,
   OnDestroy,
@@ -21,6 +20,7 @@ import { EditListComponent } from '../lists/edit-list/edit-list.component';
 import { Board } from '../models/board';
 import { Item } from '../models/item';
 import { List } from '../models/list';
+import { AppLoadingService } from '../services/app-loading.service';
 import { DataService } from '../services/data.service';
 import { DialogData } from '../shared/dialog-data';
 import { UserConfirmationDialogComponent } from '../shared/user-confirmation-dialog/user-confirmation-dialog.component';
@@ -57,7 +57,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly snackbar: MatSnackBar,
     private readonly renderer: Renderer2,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly loading: AppLoadingService
   ) {}
 
   ngOnInit(): void {
@@ -73,21 +74,32 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   // =========================================================================
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  /**
+   * Send a request to the database to fetch all the lists
+   * that are associated with the given board id.
+   * @param boardId the board id
+   */
   private fetchLists(boardId: string): void {
     const sub = this.listsService
       .getAll(`/lists?board=${boardId}`)
       .pipe(map((res: PaginatedResponse<List>) => res.data))
-      .subscribe((data: List[]) => {
-        this.lists = data;
-      });
+      .subscribe(
+        (data: List[]) => {
+          this.lists = data;
+        },
+        (err) => {
+          this.snackbar.open(err, null, {
+            panelClass: 'danger',
+          });
+          console.error(err);
+        }
+      );
 
     this.subscriptions.push(sub);
-  }
-
-  // =========================================================================
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   // =========================================================================
@@ -108,7 +120,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
         this.snackbar.open(err, null, {
           panelClass: 'danger',
         });
-      }
+      },
+      () => this.loading.isLoading(false)
     );
 
     this.subscriptions.push(sub);
@@ -151,6 +164,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   private deleteList(id: string): void {
+    this.loading.isLoading(true);
     const path = `/lists/${id}`;
     const sub = this.listsService.remove(path).subscribe(
       () => {
@@ -165,7 +179,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
         this.snackbar.open(err, null, {
           panelClass: 'danger',
         });
-      }
+      },
+      () => this.loading.isLoading(false)
     );
 
     this.subscriptions.push(sub);
@@ -190,6 +205,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   private clearList(id: string): void {
+    this.loading.isLoading(true);
     const path = `/lists/${id}/clear-items`;
     const sub = this.listsService.update(path, null).subscribe(
       () => {
@@ -204,7 +220,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
         this.snackbar.open(err, null, {
           panelClass: 'danger',
         });
-      }
+      },
+      () => this.loading.isLoading(false)
     );
 
     this.subscriptions.push(sub);
@@ -236,8 +253,6 @@ export class BoardsComponent implements OnInit, OnDestroy {
     button.classList.toggle('hidden');
   }
 
-  // =========================================================================
-
   /**
    * Handles the event that is emitted by the `CreateListComponent`.
    * @param list The `Board` that was just created.
@@ -245,8 +260,6 @@ export class BoardsComponent implements OnInit, OnDestroy {
   handleNewListEvent(list: List): void {
     this.lists.push(list);
   }
-
-  // =========================================================================
 
   /**
    * Handles the event that is emitted by the `EditListComponent`.
@@ -299,6 +312,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   private deleteItem(listId: string, itemId: string): void {
+    this.loading.isLoading(true);
     const path = `/items/${itemId}`;
     const sub = this.itemsService.remove(path).subscribe(
       () => {
@@ -308,7 +322,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
         this.snackbar.open(err, null, {
           panelClass: 'danger',
         });
-      }
+      },
+      () => this.loading.isLoading(false)
     );
 
     this.subscriptions.push(sub);
@@ -345,8 +360,6 @@ export class BoardsComponent implements OnInit, OnDestroy {
     list.items.splice(itemIndex, 1);
   }
 
-  // =========================================================================
-
   /**
    * Handles the event that is emitted by the `CreateItemComponent`.
    * @param item The `Item` that was just created.
@@ -355,8 +368,6 @@ export class BoardsComponent implements OnInit, OnDestroy {
     const list = this.lists.find((l) => l._id === item.list);
     list.items.push(item);
   }
-
-  // =========================================================================
 
   /**
    * Handles the event that is emitted by the `EditItemComponent`.
@@ -401,6 +412,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   drop(event: CdkDragDrop<Item[]>, dest: string): void {
+    this.loading.isLoading(true);
     const item = event.previousContainer.data[event.previousIndex];
     const src = item.list;
     const path = `/items/${item._id}/relocate`;
@@ -414,7 +426,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
         this.snackbar.open(err, null, {
           panelClass: 'danger',
         });
-      }
+      },
+      () => this.loading.isLoading(false)
     );
 
     this.subscriptions.push(sub);

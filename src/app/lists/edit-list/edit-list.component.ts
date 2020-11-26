@@ -14,6 +14,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { List } from 'src/app/models/list';
+import { AppLoadingService } from 'src/app/services/app-loading.service';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -33,7 +34,8 @@ export class EditListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly listsService: DataService<List>,
     private readonly snackbar: MatSnackBar,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private readonly loading: AppLoadingService
   ) {}
 
   ngOnInit(): void {
@@ -90,6 +92,8 @@ export class EditListComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.loading.isLoading(true);
+
     const list = new List({
       title: this.title.value,
       board: this.list.board,
@@ -110,9 +114,10 @@ export class EditListComponent implements OnInit, OnDestroy {
             panelClass: 'danger',
           });
         },
-        () => this.close()
+        () => {
+          this.close();
+          this.loading.isLoading(false);
+        }
       );
   }
-
-  // =========================================================================
 }

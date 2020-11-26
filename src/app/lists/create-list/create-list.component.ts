@@ -17,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { List } from 'src/app/models/list';
+import { AppLoadingService } from 'src/app/services/app-loading.service';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -36,7 +37,8 @@ export class CreateListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly listService: DataService<List>,
     private readonly snackbar: MatSnackBar,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly loading: AppLoadingService
   ) {}
 
   ngOnInit(): void {
@@ -81,6 +83,8 @@ export class CreateListComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.loading.isLoading(true);
+
     const list = new List({
       title: (this.title.value as string).trim(),
       board: this.board._id ?? this.route.snapshot.queryParamMap.get('id'),
@@ -99,9 +103,8 @@ export class CreateListComponent implements OnInit, OnDestroy {
         this.snackbar.open(err.message, null, {
           panelClass: 'danger',
         });
-      }
+      },
+      () => this.loading.isLoading(false)
     );
   }
-
-  // =========================================================================
 }
