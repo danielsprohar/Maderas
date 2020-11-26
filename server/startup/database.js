@@ -4,8 +4,8 @@ const mongoose = require('mongoose')
 module.exports = function () {
   const uri =
     process.env.NODE_ENV === 'production'
-      ? process.env.DB_URI
-      : process.env.TEST_DB_URI
+      ? process.env.MONGODB_URI
+      : process.env.TEST_MONGODB_URI
 
   mongoose
     .connect(uri, {

@@ -1,7 +1,12 @@
 <app-navbar></app-navbar>
+<mat-progress-bar
+  #progressBar
+  class="progress-bar"
+  [class.invisible]="!(loadingService.isLoading$ | async)"
+  mode="indeterminate"
+  color="accent"
+></mat-progress-bar>
 
 <main class="main-content">
   <router-outlet></router-outlet>
 </main>
-
-<!-- <app-snackbar></app-snackbar> -->

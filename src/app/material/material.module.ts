@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { A11yModule } from '@angular/cdk/a11y';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {
   MatSnackBarModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
@@ -41,7 +42,8 @@ import {
     MatSelectModule,
     MatDialogModule,
     MatSidenavModule,
-    A11yModule
+    A11yModule,
+    MatProgressBarModule
   ],
   exports: [
     MatButtonModule,
@@ -60,7 +62,8 @@ import {
     MatSelectModule,
     MatDialogModule,
     MatSidenavModule,
-    A11yModule
+    A11yModule,
+    MatProgressBarModule
   ],
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
