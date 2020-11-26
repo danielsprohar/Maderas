@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RegisterModel } from '../models/register-model';
@@ -29,10 +30,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly auth: AuthService,
     private readonly fb: FormBuilder,
-    private readonly snackbar: MatSnackBar
+    private readonly snackbar: MatSnackBar,
+    private readonly documentTitle: Title
   ) {}
 
   ngOnInit(): void {
+    this.documentTitle.setTitle('Register | Maderas');
     this.form = this.fb.group(
       {
         username: ['', [Validators.required, Validators.maxLength(255)]],

@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -33,10 +34,12 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     private readonly templatesService: DataService<Template>,
     private readonly auth: AuthService,
     private readonly router: Router,
-    private readonly loading: AppLoadingService
+    private readonly loading: AppLoadingService,
+    private readonly documentTitle: Title
   ) {}
 
   ngOnInit(): void {
+    this.documentTitle.setTitle('Create a Template | Maderas');
     this.form = this.fb.group(
       {
         name: [

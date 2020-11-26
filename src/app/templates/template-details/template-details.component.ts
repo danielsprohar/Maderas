@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -30,10 +31,12 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
     private readonly snackbar: MatSnackBar,
     private readonly boardsService: DataService<Board>,
     private readonly auth: AuthService,
-    private readonly renderer: Renderer2
+    private readonly renderer: Renderer2,
+    private readonly documentTitle: Title
   ) {}
 
   ngOnInit(): void {
+    this.documentTitle.setTitle('Template Details | Maderas');
     this.template$ = this.route.data.pipe(
       map((data: { template: Template }) => data.template)
     );

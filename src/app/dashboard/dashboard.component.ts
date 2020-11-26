@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
-  constructor() {}
+  constructor(private readonly documentTitle: Title) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.documentTitle.setTitle('Dashboard | Maderas');
+  }
 }

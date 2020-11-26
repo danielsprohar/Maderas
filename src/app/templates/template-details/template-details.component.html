@@ -1,66 +1,66 @@
 <ng-container *ngIf="template$ | async as template">
-  <div class="row flex-centered-y">
-    <div class="column">
-      <h2 class="no-margin">{{ template.name | titlecase }}</h2>
-      <p>Created by ME!</p>
-    </div>
-    <span class="spacer"></span>
-
-    <div>
-      <button
-        mat-raised-button
-        color="primary"
-        aria-haspopup="true"
-        (click)="openModal()"
-      >
-        Use template
-      </button>
-    </div>
-  </div>
-
-  <mat-divider></mat-divider>
-
-  <h3>About this template</h3>
-  <p>
-    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex placeat eos
-    labore iure facilis dolorem voluptatum? Modi provident optio tempora.
-    Consequuntur ex, error tempore totam magnam molestiae? Voluptatibus,
-    temporibus sequi?
-  </p>
-
-  <!-- ==================================================================== -->
-  <!-- Modal -->
-  <!-- ==================================================================== -->
-  <div id="modal" class="modal">
-    <div class="modal-content column">
-      <div class="modal-header">
-        <p>Create board from template</p>
-        <span class="spacer"></span>
-        <button mat-icon-button (click)="closeModal()">
-          <mat-icon>close</mat-icon>
-        </button>
+  <div class="template-details-wrapper">
+    <div class="template-details-header">
+      <div class="column">
+        <h2 class="no-margin">{{ template.name | titlecase }}</h2>
+        <p>Created by ME!</p>
       </div>
-
-      <mat-divider></mat-divider><br />
-
-      <mat-form-field>
-        <mat-label>Title</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="The board's title"
-          [formControl]="title"
-        />
-      </mat-form-field>
+      <span class="spacer"></span>
       <div>
         <button
           mat-raised-button
           color="primary"
-          [disabled]="title.invalid"
-          (click)="createFromTemplate(template._id)"
+          aria-haspopup="true"
+          (click)="openModal()"
         >
-          Create
+          Use template
         </button>
+      </div>
+    </div>
+    <div class="template-details-body">
+      <h3>About this template</h3>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex placeat eos
+        labore iure facilis dolorem voluptatum? Modi provident optio tempora.
+        Consequuntur ex, error tempore totam magnam molestiae? Voluptatibus,
+        temporibus sequi?
+      </p>
+
+      <!-- ==================================================================== -->
+      <!-- Modal -->
+      <!-- ==================================================================== -->
+      <div id="modal" class="modal">
+        <div class="modal-content column">
+          <div class="modal-header">
+            <p>Create board from template</p>
+            <span class="spacer"></span>
+            <button mat-icon-button (click)="closeModal()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+
+          <mat-divider></mat-divider><br />
+
+          <mat-form-field>
+            <mat-label>Title</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="The board's title"
+              [formControl]="title"
+            />
+          </mat-form-field>
+          <div>
+            <button
+              mat-raised-button
+              color="primary"
+              [disabled]="title.invalid"
+              (click)="createFromTemplate(template._id)"
+            >
+              Create
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

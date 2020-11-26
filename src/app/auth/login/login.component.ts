@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthResponse } from '../models/auth-response';
@@ -28,10 +29,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly auth: AuthService,
     private readonly fb: FormBuilder,
-    private readonly snackbar: MatSnackBar
+    private readonly snackbar: MatSnackBar,
+    private readonly documentTitle: Title
   ) {}
 
   ngOnInit(): void {
+    this.documentTitle.setTitle('Log in | Maderas');
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],

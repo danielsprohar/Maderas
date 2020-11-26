@@ -11,10 +11,6 @@
   margin-right: 0.5rem;
 }
 
-.mat-toolbar > .mat-button {
-  margin-left: 0.25rem !important;
-}
-
 .username {
   font-size: 1rem;
   margin: 0 0.5rem 0 0;
