@@ -37,20 +37,6 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.initializeForm();
-  }
-
-  // =========================================================================
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
-  // =========================================================================
-
-  private initializeForm(): void {
     this.form = this.fb.group(
       {
         name: [
@@ -69,6 +55,14 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         updateOn: 'blur',
       }
     );
+  }
+
+  // =========================================================================
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   // =========================================================================

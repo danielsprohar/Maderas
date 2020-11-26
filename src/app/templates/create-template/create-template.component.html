@@ -10,7 +10,7 @@
           color="primary"
           (click)="onSubmit()"
         >
-          Create
+          Save
         </button>
       </div>
     </div>
@@ -18,20 +18,20 @@
     <mat-divider></mat-divider>
 
     <form [formGroup]="form">
-      <mat-form-field class="full-width" appearance="fill">
+      <h3>Template details</h3>
+      <mat-form-field class="full-width">
         <mat-label>Template Name</mat-label>
         <input matInput formControlName="name" required />
         <mat-error>{{ getTemplateNameError() }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field class="full-width" appearance="fill">
+      <mat-form-field class="full-width">
         <mat-label>Description</mat-label>
         <textarea matInput formControlName="description"></textarea>
       </mat-form-field>
 
       <div formArrayName="lists" class="lists-container">
-        <h3>Lists</h3>
-        <mat-divider></mat-divider>
+        <h3>Default lists</h3>
 
         <div class="mat-card-container">
           <mat-card *ngFor="let list of lists.controls; let i = index">

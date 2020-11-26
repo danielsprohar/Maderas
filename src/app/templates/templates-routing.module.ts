@@ -8,13 +8,13 @@ import { TemplatesComponent } from './templates.component';
 
 const routes: Routes = [
   {
-    path: 'create',
-    component: CreateTemplateComponent,
-  },
-  {
     path: '',
     component: TemplatesComponent,
     children: [
+      {
+        path: 'create',
+        component: CreateTemplateComponent,
+      },
       {
         path: ':id',
         component: TemplateDetailsComponent,

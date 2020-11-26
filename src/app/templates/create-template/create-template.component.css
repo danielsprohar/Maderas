@@ -32,15 +32,22 @@
   flex-grow: 1;
 }
 
+/* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  /* For tablets */
   .content-container {
     width: 80%;
   }
 }
 
+/* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 768px) {
-  /* For desktop: */
+  .content-container {
+    width: 75%;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
   .content-container {
     width: 50%;
   }
