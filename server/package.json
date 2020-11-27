@@ -4,6 +4,7 @@
   "description": "A Trello clone",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "jest --watchAll --verbose --runInBand --detectOpenHandles --coverage"
   },
   "keywords": [

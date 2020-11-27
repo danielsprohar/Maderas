@@ -4,7 +4,7 @@ const winston = require('../logger/winston')
 
 module.exports = function isAuthenticated(req, res, next) {
   if (!req.headers.authorization) {
-    return res.status(httpStatusCodes.unauthorized).send('No token')
+    return res.status(httpStatusCodes.forbidden).send('No token')
   }
 
   const authHeader = req.headers.authorization.split(' ')
