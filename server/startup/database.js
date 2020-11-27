@@ -15,5 +15,5 @@ module.exports = function () {
       // https://mongoosejs.com/docs/guide.html#indexes
       autoIndex: false
     })
-    .then(() => winston.info(`Connect to database located at ${uri}`))
+    .then(() => winston.info('Connected to MongoDB'))
 }

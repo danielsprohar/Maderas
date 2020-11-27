@@ -41,10 +41,7 @@ export class CreateItemComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.itemForm = new FormGroup({
-      title: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(512),
-      ]),
+      title: new FormControl('', [Validators.maxLength(512)]),
     });
   }
   // =========================================================================
@@ -71,7 +68,7 @@ export class CreateItemComponent implements OnInit, OnDestroy {
   // =========================================================================
 
   onSubmit(): void {
-    if (this.itemForm.invalid) {
+    if (!(this.title.value as string).trim().length) {
       return;
     }
 

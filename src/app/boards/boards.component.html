@@ -65,11 +65,14 @@
                   <button mat-menu-item (click)="openEditListModal(list)">
                     Edit ...
                   </button>
-                  <button
-                    mat-menu-item
-                    (click)="openClearListConfirmationDialog(list._id)"
-                  >
-                    Remove items                  </button>
+                  <ng-container *ngIf="list.items.length">
+                    <button
+                      mat-menu-item
+                      (click)="openClearListConfirmationDialog(list._id)"
+                    >
+                      Remove items
+                    </button>
+                  </ng-container>
                 </mat-menu>
               </div>
 

@@ -20,7 +20,7 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
 
   public template$: Observable<Template>;
 
-  public title = new FormControl('Kanban Template', [
+  public title = new FormControl('', [
     Validators.required,
     Validators.maxLength(512),
   ]);

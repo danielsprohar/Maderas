@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -58,10 +59,13 @@ export class BoardsComponent implements OnInit, OnDestroy {
     private readonly snackbar: MatSnackBar,
     private readonly renderer: Renderer2,
     private readonly dialog: MatDialog,
-    private readonly loading: AppLoadingService
+    private readonly loading: AppLoadingService,
+    private readonly documentTitle: Title
   ) {}
 
   ngOnInit(): void {
+    this.documentTitle.setTitle('Maderas');
+
     this.board$ = this.route.data.pipe(
       map((data: { board: Board }) => {
         if (data.board) {
