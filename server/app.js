@@ -20,7 +20,7 @@ process.on('unhandledRejection', (err) => {
 // Start the server
 // ======================================================
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 8080
 const server = app.listen(port, () => {
   winston.info('Now listening on port ' + port)
 })

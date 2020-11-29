@@ -16,14 +16,18 @@ describe('auth middlware', () => {
     }
   })
 
-  it('should return 401 if no token is provided', async () => {
+  // =========================================================================
+
+  it('should return 403 if no token is provided', async () => {
     const res = await request(server)
       .post('/api/boards')
       .send({ title: 'Test board', user: new mongoose.Types.ObjectId() })
 
-    expect(res.status).toBe(httpStatusCodes.unauthorized)
+    expect(res.status).toBe(httpStatusCodes.forbidden)
   })
 
+  // =========================================================================
+  
   it('should return 400 for an invalid Authorization header value', async () => {
     const token = new User().generateAuthToken()
 
@@ -35,7 +39,9 @@ describe('auth middlware', () => {
     expect(res.status).toBe(httpStatusCodes.badRequest)
   })
 
-  it('should return 400 for an invalid Authorization header value', async () => {
+  // =========================================================================
+
+  it('should return 403 for an invalid token', async () => {
     const token = ''
 
     const res = await request(server)

@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "deploy": "gcloud app deploy",
     "test": "jest --watchAll --verbose --runInBand --detectOpenHandles --coverage"
   },
   "keywords": [
