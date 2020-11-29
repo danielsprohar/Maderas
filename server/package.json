@@ -2,9 +2,9 @@
   "name": "maderas-server",
   "version": "1.0.0",
   "description": "A Trello clone",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node server.js",
     "test": "jest --watchAll --verbose --runInBand --detectOpenHandles --coverage"
   },
   "keywords": [

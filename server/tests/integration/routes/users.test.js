@@ -36,7 +36,7 @@ async function clearDb() {
 
 describe('/api/users', () => {
   beforeEach(() => {
-    server = require('../../../app')
+    server = require('../../../server')
   })
 
   // =========================================================================

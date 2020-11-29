@@ -32,7 +32,7 @@ let server = null
 
 describe('/api/templates', () => {
   beforeEach(() => {
-    server = require('../../../app')
+    server = require('../../../server')
   })
 
   afterEach(async () => {

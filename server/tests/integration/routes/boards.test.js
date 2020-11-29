@@ -59,7 +59,7 @@ async function createNotFoundRequest() {
 // ===========================================================================
 describe('/api/boards', () => {
   beforeEach(() => {
-    server = require('../../../app')
+    server = require('../../../server')
   })
 
   afterEach(async () => {

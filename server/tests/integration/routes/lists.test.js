@@ -29,7 +29,7 @@ async function createNotFoundRequest() {
 
 describe('/api/lists', () => {
   beforeEach(() => {
-    server = require('../../../app')
+    server = require('../../../server')
   })
 
   afterEach(async () => {

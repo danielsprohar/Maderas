@@ -26,7 +26,7 @@ async function createNotFoundRequest() {
 
 describe('/api/items', () => {
   beforeEach(() => {
-    server = require('../../../app')
+    server = require('../../../server')
   })
 
   afterEach(async () => {

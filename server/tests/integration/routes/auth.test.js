@@ -38,7 +38,7 @@ describe('/api/auth', () => {
   let server = null
 
   beforeEach(() => {
-    server = require('../../../app')
+    server = require('../../../server')
   })
 
   // =========================================================================
